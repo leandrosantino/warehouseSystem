@@ -1,0 +1,81 @@
+.nav{
+    height: 31px;
+    background-color: rgb(211, 211, 211);
+    display: flex;
+    color: #2f3241;
+    font: bold 11pt arial;
+    display: flex;
+}
+
+.nav > div{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 50%;
+    padding-left: 9px;
+}
+
+#Nav_butons{
+    justify-content: flex-end;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#Nav_butons > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 33px;
+}
+
+#icon{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 2px;
+    top: 2.5px;
+}
+
+
+#ico-max{
+    width: 12px;
+    height: 12px;
+}
+
+#ico-close{
+    width: 25px;
+    height: 25px;
+}
+
+#ico-min, #ico-max, #ico-close{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2f3241;
+}
+
+
+
+#butonNav:hover{
+    background-color: #9c9c9c;
+}
+#butonClose:hover{
+    background-color: rgb(238, 56, 56);
+}
+
+#logo{
+    width: 30px;
+}
+
+#imgLogo{
+    width: 17px;
+}
+
+.drag{
+    -webkit-app-region: drag;
+}
+
+.no-drag{
+    -webkit-app-region: no-drag;
+}

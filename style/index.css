@@ -1,0 +1,22 @@
+@import url("./bootstrap/css/bootstrap.css");
+@import url("./colors.css");
+@import url("../navbar/navBar.css");
+
+body{
+    background-color: var(--backG);
+    color: var(--branco);
+    user-select: none;
+}
+
+*{
+    font-family: var(--font);
+    color: var(--branco);
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+#app{
+    width: 100%;
+    height: calc(100vh - 31px);
+}
+
