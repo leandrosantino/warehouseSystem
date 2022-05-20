@@ -12,8 +12,6 @@ if(reload == 1){
     });
 }
 
-
-
 const windows = createBrowserWindows({
     BrowserWindow,
     ipcMain,
@@ -35,6 +33,7 @@ app.on('window-all-closed', ()=>{
 
 function init(){
     windows.main.show()
+    windows.main.maximize()
 
     windows.create('modal',{
         width: 1170, 

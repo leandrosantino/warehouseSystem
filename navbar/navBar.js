@@ -57,15 +57,17 @@ function main(windows){
                 window = windows[win]
             }
             
-            window.on('resize', ()=>{
-                window.webContents.send('changeMaxIco')
-            })
+            try{
+                window.on('resize', ()=>{
+                    window.webContents.send('changeMaxIco')
+                })
+            }catch{}
         }
     }
 }
 
-function render(window){
-    const source = path.join(__dirname, '../src/icons')
+function render(window, type){
+    const source = path.join(__dirname, './icons')
 
     const buttons = {
         close: fs.readFileSync(path.join(source, './close.svg'), {encoding:'utf8', flag:'r'}) ,
@@ -76,19 +78,16 @@ function render(window){
 
     function create(){
         
-        console.log(buttons)
-
         const html = ejs.create(path.join(__dirname, 'navBar.ejs'), {
             close: buttons.close,
-            maximize: 
-            ipcRenderer.sendSync('isMaximized', {window})? 
-            buttons.restore:
-            buttons.maximize,
-
-            minimize: buttons.minimize,
+            maximize: type != 'modal'? buttons.maximize: false,
+            minimize: type != 'modal'? buttons.minimize: false,
         })
         document.querySelector('.nav').innerHTML = html
 
+        setTimeout(()=>{
+            changeIcon()
+        }, 100)
 
     }
 

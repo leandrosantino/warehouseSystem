@@ -1,5 +1,6 @@
 const contextBridge = require('../../modules/globalPreload.js')({
-    window: 'modal'
+    window: 'modal',
+    type: 'modal'
 })
 
 contextBridge.addPages({
