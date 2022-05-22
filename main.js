@@ -5,7 +5,7 @@ const navBar = require('./navbar/navBar.js')
 const dialog = createDialog(require('electron').dialog)
 const path = require('path')
 
-const reload = 0
+const reload = 1
 if(reload == 1){
     require("electron-reload")(__dirname, {
         electron: require(`${__dirname}/node_modules/electron`),
@@ -21,7 +21,7 @@ const windows = createBrowserWindows({
 
 app.on('ready', ()=>{
     windows.createMain({
-        width: 1170, 
+        width: 1000, 
         height: 655,
         source: path.join(__dirname, './windows/main'),
     }, init)
@@ -41,8 +41,6 @@ function init(){
         source: path.join(__dirname, './windows/modal'),
         parent: windows.main
     })
-
-    windows.modal.show()
 
     navBar.main(windows)
     dialog.setIpc(ipcMain, windows)
