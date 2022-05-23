@@ -35,13 +35,6 @@ function init(){
     windows.main.show()
     windows.main.maximize()
 
-    windows.create('modal',{
-        width: 1170, 
-        height: 655,
-        source: path.join(__dirname, './windows/modal'),
-        parent: windows.main
-    })
-
     navBar.main(windows)
     dialog.setIpc(ipcMain, windows)
 }
