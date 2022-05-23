@@ -69,11 +69,14 @@ function main(windows){
 function render(window, type){
     const source = path.join(__dirname, './icons')
 
+
+    const icons = ipcRenderer.sendSync('icons')
+
     const buttons = {
-        close: fs.readFileSync(path.join(source, './close.svg'), {encoding:'utf8', flag:'r'}) ,
-        maximize: fs.readFileSync(path.join(source, './maximum.svg'), {encoding:'utf8', flag:'r'}) ,
-        minimize: fs.readFileSync(path.join(source, './minimum.svg'), {encoding:'utf8', flag:'r'}) ,
-        restore: fs.readFileSync(path.join(source, './restore.svg'), {encoding:'utf8', flag:'r'}) ,
+        close: icons.close,
+        maximize: icons.maximize,
+        minimize: icons.minimize,
+        restore: icons.restore,
     }
 
     function create(){

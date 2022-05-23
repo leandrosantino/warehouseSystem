@@ -25,7 +25,8 @@ module.exports = (args = {
         'events': event,
         'ejs': ejs,
         'navBar': navBar.render(args.window, args.type),
-        'pages': {create: createPage}
+        'pages': {create: createPage},
+        'icons': ipcRenderer.sendSync('icons')
     }
 
     function newBridge(name, object){

@@ -2,6 +2,7 @@ const {app, BrowserWindow, ipcMain} = require('electron')
 const createBrowserWindows = require('./modules/createWindow.js')
 const createDialog = require('./modules/dialog.js')
 const navBar = require('./navbar/navBar.js')
+const icons = require('./modules/readicons.js')()
 const dialog = createDialog(require('electron').dialog)
 const path = require('path')
 

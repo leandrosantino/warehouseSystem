@@ -6,9 +6,8 @@ function createPageHome(window){
 
     function createPage(){
         const ejs = window.ejs
-        const icons = {
-            config: fs.readFileSync(path.join(__dirname, '../../../../src/icons/config.svg')),
-        }
+
+        const icons = window.icons
 
         function getElements(){
             //page.btTeste = document.querySelector('#bt')
