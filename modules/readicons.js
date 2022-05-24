@@ -22,6 +22,10 @@ module.exports = ()=>{
         logout: readSvg('logout'),
         person: readSvg('person'),
         search: readSvg('search'),
+        question: readSvg('question'),
+        info: readSvg('info'),
+        addForm: readSvg('addForm'),
+        box: readSvg('box'),
     }
 
     ipcMain.on('icons', (event, name)=>[

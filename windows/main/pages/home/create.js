@@ -5,19 +5,19 @@ function createPageHome(window){
     const fs = require('fs')
 
     function createPage(){
-        const ejs = window.ejs
+        const ejs = window.ejs 
 
         const icons = window.icons
 
         function getElements(){
-            //page.btTeste = document.querySelector('#bt')
+            page.login = document.querySelector('#login')
+            page.logout = document.querySelector('#logout')
         }
 
         function render(dados){
             const html = ejs.create(path.join(__dirname, './home.ejs'), {...dados, icons: icons}) 
             app.innerHTML = html
             getElements()
-            console.log({...dados, icons: icons})
         }
 
         const page = {
@@ -29,32 +29,68 @@ function createPageHome(window){
 
     function createLogicCore(){
 
+        const optionsPage = {
+            conected: false,
+            user: 'leandro Santino'
+        }
+
         function init(){
             console.log('init')
-            events.send('render', {ano: '2021'})
+            events.send('render', optionsPage)
         }
 
         function update(){
             console.log('Update')
         }
 
+        function login(){
+            optionsPage.conected = true
+            events.send('render', optionsPage)
+            events.send('loginButtons', 'login')
+        }
+        
+        function logout(){
+            optionsPage.conected = false
+            events.send('render', optionsPage)
+            events.send('loginButtons', 'logout')
+        }
+
         return {
             init,
             update,
+            login,
+            logout,
         }
 
     }
 
     const page = createPage()
-    const logicCore  = createLogicCore()
+    const core  = createLogicCore()
 
     events.on('render', (args)=>{
         page.render(args)
+        main()
     })
 
+    function main(){
+        events.DOM('click', page.login, core.login)
+        events.DOM('click', page.logout, core.logout)
+
+        events.on('loginButtons', (args)=>{
+            console.log(args)
+            if(args === 'login'){
+                page.login.style.display = 'none'
+                page.logout.style.display = 'inherit'
+            }else{
+                page.login.style.display = 'inherit'
+                page.logout.style.display = 'none'
+            }
+        })
+    }
+
     return {
-        render: logicCore.init,
-        update: logicCore.update,
+        render: core.init,
+        update: core.update,
     }
 }
 
