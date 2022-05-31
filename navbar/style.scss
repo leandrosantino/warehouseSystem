@@ -1,0 +1,74 @@
+@use '../style/sass/mixins' as mix;
+@use '../style/sass/colors' as cor;
+
+.nav{
+    height: 31px;
+    background-color: cor.$background;
+    display: flex;
+    color: cor.$gray;
+    font: bold 11pt arial;
+    display: flex;
+
+    & > div{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 50%;
+        padding-left: 9px;
+    }
+    
+}
+
+#Nav_butons{
+    justify-content: flex-end;
+    padding-left: 0;
+    padding-right: 0;
+    
+    & > div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 33px;
+    }
+}
+
+#icon{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 2px;
+    top: 2.5px;
+}
+
+#ico-max{
+    width: 12px;
+    height: 12px;
+}
+
+#ico-close{
+    width: 25px;
+    height: 25px;
+}
+
+
+#ico-min, #ico-max, #ico-close{
+    @include mix.flex-center;
+    color: cor.$gray;
+}
+
+#butonNav:hover{
+    background-color: cor.$gray2;
+}
+#butonClose:hover{
+    background-color: cor.$red-close;
+}
+
+#logo{
+    width: 30px;
+}
+
+#imgLogo{
+    width: 17px;
+}
+

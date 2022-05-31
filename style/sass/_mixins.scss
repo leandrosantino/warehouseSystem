@@ -1,0 +1,23 @@
+// Padrões de Estilos
+
+    @mixin reset{
+        body{
+            background-color: var(--backG);
+            color: var(--branco);
+            user-select: none;
+            margin: 0;
+        }
+        
+        *{  
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--branco);
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+    };
+
+    @mixin flex-center{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }

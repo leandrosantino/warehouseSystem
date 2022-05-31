@@ -81,10 +81,13 @@ function render(window, type){
 
     function create(){
         
-        const html = ejs.create(path.join(__dirname, 'navBar.ejs'), {
-            close: buttons.close,
-            maximize: type != 'modal'? buttons.maximize: false,
-            minimize: type != 'modal'? buttons.minimize: false,
+        const html = ejs.create({
+            source: __dirname,
+            data: {
+                close: buttons.close,
+                maximize: type != 'modal'? buttons.maximize: false,
+                minimize: type != 'modal'? buttons.minimize: false,
+            }
         })
         document.querySelector('.nav').innerHTML = html
 

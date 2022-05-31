@@ -15,7 +15,10 @@ function createPageHome(window){
         }
 
         function render(dados){
-            const html = ejs.create(path.join(__dirname, './home.ejs'), {...dados, icons: icons}) 
+            const html = ejs.create({
+                source: __dirname, 
+                data: {...dados, icons: icons}
+            }) 
             app.innerHTML = html
             getElements()
         }

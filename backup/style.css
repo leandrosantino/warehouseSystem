@@ -1,88 +1,144 @@
 #container{
     display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-direction: column;
     width: 100%;
-    height: 80%;
-}
-
-#title, #options{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-}
-
-#title{
-    font: bold 30pt arial;
-    color: var(--gray);
-}
-
-#options{
-    width:  400px;
-    height: 300px;
-}
-
-#case{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 50%;
     height: 100%;
-}
-
-#casePesquisa, #caseLogin{
-    width: 100%;
-    display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    height: 50%;
-}
-#casePesquisa{
-    align-items: end;
-    padding-bottom: 5px;
-}
-#caseLogin{
-    align-items: flex-start;
 }
 
 
-.button{
-    width: 95%;
-    font: bold 17pt arial;
-    color: white;
-}
+/* ========================= Side Bar ======================= */
+    #side-bar{
+        width: 250px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+        background-color: var(--background);
+    }
+    #mainCase{
+        width: 100%;
+        height: 100%;
+    }
 
-#requisição{
-    height: 90%;
-    background-color: var(--primary);
-}
+    #user, #sobre{
+        width: 100%;
+        height: 40px;
+    }
 
-#pesquisa, #login{
-    height: 90%;
-    background-color: var(--secondary);
-}
-#login{
-    background-color: var(--alert);
-}
+    #user{
+        background-color: var(--gray2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--gray);
+    }
 
-p{
-    margin-top: 5px;
-    font: normal 10pt arial;
-}
+    #user > div{
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
 
-#config{
-    border-radius: 6px;
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    margin-left: 5px;
-    margin-top: 5px;
-    color: var(--gray);
-    background-color: var(--background);
+    #iconUser{width: 45px; justify-content: center; }
+    #btLogout{width: 80px; justify-content: center;}
+    #nameUser{
+        width: 100%; 
+        justify-content: start;
+        font: bold 12pt arial;
+    }
+
+    #logout{
+        font-size: 10pt;
+        height: 20px;
+        width: 25px;
+        border-radius: 3px;
+        background-color: var(--cancel);
+        color: white;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+/* ====================== Buttons Case ===================== */
+
+    #buttonsCase{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btOption{
+        margin-top: 15px;
+        width: 90%;
+        height: 40px;
+        color: #fff;
+        font: bold 13pt arial;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #iconBt{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+    }
+
+    #requisitar{background-color:  var(--primary);}
+    #pesquisar{background-color: var(--secondary);}   
+    #login{background-color: var(--alert);} 
+    #requisicoes{background-color: var(--success);}
+    #estoque{background-color: var(--side-bar);}
+
+/* ====================== Sobre ===================== */
+
+    #sobre{
+        border-top: solid 2px var(--gray2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font: italic 10pt arial;
+    }
+
+    #btSobre{
+        margin-left: 6px;
+        width: 20px;
+        height: 20px;
+        background: none;
+        color: var(--gray);
+    }
+
+#mainCase{
     display: flex;
     align-items: center;
+    flex-direction: column;
+    padding: 30px;
+}
+
+#mainCase > div{
+    width: 80%;
+}
+
+#mainCase > div > h1{
+    font: bold 40pt arial;
+    margin-top: 20px;
+}
+#mainCase > div > h3{
+    font: normal 28pt arial;
+}
+
+
+ul{font-size: 16pt;}
+li{margin-bottom: 20px;}
+li > ul{margin-top: 20px;}
+
+#logoAdler{height: 60px;}
+#caseImg{
+    display: flex;
     justify-content: center;
 }

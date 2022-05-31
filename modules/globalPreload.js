@@ -5,10 +5,11 @@ module.exports = (args = {
         contextBridge,
         ipcRenderer,
     } = require("electron");
+    const path = require('path')
 
     const event = require('./event.js')()
-    const ejs = require('./ejs.js')()
     const navBar = require('../navbar/navBar.js')
+    const sass = require('sass')
 
     const bridges = {
         'ipc': {
@@ -23,10 +24,15 @@ module.exports = (args = {
             }
         },
         'events': event,
-        'ejs': ejs,
         'navBar': navBar.render(args.window, args.type),
         'pages': {create: createPage},
-        'icons': ipcRenderer.sendSync('icons')
+        'icons': ipcRenderer.sendSync('icons'),
+        'ejs': require('./ejs.js')(),
+        'setCss': (_path)=>{
+            const source = path.join(__dirname, '../windows')
+            const compile = sass.compile(path.join(source, _path))
+            document.head.innerHTML += `<style>${compile.css}</style>`
+        },
     }
 
     function newBridge(name, object){
