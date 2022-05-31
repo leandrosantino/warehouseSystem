@@ -8,14 +8,14 @@ algumas das tecnologias aplicadas no projeto são:
     - sqlite
     - sass
 
-O projeto foi pensado pra ter uma estrutura que repeite os conceitos de desacoplamento de código e também injeção de dependencias.
+O projeto foi pensado pra ter uma estrutura que respeite os conceitos de desacoplamento de código e também injeção de dependencias.
 
 # Funcionalidades
 
 - Requisições de Item:
 
     - Criar requisições:
-        -inserir na Base de Dados;
+        - Inserir na Base de Dados;
 
     - Pesquisar Itens;
 
@@ -27,7 +27,7 @@ O projeto foi pensado pra ter uma estrutura que repeite os conceitos de desacopl
             * Inserir Assinatura;
 
     - Emitir FABs(admin):
-        - inserir na Base de Dados;
+        - Inserir na Base de Dados;
         - Gerar Arquivo .xlsx;
         - Editar;
 
