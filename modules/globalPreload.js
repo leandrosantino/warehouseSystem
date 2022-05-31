@@ -28,9 +28,9 @@ module.exports = (args = {
         'pages': {create: createPage},
         'icons': ipcRenderer.sendSync('icons'),
         'ejs': require('./ejs.js')(),
-        'setCss': (_path)=>{
-            const source = path.join(__dirname, '../windows')
-            const compile = sass.compile(path.join(source, _path))
+        'setCss': ()=>{
+            const source = path.join(__dirname, `../windows/${args.window}/index.scss`)
+            const compile = sass.compile(source)
             document.head.innerHTML += `<style>${compile.css}</style>`
         },
     }
