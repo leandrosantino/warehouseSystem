@@ -1,0 +1,6 @@
+{
+    "explorer.sortOrder": "default",
+    "files.exclude": {
+        "**/.gitpod.yml": true
+    }
+}
