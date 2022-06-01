@@ -12,6 +12,10 @@ function createPageHome(window){
         function getElements(){
             page.login = document.querySelector('#login')
             page.logout = document.querySelector('#logout')
+            page.btReqs = document.querySelector('#requisitar')
+            page.mainCase = document.querySelector('#mainCase')
+            page.requisicoes = document.querySelector('#requisicoes')
+            page.estoque = document.querySelector('#estoque')
         }
 
         function render(dados){
@@ -33,13 +37,12 @@ function createPageHome(window){
     function createLogicCore(){
 
         const optionsPage = {
-            conected: false,
             user: 'leandro Santino'
         }
 
         function init(){
             console.log('init')
-            events.send('render', optionsPage)
+            events.send('renderHome', optionsPage)
         }
 
         function update(){
@@ -47,14 +50,10 @@ function createPageHome(window){
         }
 
         function login(){
-            optionsPage.conected = true
-            events.send('render', optionsPage)
             events.send('loginButtons', 'login')
         }
         
         function logout(){
-            optionsPage.conected = false
-            events.send('render', optionsPage)
             events.send('loginButtons', 'logout')
         }
 
@@ -70,7 +69,7 @@ function createPageHome(window){
     const page = createPage()
     const core  = createLogicCore()
 
-    events.on('render', (args)=>{
+    events.on('renderHome', (args)=>{
         page.render(args)
         main()
     })
@@ -84,17 +83,30 @@ function createPageHome(window){
             if(args === 'login'){
                 page.login.style.display = 'none'
                 page.logout.style.display = 'inherit'
+                page.requisicoes.style.display = 'inherit'
+                page.estoque.style.display = 'inherit'
             }else{
                 page.login.style.display = 'inherit'
                 page.logout.style.display = 'none'
+                page.requisicoes.style.display = 'none'
+                page.estoque.style.display = 'none'
             }
         })
-    }
 
-    return {
+        home.btReqs = page.btReqs
+        home.mainCase = page.mainCase
+
+
+    }
+    
+    const home = {
         render: core.init,
         update: core.update,
     }
+    
+    core.init()
+
+    return home
 }
 
 module.exports = createPageHome

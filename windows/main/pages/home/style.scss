@@ -1,0 +1,157 @@
+@use '../../../../style/sass/global-class';
+@use '../../../../style/sass/colors' as cor;
+@use '../../../../style/sass/mixins' as mix;
+
+
+#container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ========================= Side Bar ======================= */
+    #side-bar{
+        width: 250px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+        background-color: cor.$background;
+    }
+    #mainCase{
+        width: 100%;
+        height: 100%;
+    }
+
+    #user, #sobre{
+        width: 100%;
+        height: 40px;
+    }
+
+    #user{
+        background-color: cor.$gray2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: cor.$gray;
+
+        &> div{
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+    }
+
+    #iconUser{width: 45px; justify-content: center; }
+    #btLogout{width: 80px; justify-content: center;}
+    #nameUser{
+        width: 100%; 
+        justify-content: start;
+        font: bold 12pt arial;
+    }
+
+    #logout{
+        font-size: 10pt;
+        height: 20px;
+        width: 25px;
+        border-radius: 3px;
+        background-color: cor.$cancel;
+        color: white;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+/* ====================== Buttons Case ===================== */
+
+    #buttonsCase{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btOption{
+        margin-top: 15px;
+        width: 90%;
+        height: 40px;
+        color: #fff;
+        font: bold 13pt arial;
+        @include mix.flex-center;
+    }
+
+    #iconBt{
+        @include mix.flex-center;
+        margin-right: 10px;
+    }
+
+    #requisitar{background-color:  cor.$primary;}
+    #pesquisar{background-color: cor.$secondary;}
+    #login{background-color: cor.$alert;}
+    #requisicoes{
+        background-color: cor.$success;
+        display: none;
+    }
+    #estoque{
+        background-color: cor.$side-bar;
+        display: none;
+    }
+
+/* ====================== Sobre ===================== */
+
+    #sobre{
+        border-top: solid 2px cor.$gray2;
+        @include mix.flex-center;
+        font: italic 10pt arial;
+    }
+
+    #btSobre{
+        margin-left: 6px;
+        width: 20px;
+        height: 20px;
+        background: none;
+        color: cor.$gray;
+    }
+
+#mainCase{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    div{
+        width: 80%;
+        h1{
+            font: bold 40pt arial;
+            margin-top: 20px;
+        }
+        h3{
+            font: normal 28pt arial;
+        }
+    }
+
+    ul{
+        font-size: 16pt;
+        li{
+            margin-bottom: 20px;
+            &> ul{
+                margin-top: 20px;
+            }
+        }
+    }
+
+}
+
+
+#logoAdler{
+    height: 60px;
+    margin-top: 20px;
+}
+#caseImg{
+    display: flex;
+    justify-content: center;
+}
