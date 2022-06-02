@@ -7,8 +7,6 @@ function createPageHome(window){
     function createPage(){
         const ejs = window.ejs 
 
-        const icons = window.icons
-
         function getElements(){
             page.login = document.querySelector('#login')
             page.logout = document.querySelector('#logout')
@@ -17,11 +15,11 @@ function createPageHome(window){
             page.requisicoes = document.querySelector('#requisicoes')
             page.estoque = document.querySelector('#estoque')
         }
-
+ 
         function render(dados){
             const html = ejs.create({
                 source: __dirname, 
-                data: {...dados, icons: icons}
+                data: dados
             }) 
             app.innerHTML = html
             getElements()
@@ -48,10 +46,6 @@ function createPageHome(window){
         function update(){
             console.log('Update')
         }
-
-        function login(){
-            events.send('loginButtons', 'login')
-        }
         
         function logout(){
             events.send('loginButtons', 'logout')
@@ -60,7 +54,6 @@ function createPageHome(window){
         return {
             init,
             update,
-            login,
             logout,
         }
 
@@ -75,8 +68,8 @@ function createPageHome(window){
     })
 
     function main(){
-        events.DOM('click', page.login, core.login)
-        events.DOM('click', page.logout, core.logout)
+        //events.DOM('click', page.login, core.login)
+        //events.DOM('click', page.logout, core.logout)
 
         events.on('loginButtons', (args)=>{
             console.log(args)
@@ -95,6 +88,7 @@ function createPageHome(window){
 
         home.btReqs = page.btReqs
         home.mainCase = page.mainCase
+        home.login = page.login
 
 
     }

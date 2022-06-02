@@ -26,7 +26,6 @@ module.exports = (args = {
         'events': event,
         'navBar': navBar.render(args.window, args.type),
         'pages': {create: createPage},
-        'icons': ipcRenderer.sendSync('icons'),
         'ejs': require('./ejs.js')(),
         'setCss': ()=>{
             const source = path.join(__dirname, `../windows/${args.window}/index.scss`)

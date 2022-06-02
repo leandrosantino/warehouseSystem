@@ -4,6 +4,7 @@ function createScreen(){
     const fs = require('fs')
     const path = require('path')
     const sass = require('sass')
+    const {ipcRenderer} = require('electron')
 
     function create(options = {
         source, 
@@ -12,6 +13,7 @@ function createScreen(){
 
         const scssFile = path.join(options.source, 'style.scss')
         const ejsFile = path.join(options.source, 'template.ejs')
+        const icons = ipcRenderer.sendSync('icons')
 
         const style = sass.compile(scssFile)
         const linkCss = `
@@ -19,7 +21,10 @@ function createScreen(){
         `
         const str = fs.readFileSync(ejsFile,'utf8')
         const template = ejs.compile(`${linkCss}${str}`);
-        return template(options.data)
+        return template({
+            icons,
+            ...options.data,
+        })
     } 
 
     function createString(str, data){

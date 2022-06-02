@@ -4,13 +4,19 @@ try{
     
     const home = window.pages.create('home', window)
     const reqs = window.pages.create('requisitar', window)
+    const login = window.pages.create('login', window)
 
+    //Open page new Request
     window.events.DOM('click', home.btReqs, ()=>{
-        window.events.send('renderReqs', {
-            container: home.mainCase
-        })
-
+        reqs.render({container: home.mainCase})
     })
+    
+    //Open page Login
+    window.events.DOM('click', home.login, ()=>{
+        login.render({container: home.mainCase})
+    })
+    //login.render({container: home.mainCase})
+
 
     
 

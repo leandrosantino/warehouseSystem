@@ -1,0 +1,60 @@
+ // Estilização da Tela de Login
+
+    @use '../../../../style/sass/mixins' as mix;
+    @use '../../../../style/sass/colors' as cor;
+
+    #case{
+        @include mix.flex-center;
+        flex-direction: column;
+        width: 350px;
+        height: 30%;
+        justify-content: space-around;
+
+        div{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 90%;
+            height: 60px;
+            margin-bottom: 25px;
+
+            #label{
+
+                @mixin label-style {
+                    font-weight: bold;
+                    font-size: 16pt
+                }
+
+                &-senha{
+                    @include label-style;
+                }
+                &-user{
+                    @include label-style;
+                }
+            }
+
+            #input{
+                &-senha{
+                    @include mix.input-class;
+                }
+                &-user{
+                    @include mix.input-class;
+                }
+            }
+
+        };
+        
+        &-button{
+            align-items: flex-end;
+            button{
+                @include mix.button-class;
+                width: 100px;
+                height: 30px;
+                font-weight: bold;
+                font-size: 12pt;
+                background-color: cor.$primary;
+                color: white;
+            }
+        }
+
+    }

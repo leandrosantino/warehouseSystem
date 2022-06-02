@@ -1,5 +1,7 @@
 // Padrões de Estilos
 
+    @use './colors' as cor ;
+
     @mixin reset{
         body{
             background-color: var(--backG);
@@ -20,4 +22,21 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+
+    @mixin button-class{
+        border: none;
+        border-radius: 10px;
+
+        &:hover{opacity: 90%}
+        &:active{opacity: 60%}
+    }
+
+    @mixin input-class{
+        border: 1.5px solid cor.$gray;
+        border-radius: 6px;
+        padding: .4rem;
+        text-indent: .2rem;
+        font-size: 14pt;
     }
