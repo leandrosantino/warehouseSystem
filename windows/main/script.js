@@ -15,7 +15,7 @@ try{
     window.events.DOM('click', home.login, ()=>{
         login.render({container: home.mainCase})
     })
-    //login.render({container: home.mainCase})
+    login.render({container: home.mainCase})
 
 
     

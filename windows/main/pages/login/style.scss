@@ -6,44 +6,50 @@
     #case{
         @include mix.flex-center;
         flex-direction: column;
-        width: 350px;
-        height: 30%;
-        justify-content: space-around;
+        width: 400px;
+        height: 350px;
+        justify-content: center;
+        background-color: cor.$login-background;
+        border-radius: 15px;
+        color: white;
 
-        div{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 90%;
-            height: 60px;
-            margin-bottom: 25px;
+        div{ 
+            @include mix.flex-center;
+            width: 100%;
+            
+            @mixin input-login{
+                all: unset;
+                border: 2.5px solid cor.$primary;
+                border-radius: 20px;
+                padding: .4rem;
+                text-indent: .2rem;
+                font-size: 14pt;
+                transition: .4s;
+                width: 70%;                  
+                color: white;
 
-            #label{
-
-                @mixin label-style {
-                    font-weight: bold;
-                    font-size: 16pt
+                &::-webkit-input-placeholder{
+                    color: cor.$gray2;
                 }
 
-                &-senha{
-                    @include label-style;
-                }
-                &-user{
-                    @include label-style;
+                &:focus{
+                    border-color: cor.$login-secondary;
+                    width: 80%;    
                 }
             }
 
             #input{
-                &-senha{
-                    @include mix.input-class;
-                }
-                &-user{
-                    @include mix.input-class;
-                }
+                &-senha{@include input-login;}
+                &-user{@include input-login;}
             }
 
         };
-        
+
+        &-logo{height: 30%;}
+        &-user, &-senha{height: 17.5%;}
+        &-options{height: 10%;}
+        &-button{height: 25%;}
+
         &-button{
             align-items: flex-end;
             button{
@@ -52,7 +58,7 @@
                 height: 30px;
                 font-weight: bold;
                 font-size: 12pt;
-                background-color: cor.$primary;
+                background-color: cor.$login-success;
                 color: white;
             }
         }
