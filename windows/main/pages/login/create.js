@@ -11,6 +11,7 @@ function createPageHome(window){
             page.login = document.querySelector('#btLogin')
             page.input_user = document.querySelector('#input-user')
             page.input_password = document.querySelector('#input-senha')
+            page.checkbox = document.querySelector('#checkbox')
         }
 
         function render(dados, container){
@@ -91,6 +92,14 @@ function createPageHome(window){
                 user: page.input_user.value,
                 password: page.input_password.value
             })
+        })
+        events.DOM('change', page.checkbox, ()=>{
+            console.log('ok',page.checkbox.checked)
+            if(page.checkbox.checked){
+                page.input_password.type = 'text'
+            }else{
+                page.input_password.type = 'password'
+            }
         })
     }
 

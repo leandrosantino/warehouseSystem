@@ -26,10 +26,13 @@ module.exports = ()=>{
         info: readSvg('info'),
         addForm: readSvg('addForm'),
         box: readSvg('box'),
+        check: readSvg('check'),
     }
+    console.log(icons.check)
 
-    ipcMain.on('icons', (event, name)=>[
+    ipcMain.on('icons', (event, name)=>{
+        
         event.returnValue = icons
-    ])
+    })
 
 }

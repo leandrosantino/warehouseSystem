@@ -3,15 +3,17 @@
     @use '../../../../style/sass/mixins' as mix;
     @use '../../../../style/sass/colors' as cor;
 
+    $width_iten: 80%;
+
     #case{
         @include mix.flex-center;
         flex-direction: column;
         width: 400px;
         height: 350px;
         justify-content: center;
-        background-color: cor.$login-background;
+        background-color: cor.$background;
         border-radius: 15px;
-        color: white;
+        color: cor.$emphasis;
 
         div{ 
             @include mix.flex-center;
@@ -20,22 +22,19 @@
             @mixin input-login{
                 all: unset;
                 border: 2.5px solid cor.$primary;
-                border-radius: 20px;
+                background-color: cor.$white;
+                border-radius: 6px;
                 padding: .4rem;
                 text-indent: .2rem;
                 font-size: 14pt;
                 transition: .4s;
-                width: 70%;                  
-                color: white;
+                width: $width_iten;                  
+                
 
                 &::-webkit-input-placeholder{
-                    color: cor.$gray2;
+                    color: cor.$gray;
                 }
 
-                &:focus{
-                    border-color: cor.$login-secondary;
-                    width: 80%;    
-                }
             }
 
             #input{
@@ -45,22 +44,50 @@
 
         };
 
-        &-logo{height: 30%;}
+        &-header{
+            width: 100%;
+            height: 30%;
+            div{
+                width: $width_iten;    
+                font-size: 31pt;
+                font-weight: 600;
+                justify-content: flex-start
+            }
+        };
+
+
         &-user, &-senha{height: 17.5%;}
-        &-options{height: 10%;}
+        &-options{
+            height: 10%;
+            #passView{
+                & input {display: none;}
+                & div {
+                    width: 13px;
+                    height: 13px;
+                    @include mix.flex-center;
+                    background-color: #fff;
+                    border: 1px solid #DDD;
+                    color:  #fff;
+                    margin-right: 5px;
+                    border-radius: 3px;
+                }
+                & input:checked + div{background-color: cor.$secondary;}
+            }
+        }
         &-button{height: 25%;}
 
         &-button{
             align-items: flex-end;
             button{
                 @include mix.button-class;
-                width: 100px;
-                height: 30px;
+                width: $width_iten;
+                height: 35px;
                 font-weight: bold;
                 font-size: 12pt;
-                background-color: cor.$login-success;
+                background-color: cor.$primary;
                 color: white;
             }
-        }
+        } 
 
     }
+

@@ -1,7 +1,7 @@
  <div id="case">
 
-    <div id="case-logo">
-
+    <div id="case-header">
+        <div>Login</div>
     </div>
 
     <div id="case-user">
@@ -10,12 +10,14 @@
 
     <div id="case-senha">
         <input type="password" id="input-senha" placeholder="Senha">
-    </div>
+    </div> 
 
     <div id="case-options">
         <div>
-            <input type="checkbox" name="view" id="view">
-            <label for="view">Mostrar Senha</label>
+            <label for="checkbox" id="passView">
+                <input type="checkbox" name="view" id="checkbox">
+                <div><%- icons.check %></div>
+            </label><label for="checkbox">Mostrar Senha</label>
         </div>
     </div>
 

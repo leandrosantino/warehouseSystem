@@ -27,7 +27,7 @@
 
     @mixin button-class{
         border: none;
-        border-radius: 10px;
+        border-radius: 7px;
 
         &:hover{opacity: 90%}
         &:active{opacity: 60%}

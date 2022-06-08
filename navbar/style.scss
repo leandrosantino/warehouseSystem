@@ -3,10 +3,10 @@
 
 .nav{
     height: 31px;
-    background-color: cor.$background;
+    background-color: cor.$emphasis;
     display: flex;
-    color: cor.$gray;
-    font: bold 11pt arial;
+    color: cor.$white;
+    font: normal 11pt arial; 
     display: flex;
 
     & > div{
@@ -54,14 +54,14 @@
 
 #ico-min, #ico-max, #ico-close{
     @include mix.flex-center;
-    color: cor.$gray;
+    color: cor.$white;
 }
 
 #butonNav:hover{
-    background-color: cor.$gray2;
+    background-color: cor.$gray;
 }
 #butonClose:hover{
-    background-color: cor.$red-close;
+    background-color: cor.$cancel;
 }
 
 #logo{

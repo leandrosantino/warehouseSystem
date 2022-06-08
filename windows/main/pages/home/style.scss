@@ -36,11 +36,11 @@
     }
 
     #user{
-        background-color: cor.$gray2;
+        background-color: cor.$emphasis_background;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: cor.$gray;
+        color: cor.$emphasis;
 
         &> div{
             display: flex;
@@ -48,15 +48,26 @@
             height: 100%;
         }
 
+        #iconUser{
+            width: 45px; 
+            justify-content: center;
+            margin-left: 6px;
+        }
+        #btLogout{
+            width: 60px; 
+            justify-content: center;
+        }
+        #nameUser{
+            width: 100%; 
+            justify-content: start;
+            font: bold 11pt arial;
+            margin-left: 5px;
+            text-align: center;
+        }
     }
 
-    #iconUser{width: 45px; justify-content: center; }
-    #btLogout{width: 80px; justify-content: center;}
-    #nameUser{
-        width: 100%; 
-        justify-content: start;
-        font: bold 12pt arial;
-    }
+
+
 
     #logout{
         font-size: 10pt;
@@ -96,22 +107,23 @@
 
     #requisitar{background-color:  cor.$primary;}
     #pesquisar{background-color: cor.$secondary;}
-    #login{background-color: cor.$alert;}
+    #login{background-color: cor.$theme5;}
     #requisicoes{
-        background-color: cor.$success;
+        background-color: cor.$theme3;
         display: none;
     }
     #estoque{
-        background-color: cor.$side-bar;
+        background-color: cor.$theme4;
         display: none;
     }
 
 /* ====================== Sobre ===================== */
 
     #sobre{
-        border-top: solid 2px cor.$gray2;
+        border-top: solid 2px cor.$emphasis_background;
         @include mix.flex-center;
         font: italic 10pt arial;
+        color: cor.$emphasis;
     }
 
     #btSobre{
@@ -119,7 +131,7 @@
         width: 20px;
         height: 20px;
         background: none;
-        color: cor.$gray;
+        color: cor.$emphasis;
     }
 
 #welcomePage{
