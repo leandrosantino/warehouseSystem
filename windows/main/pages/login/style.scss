@@ -13,7 +13,7 @@
         justify-content: center;
         background-color: cor.$background;
         border-radius: 15px;
-        color: cor.$emphasis;
+        color: cor.$theme3;
 
         div{ 
             @include mix.flex-center;
@@ -24,7 +24,7 @@
                 border: 2.5px solid cor.$primary;
                 background-color: cor.$white;
                 border-radius: 6px;
-                padding: .4rem;
+                padding: .4rem; 
                 text-indent: .2rem;
                 font-size: 14pt;
                 transition: .4s;
@@ -46,7 +46,7 @@
 
         &-header{
             width: 100%;
-            height: 30%;
+            height: 25%;
             div{
                 width: $width_iten;    
                 font-size: 31pt;
@@ -55,6 +55,16 @@
             }
         };
 
+        &-msg{
+            display: inline;
+            height: 5%;
+            width: 100%;
+            p{
+                text-align: start;
+                width: $width_iten;
+                color: cor.$theme4;
+            }
+        }
 
         &-user, &-senha{height: 17.5%;}
         &-options{

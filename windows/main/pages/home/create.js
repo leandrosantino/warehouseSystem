@@ -14,6 +14,8 @@ function createPageHome(window){
             page.mainCase = document.querySelector('#mainCase')
             page.requisicoes = document.querySelector('#requisicoes')
             page.estoque = document.querySelector('#estoque')
+            page.btChangeSideBar = document.querySelector('#iconUser')
+            page.sideBar = document.querySelector('#side-bar')
         }
  
         function render(dados){
@@ -35,11 +37,10 @@ function createPageHome(window){
     function createLogicCore(){
 
         const optionsPage = {
-            user: 'leandro Santino'
+            user: 'Adler Pelzer Group'
         }
 
         function init(){
-            console.log('init')
             events.send('renderHome', optionsPage)
         }
 
@@ -70,6 +71,16 @@ function createPageHome(window){
     function main(){
         //events.DOM('click', page.login, core.login)
         //events.DOM('click', page.logout, core.logout)
+
+        events.DOM('click', page.btChangeSideBar, ()=>{
+            const type = page.sideBar.getAttribute('class')
+            if(type == 'sideBar_reduce'){
+                page.sideBar.setAttribute('class', 'sideBar_normal')
+            }else{
+                page.sideBar.setAttribute('class', 'sideBar_reduce')
+            }
+            
+        })
 
         events.on('loginButtons', (args)=>{
             console.log(args)

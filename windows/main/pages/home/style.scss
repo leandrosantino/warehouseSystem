@@ -2,6 +2,7 @@
 @use '../../../../style/sass/colors' as cor;
 @use '../../../../style/sass/mixins' as mix;
 
+$width_sideBar: 250px;
 
 #container{
     display: flex;
@@ -12,15 +13,73 @@
 }
 
 /* ========================= Side Bar ======================= */
-    #side-bar{
+
+    .sideBar_reduce{
+        width: 35px;
+        .btOption{
+            justify-content: center;
+            div{display: none;}
+            span{
+                @include mix.flex-center;
+                width: 100%;   
+            }
+        }
+        #user{
+            #nameUser{display: none;}
+            #btLogout{display: none}
+            #iconUser{margin-left: 0;}
+        }
+        #sobre{display: none;}
+    }
+    .sideBar_normal{
         width: 250px;
+        .btOption{
+            justify-content: flex-start;
+            span{
+                @include mix.flex-center;
+                margin-right: 10px;
+                margin-left: 5px;        
+            }
+        }
+    }
+
+    #side-bar{
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-direction: column;
         background-color: cor.$background;
+        transition: .3s;
+
+        #buttonsCase{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        #requisicoes{display: none;}
+        #estoque{display: none;}
+
+        .btOption{
+            border: none;
+            border-bottom: 1px solid cor.$primary;
+            background-color: rgba(0,0,0,0);
+            margin-top: 5px;
+            width: 100%;
+            height: 35px;
+            color: cor.$theme3;
+            font: bold 13pt arial;
+            padding: 15;
+            display: flex;
+            align-items: center;
+            &:hover{opacity: 70%;}
+        }
     }
+
+
     #mainCase{
         width: 100%;
         height: 100%;
@@ -40,7 +99,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: cor.$emphasis;
+        color: cor.$theme3;
 
         &> div{
             display: flex;
@@ -52,6 +111,10 @@
             width: 45px; 
             justify-content: center;
             margin-left: 6px;
+            &:hover{
+                opacity: 70%;
+                cursor: pointer;
+            }
         }
         #btLogout{
             width: 60px; 
@@ -60,14 +123,11 @@
         #nameUser{
             width: 100%; 
             justify-content: start;
-            font: bold 11pt arial;
+            font: bold 10pt arial;
             margin-left: 5px;
             text-align: center;
         }
     }
-
-
-
 
     #logout{
         font-size: 10pt;
@@ -83,39 +143,7 @@
 
 /* ====================== Buttons Case ===================== */
 
-    #buttonsCase{
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
 
-    .btOption{
-        margin-top: 15px;
-        width: 90%;
-        height: 40px;
-        color: #fff;
-        font: bold 13pt arial;
-        @include mix.flex-center;
-    }
-
-    #iconBt{
-        @include mix.flex-center;
-        margin-right: 10px;
-    }
-
-    #requisitar{background-color:  cor.$primary;}
-    #pesquisar{background-color: cor.$secondary;}
-    #login{background-color: cor.$theme5;}
-    #requisicoes{
-        background-color: cor.$theme3;
-        display: none;
-    }
-    #estoque{
-        background-color: cor.$theme4;
-        display: none;
-    }
 
 /* ====================== Sobre ===================== */
 

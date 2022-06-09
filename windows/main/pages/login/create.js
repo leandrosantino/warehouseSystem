@@ -12,6 +12,17 @@ function createPageHome(window){
             page.input_user = document.querySelector('#input-user')
             page.input_password = document.querySelector('#input-senha')
             page.checkbox = document.querySelector('#checkbox')
+            page.loginAlert = document.querySelector('#login-alert')
+        }
+
+        function renderEvents(){
+            getElements()
+            events.on('loginAlert', (arg)=>{
+                page.loginAlert.innerHTML = arg
+                setTimeout(()=>{
+                    page.loginAlert.innerHTML = ''
+                },1000)
+            })
         }
 
         function render(dados, container){
@@ -20,7 +31,7 @@ function createPageHome(window){
                 data: dados
             }) 
             container.innerHTML = html
-            getElements()
+            renderEvents()
         }
 
         const page = {
@@ -34,7 +45,7 @@ function createPageHome(window){
 
         const optionsPage = {
             conected: false,
-            user: 'leandro Santino'
+            user: 'Adler'
         }
 
         const users = {
@@ -44,8 +55,8 @@ function createPageHome(window){
         }
 
         function init(args){
-            console.log('init')
             events.send('renderLogin', args)
+            console.log(window.useManage.getUserConected())
         }
 
         function update(){
@@ -62,10 +73,10 @@ function createPageHome(window){
                 if(login_date.password == user.password){
                     events.send('loginButtons', 'login')
                 }else{
-                    console.log('senha Errada')
+                    events.send('loginAlert', 'Usuário ou senha Incorretos!')
                 }
             }else{
-                console.log('Usuário não encontradao')
+                events.send('loginAlert', 'Usuário ou senha Incorretos!')
             }
         }
 

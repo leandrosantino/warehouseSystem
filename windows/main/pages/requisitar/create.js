@@ -35,7 +35,6 @@ function createPageHome(window){
         }
 
         function init(args){
-            console.log('init')
             events.send('renderReqs', args)
         }
 

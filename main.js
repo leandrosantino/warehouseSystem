@@ -1,10 +1,12 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
+const path = require('path')
+
 const createBrowserWindows = require('./modules/createWindow.js')
 const createDialog = require('./modules/dialog.js')
+const dialog = createDialog(require('electron').dialog)
 const navBar = require('./navbar/navBar.js')
 const icons = require('./modules/readicons.js')()
-const dialog = createDialog(require('electron').dialog)
-const path = require('path')
+const userManege = require('./modules/userManage.js')()
 
 const reload = 1
 if(reload == 1){
@@ -38,4 +40,9 @@ function init(){
 
     navBar.main(windows)
     dialog.setIpc(ipcMain, windows)
+
+    ipcMain.on('userManage', (event, args)=>{
+        console.log('teste')
+        event.returnValue = userManege
+    })
 }

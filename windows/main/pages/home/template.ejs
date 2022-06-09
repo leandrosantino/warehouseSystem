@@ -1,13 +1,13 @@
 <div id="container">
 
-    <div id="side-bar">
+    <div id="side-bar" class="sideBar_normal">
     
         <div id="user">
             <div id="iconUser">
-                <%- icons.person %> 
+                <%- icons.list %> 
             </div> 
-            <div id="nameUser"><%- user %></div>
 
+            <div id="nameUser"><%- user %></div>
 
             <div id="btLogout"> 
                 <button class="button" id="logout">
@@ -20,34 +20,49 @@
         
         <div id="buttonsCase">
 
-            <button id="requisitar" class="button btOption"> 
+            <button id="requisitar" class="btOption"> 
                 <span id="iconBt" >
                     <%- icons.addForm %> 
-                </span> Requisitar Item
+                </span> 
+                <div>
+                    Requisitar Item
+                </div>
             </button>
             
-            <button id="pesquisar" class="button btOption"> 
+            <button id="pesquisar" class="btOption"> 
                 <span id="iconBt" >
                     <%- icons.search %> 
-                </span> Pesquisar 
+                </span> 
+                <div>
+                    Pesquisar
+                </div> 
             </button> 
 
-            <button id="requisicoes" class="button btOption"> 
+            <button id="requisicoes" class="btOption"> 
                 <span id="iconBt" >
                     <%- icons.form %> 
-                </span> Requisições
+                </span> 
+                <div>
+                    Requisições
+                </div>
             </button>
             
-            <button id="estoque" class="button btOption"> 
+            <button id="estoque" class="btOption"> 
                 <span id="iconBt" >
                     <%- icons.box %> 
-                </span> Estoque
+                </span> 
+                <div>
+                    Estoque
+                </div>
             </button>          
                 
-            <button id="login" class="button btOption"> 
+            <button id="login" class="btOption"> 
                 <span id="iconBt" >
                     <%- icons.login %> 
-                </span> Login 
+                </span> 
+                <div>
+                    Login
+                </div> 
             </button>
                 
              
