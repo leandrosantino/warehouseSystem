@@ -1,4 +1,6 @@
-function createDialog(dialog){
+function createDialog(events){
+
+    const {dialog} = require('electron')
 
     function directory(args = {
         title,
@@ -27,7 +29,6 @@ function createDialog(dialog){
     }
     
     function success(args={
-        title,
         msg,
         type,
         window,
@@ -35,7 +36,7 @@ function createDialog(dialog){
         
     }){
         const options = {
-            title: args.title,
+            title: 'WarehouseSystem',
             message: args.msg,
             type:  args.type,
         }
@@ -48,14 +49,36 @@ function createDialog(dialog){
 
 
     }
+
+    function question(args={
+        msg,
+        detail,
+        window,
+        sync: false,
+    }, callback){
+
+        const options = {
+            title: 'WarehouseSystem',
+            message: args.msg,
+            detail: args.detail,
+            type:  'question',
+            buttons: ['Yes', 'No']
+        }
+
+        if(args.sync){
+            return dialog.showMessageBoxSync(args.window, options);
+        }else{
+            return dialog.showMessageBox(args.window, options, callback);
+        }
+    };
  
     function error(msg){
         dialog.showErrorBox('Alerta!!', msg)
     }
 
-    function setIpc(ipcMain, windows){
+    function setIpc(windows){
 
-        ipcMain.on('dialogPath', (event, args)=>{
+        events.on('dialogPath', (event, args)=>{
      
             const resp = directory({
                 title: args.title,
@@ -73,20 +96,31 @@ function createDialog(dialog){
     
         })
 
-        ipcMain.on('dialogSuccess', (event, args)=>{
+        events.on('dialogSuccess', (event, args)=>{
             const resp = success({
-                title: args.title,
                 msg: args.msg,
-                sync: true,
+                detail: args.detail,
                 window: windows[args.window],
-                type: 'info',
+                sync: true,
             })
 
             event.returnValue = resp
             
         })
+        
+        events.on('dialogQuestion', (event, args)=>{
+            const resp = question({
+                msg: args.msg,
+                detail: args.detail,
+                sync: true,
+                window: windows[args.window],
+            })
 
-        ipcMain.on('dialogError', (event, args)=>{
+            event.returnValue = resp == 0 ? true: false
+            
+        })
+
+        events.on('dialogError', (event, args)=>{
             error(args)
         })
 
@@ -96,6 +130,7 @@ function createDialog(dialog){
         directory,
         success,
         error,
+        question,
         setIpc
     }
 

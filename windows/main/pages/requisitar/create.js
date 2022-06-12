@@ -11,13 +11,17 @@ function createPageHome(window){
             page.voltar = document.querySelector('#voltar')
         }
 
+        function renderEvents(){
+            getElements()
+        }
+
         function render(dados, container){
             const html = ejs.create({
                 source: __dirname, 
                 data: dados
             }) 
             container.innerHTML = html
-            getElements()
+            renderEvents()
         }
 
         const page = {
@@ -42,7 +46,6 @@ function createPageHome(window){
             console.log('Update')
         }
 
-
         return {
             init,
             update,
@@ -55,12 +58,7 @@ function createPageHome(window){
 
     events.on('renderReqs', (args)=>{
         page.render(core.optionsPage, args.container)
-        main()
     })
-
-    function main(){
-        
-    }
 
     return {
         render: core.init,

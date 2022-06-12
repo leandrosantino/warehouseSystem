@@ -21,7 +21,24 @@ function createPageHome(window){
                 page.loginAlert.innerHTML = arg
                 setTimeout(()=>{
                     page.loginAlert.innerHTML = ''
-                },1000)
+                },1500)
+            })
+            events.DOM('change', page.checkbox, ()=>{
+                if(page.checkbox.checked){
+                    page.input_password.type = 'text'
+                }else{
+                    page.input_password.type = 'password'
+                }
+            })
+            events.on('setfunc_btlogin', (login)=>{
+                events.DOM('click', page.login, ()=>{
+                    login({
+                        user: page.input_user.value,
+                        password: page.input_password.value,
+                    })
+                    page.input_user.value = ''
+                    page.input_password.value = ''
+                })
             })
         }
 
@@ -48,15 +65,9 @@ function createPageHome(window){
             user: 'Adler'
         }
 
-        const users = {
-            'leandro_santino': {
-                password: 'alpha45c'
-            }
-        }
-
         function init(args){
             events.send('renderLogin', args)
-            console.log(window.useManage.getUserConected())
+            events.send('setfunc_btlogin', login)
         }
 
         function update(){
@@ -67,11 +78,12 @@ function createPageHome(window){
             user,
             password,
         }){
-            const user = users[login_date.user]
-            console.log(user, login_date)
+            const user = window.ipc.sendSync('login', login_date)
             if(user){
                 if(login_date.password == user.password){
                     events.send('loginButtons', 'login')
+                    console.log('teste',window.ipc.sendSync('getConectedUser'))
+                    //events.send('OpenReqs')
                 }else{
                     events.send('loginAlert', 'Usuário ou senha Incorretos!')
                 }
@@ -94,25 +106,7 @@ function createPageHome(window){
 
     events.on('renderLogin', (args)=>{
         page.render(core.optionsPage, args.container)
-        main()
     })
-
-    function main(){
-        events.DOM('click', page.login, ()=>{
-            core.login({
-                user: page.input_user.value,
-                password: page.input_password.value
-            })
-        })
-        events.DOM('change', page.checkbox, ()=>{
-            console.log('ok',page.checkbox.checked)
-            if(page.checkbox.checked){
-                page.input_password.type = 'text'
-            }else{
-                page.input_password.type = 'password'
-            }
-        })
-    }
 
     return {
         render: core.init,

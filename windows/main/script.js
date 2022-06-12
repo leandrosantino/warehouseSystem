@@ -3,7 +3,7 @@ const app = document.querySelector('#app')
 try{
     
     const home = window.pages.create('home', window)
-    const reqs = window.pages.create('requisitar', window)
+    const reqs = window.pages.create('requisitar', window) 
     const login = window.pages.create('login', window)
 
     //Open page new Request

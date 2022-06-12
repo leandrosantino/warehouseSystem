@@ -31,6 +31,7 @@ $width_sideBar: 250px;
         }
         #sobre{display: none;}
     }
+
     .sideBar_normal{
         width: 250px;
         .btOption{
@@ -50,7 +51,7 @@ $width_sideBar: 250px;
         justify-content: space-between;
         flex-direction: column;
         background-color: cor.$background;
-        transition: .3s;
+        transition: .1s;
 
         #buttonsCase{
             width: 100%;
