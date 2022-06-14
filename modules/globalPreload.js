@@ -7,7 +7,7 @@ module.exports = (args = {
     } = require("electron");
     const path = require('path')
 
-    const event = require('./event.js')()
+    const eventCreator = require('./event.js')
     const navBar = require('../navbar/navBar.js')
     const sass = require('sass')
 
@@ -23,7 +23,8 @@ module.exports = (args = {
                 ipcRenderer.on(channel, (event, ...args) => func(event, ...args));
             }
         },
-        'events': event,
+        'events': eventCreator(),
+        'eventEmitterCreator': eventCreator,
         'navBar': navBar.render(args.window, args.type),
         'pages': {create: createPage},
         'ejs': require('./ejs.js')(),
@@ -46,8 +47,8 @@ module.exports = (args = {
 
     let pages = {}
 
-    function createPage(page, event){
-        return pages[page](event)
+    function createPage(page, _args){
+        return pages[page](_args)
     }
 
     function addPages(pages_){

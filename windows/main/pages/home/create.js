@@ -1,26 +1,42 @@
 function createPageHome(window){
 
-    const path = require('path')
-    const events = window.events
-    const fs = require('fs')
+    const events = window.eventEmitterCreator()
+    const globalEvents = window.events
 
-    function createPage(){
+    function createPage(){ 
         const ejs = window.ejs 
 
         function getElements(){
-            page.login = document.querySelector('#login')
-            page.logout = document.querySelector('#logout')
-            page.btReqs = document.querySelector('#requisitar')
-            page.mainCase = document.querySelector('#mainCase')
-            page.requisicoes = document.querySelector('#requisicoes')
-            page.estoque = document.querySelector('#estoque')
-            page.btChangeSideBar = document.querySelector('#iconUser')
-            page.sideBar = document.querySelector('#side-bar')
+
+            const elements = {
+                login:{id:'#login'},
+                logout:{id:'#logout'},
+                requisitar:{id:'#requisitar'},
+                mainCase :{id:'#mainCase'},
+                requisicoes :{id:'#requisicoes'},
+                estoque:{id:'#estoque'},
+                btChangeSideBar:{id:'#iconUser'},
+                sideBar:{id:'#side-bar'},
+                nameUser:{id:'#nameUser'},
+            }
+            
+            for(iten in elements){
+                page[iten] = document.querySelector(elements[iten].id)
+            }
+
         }
 
         function renderEvents(){
             getElements()
-            //events.DOM('click', page.login, core.login)
+
+            events.DOM('click', page.login, ()=>{
+                globalEvents.send('toChargeLogin')
+            })
+
+            events.DOM('click', page.requisitar, ()=>{ 
+                globalEvents.send('toChargeRequisitar')
+            })
+
             events.DOM('click', page.logout, core.logout)
 
             events.DOM('click', page.btChangeSideBar, ()=>{
@@ -34,8 +50,11 @@ function createPageHome(window){
                 
             })
 
-            events.on('loginButtons', (args)=>{
-                console.log(args)
+            globalEvents.on('setUserName', (name)=>{
+                page.nameUser.innerHTML = name
+            })
+
+            globalEvents.on('loginButtons', (args)=>{
                 if(args === 'login'){
                     page.login.style.display = 'none'
                     page.logout.style.display = 'inherit'
@@ -49,9 +68,7 @@ function createPageHome(window){
                 }
             })
 
-            home.btReqs = page.btReqs
             home.mainCase = page.mainCase
-            home.login = page.login
         }
  
         function render(dados){
@@ -62,6 +79,10 @@ function createPageHome(window){
             app.innerHTML = html
             renderEvents()
         }
+
+        events.on('render', (args)=>{
+            render(args)
+        })
 
         const page = {
             render, 
@@ -75,8 +96,8 @@ function createPageHome(window){
             user: 'Adler Pelzer Group'
         }
 
-        function init(){
-            events.send('renderHome', optionsPage)
+        function toCharge(){
+            events.send('render', optionsPage)
         }
 
         function update(){
@@ -85,12 +106,14 @@ function createPageHome(window){
         
         function logout(){
             if(window.ipc.sendSync('logout')){
-                events.send('loginButtons', 'logout')
+                globalEvents.send('loginButtons', 'logout')
+                globalEvents.send('toChargeLogin')
+                globalEvents.send('setUserName', optionsPage.user)
             }
         }
 
         return {
-            init,
+            toCharge,
             update,
             logout,
         }
@@ -99,17 +122,12 @@ function createPageHome(window){
 
     const page = createPage()
     const core  = createLogicCore()
-
-    events.on('renderHome', (args)=>{
-        page.render(args)
-    })
     
     const home = {
-        render: core.init,
         update: core.update,
     }
     
-    core.init()
+    core.toCharge()
 
     return home
 }

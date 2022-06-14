@@ -4,18 +4,16 @@ module.exports = (ipcMain, eventEmitter)=>{
 
     const users = {
         'leandro_santino': {
+            name: 'Leandro Santino',
             password: 'alpha45c'
         },
-        '': {
-            password: ''
-        }
+        'eliabe_carlos': {
+            name: 'Eliabe Carlos',
+            password: 'calanguinho'
+        },
     }
 
-    let userConneted = {
-        name: 'Leandro',
-        pass: 'alpha45c', 
-        id: '12457943',
-    }
+    let userConneted = {}
 
     function createUser(){
 

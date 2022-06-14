@@ -1,8 +1,7 @@
-function createPageHome(window){
+function createPageHome({window, container}){
 
-    const path = require('path')
-    const events = window.events
-    const fs = require('fs')
+    const events = window.eventEmitterCreator()
+    const globalEvents = window.events
 
     function createPage(){
         const ejs = window.ejs 
@@ -24,6 +23,10 @@ function createPageHome(window){
             renderEvents()
         }
 
+        events.on('render', (data_Page)=>{
+            page.render(data_Page, container)
+        })
+    
         const page = {
             render,
         }
@@ -31,37 +34,35 @@ function createPageHome(window){
         return page
     }
 
-    function createLogicCore(){
+    function createCore(){
 
-        const optionsPage = {
+        const data_Page = {
             conected: false,
             user: 'leandro Santino'
         }
 
-        function init(args){
-            events.send('renderReqs', args)
+        function toCharge(){
+            events.send('render', data_Page)
         }
+
+        globalEvents.on('toChargeRequisitar', toCharge)
 
         function update(){
             console.log('Update')
         }
 
         return {
-            init,
+            toCharge,
             update,
         }
 
     }
 
     const page = createPage()
-    const core  = createLogicCore()
-
-    events.on('renderReqs', (args)=>{
-        page.render(core.optionsPage, args.container)
-    })
+    const core  = createCore()
 
     return {
-        render: core.init,
+        toCharge: core.toCharge,
         update: core.update,
     }
 }

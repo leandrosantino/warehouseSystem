@@ -1,9 +1,9 @@
-function createPageHome(window){
+function createPageHome({window, container}){
 
-    const path = require('path')
-    const events = window.events
-    const fs = require('fs')
-
+    const events = window.eventEmitterCreator()
+    const globalEvents = window.events
+    
+    
     function createPage(){
         const ejs = window.ejs 
 
@@ -51,6 +51,10 @@ function createPageHome(window){
             renderEvents()
         }
 
+        events.on('render', (data_Page)=>{
+            render(data_Page, container) 
+        })
+
         const page = {
             render,
         }
@@ -58,17 +62,19 @@ function createPageHome(window){
         return page
     }
 
-    function createLogicCore(){
+    function createCore(){
 
-        const optionsPage = {
+        const data_Page = {
             conected: false,
             user: 'Adler'
         }
 
-        function init(args){
-            events.send('renderLogin', args)
+        function toCharge(){
+            events.send('render', data_Page)
             events.send('setfunc_btlogin', login)
         }
+
+        globalEvents.on('toChargeLogin', toCharge)
 
         function update(){
             console.log('Update')
@@ -81,9 +87,9 @@ function createPageHome(window){
             const user = window.ipc.sendSync('login', login_date)
             if(user){
                 if(login_date.password == user.password){
-                    events.send('loginButtons', 'login')
-                    console.log('teste',window.ipc.sendSync('getConectedUser'))
-                    //events.send('OpenReqs')
+                    globalEvents.send('loginButtons', 'login')
+                    globalEvents.send('setUserName', user.name)
+                    globalEvents.send('toChargeRequisitar')
                 }else{
                     events.send('loginAlert', 'Usuário ou senha Incorretos!')
                 }
@@ -93,23 +99,18 @@ function createPageHome(window){
         }
 
         return {
-            init,
+            toCharge,
             update,
             login,
-            optionsPage,
         }
 
     }
 
     const page = createPage()
-    const core  = createLogicCore()
-
-    events.on('renderLogin', (args)=>{
-        page.render(core.optionsPage, args.container)
-    })
+    const core  = createCore()
 
     return {
-        render: core.init,
+        toCharge: core.toCharge,
         update: core.update,
     }
 }
