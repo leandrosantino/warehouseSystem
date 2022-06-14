@@ -11,7 +11,7 @@
     },
     "build": {
         "asar": "false",
-        "productName": "name",
+        "productName": "warehouseSystem",
         "win": {
             "icon": "./src/icon.png"
         }
@@ -22,14 +22,13 @@
         "ejs": "^3.1.8",
         "sequelize": "^6.20.0",
         "sqlite3": "^5.0.8",
-        "w3": "^2.0.2"
+        "sass": "^1.52.3"
     },
     "devDependencies": {
         "electron": "^18.2.3",
         "electron-builder": "^22.13.1",
         "electron-rebuild": "^3.2.7",
-        "electron-reload": "^2.0.0-alpha.1",
-        "sass": "^1.52.1"
+        "electron-reload": "^2.0.0-alpha.1"
     },
     "description": ""
 }
