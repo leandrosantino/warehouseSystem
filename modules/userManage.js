@@ -2,14 +2,34 @@
 
 module.exports = (ipcMain, eventEmitter)=>{
 
+    const {admin, editor} = {
+        admin: {
+            pages: [
+                'requisicoes',
+                'estoque',
+            ],
+            actions: [
+                'user manage',
+            ], 
+        },
+        editor: {
+            pages: [
+                'requisicoes',
+            ],
+            actions: [], 
+        }
+    }
+
     const users = {
         'leandro_santino': {
             name: 'Leandro Santino',
-            password: 'alpha45c'
+            password: 'alpha45c',
+            permissions: admin
         },
         'eliabe_carlos': {
             name: 'Eliabe Carlos',
-            password: 'calanguinho'
+            password: 'calanguinho',
+            permissions: editor
         },
     }
 
@@ -22,7 +42,7 @@ module.exports = (ipcMain, eventEmitter)=>{
     function login(loginData = {
         user,
         pass,
-    }){
+    }){ 
         const user = users[loginData.user]
         if(user){
             if(users.pass === loginData.pass){

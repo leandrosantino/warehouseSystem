@@ -8,6 +8,9 @@ const dialog = require('./modules/dialog.js')(events)
 const navBar = require('./navbar/navBar.js')
 const icons = require('./modules/readicons.js')()
 const userManege = require('./modules/userManage.js')(ipcMain, events)
+const dataBase = require('./database/create')()
+const serialPort = require('./modules/sereialPort')(ipcMain, dataBase)
+const excel = require('./modules/excel')(ipcMain, dataBase)
 
 const reload = 1
 if(reload == 1){
@@ -35,12 +38,20 @@ app.on('window-all-closed', ()=>{
     app.quit();
 });
 
-function init(){
+async function init(){
+
+    const resp = await dataBase.init()
+    if(resp){
+        console.log('erro')
+    }
+
     windows.main.show()
     windows.main.maximize()
     navBar.main(windows)
     dialog.setIpc(windows)
+    serialPort.init()
  
+    excel.populateDB()
 
     userManege.init()
 }

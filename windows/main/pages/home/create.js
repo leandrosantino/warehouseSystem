@@ -55,11 +55,15 @@ function createPageHome(window){
             })
 
             globalEvents.on('loginButtons', (args)=>{
-                if(args === 'login'){
+                if(args.type === 'login'){
                     page.login.style.display = 'none'
                     page.logout.style.display = 'inherit'
-                    page.requisicoes.style.display = 'inherit'
-                    page.estoque.style.display = 'inherit'
+                    args.permissions.forEach(item=>{
+                        try{
+                            page[item].style.display = 'inherit'
+                        }catch{}
+                    })
+
                 }else{
                     page.login.style.display = 'inherit'
                     page.logout.style.display = 'none'
