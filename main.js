@@ -9,7 +9,7 @@ const navBar = require('./navbar/navBar.js')
 const icons = require('./modules/readicons.js')()
 const userManege = require('./modules/userManage.js')(ipcMain, events)
 const dataBase = require('./database/create')()
-const serialPort = require('./modules/sereialPort')(ipcMain, dataBase)
+const scannerServer = require('./modules/scanerServer')(ipcMain, dataBase)
 const excel = require('./modules/excel')(ipcMain, dataBase)
 
 const reload = 1
@@ -40,18 +40,20 @@ app.on('window-all-closed', ()=>{
 
 async function init(){
 
+    dialog.setIpc(windows)
+    navBar.main(windows)
+    
     const resp = await dataBase.init()
     if(resp){
         console.log('erro')
+        dialog.error('Falha ao carregar a Base de Dados')
     }
+
+    scannerServer.init(windows)
+    //excel.populateDB()
+    userManege.init()
 
     windows.main.show()
     windows.main.maximize()
-    navBar.main(windows)
-    dialog.setIpc(windows)
-    serialPort.init()
- 
-    excel.populateDB()
-
-    userManege.init()
+    console.clear()
 }
