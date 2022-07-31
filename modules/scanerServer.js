@@ -1,14 +1,15 @@
-function createSerialMonitor(ipcMain, dataBase){
+function createSerialMonitor(ipcMain, excel){
 
     const SerialPort = require('./serialPort')()
     let windows = null
     let port = null
     let produtos = {}
-    const historico = []
+    let historico = []
 
     const actions = {
         getData({code, windowName}){
             const produto = produtos[code]
+            console.log(produto)
             if(produto){
                 return JSON.stringify(produto)
             }else{
@@ -22,10 +23,26 @@ function createSerialMonitor(ipcMain, dataBase){
             const item = produtos[code]
             if(item){
                 const diff  = item.estoque-estoque
-                const type = diff<0?'saída':'entrada' 
-                historico.unshift(`${type} de ${Math.abs(diff)} no item ${item.nome}`)
-        
+                const type = diff>0?'saída':'entrada' 
+
+                const date = new Date()
+                const meses = ['01','02','03','04','05','06','07','08','09','10','11','12']
+                
+                historico.unshift([
+                    `${date.getDate()}/${meses[date.getMonth()]}/${date.getFullYear()}`,
+                    diff==0?'Inalterado':type,
+                    Math.abs(diff),
+                    item.descricao,
+                    item.estoque,
+                    estoque
+                ])
                 console.log(historico)
+
+                const resp = excel.updateHistorico(historico)
+
+                console.log(resp)
+
+                windows[windowName].webContents.send('updateHistorico', historico)
         
                 return JSON.stringify({
                     status: 'ok',
@@ -51,15 +68,16 @@ function createSerialMonitor(ipcMain, dataBase){
 
     async function start(windowName){
         
-        produtos = await dataBase.getProdutos()
+        produtos = excel.getProdutos()
+        historico = excel.getHistorico()
         port = await SerialPort.init()
 
         if(port && !produtos.err){
-            console.log('connected Scanner')
+            console.log('connected Scanner') 
             port.on('readable', ()=>{
                 try{
-                    let msg = toJson(port.read().toString())
-                    console.log(msg)
+                    let msg = toJson(String(port.read()))
+                    console.log(String(port.read()), msg, 'teste')
                     const {type, params} = msg
 
                     params.windowName = windowName
@@ -77,7 +95,7 @@ function createSerialMonitor(ipcMain, dataBase){
                     }
                     
                 }catch(err){
-                    console.log('erro', err)
+                    //console.log('erro', err)
                 }       
             })
             port.on('close', resp=>{

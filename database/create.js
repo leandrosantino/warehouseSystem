@@ -27,7 +27,6 @@ function dataBase(){
                 const {codigo, descricao, endereco, estoque} = produto
                 resp[codigo] = {descricao, endereco, estoque}
             })
-            console.clear()
 
             return resp
    

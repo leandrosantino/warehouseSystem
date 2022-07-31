@@ -19,6 +19,10 @@ try{
         console.log(args)
     })
 
+    window.ipc.on('updateHistorico', (event, args)=>{
+        console.log(args)
+    })
+
     setTimeout(() => {
         const resp = window.ipc.sendSync('scannerInit', 'main')
         if(resp){

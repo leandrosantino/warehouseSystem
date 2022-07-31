@@ -9,10 +9,10 @@ const navBar = require('./navbar/navBar.js')
 const icons = require('./modules/readicons.js')()
 const userManege = require('./modules/userManage.js')(ipcMain, events)
 const dataBase = require('./database/create')()
-const scannerServer = require('./modules/scanerServer')(ipcMain, dataBase)
 const excel = require('./modules/excel')(ipcMain, dataBase)
+const scannerServer = require('./modules/scanerServer')(ipcMain, excel)
 
-const reload = 1
+const reload = 0
 if(reload == 1){
     require("electron-reload")(__dirname, {
         electron: require(`${__dirname}/node_modules/electron`),
@@ -50,10 +50,8 @@ async function init(){
     }
 
     scannerServer.init(windows)
-    //excel.populateDB()
     userManege.init()
 
     windows.main.show()
     windows.main.maximize()
-    console.clear()
 }
