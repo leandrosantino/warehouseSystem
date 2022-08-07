@@ -70,6 +70,7 @@ function createPageHome({window, container}){
         }
 
         function toCharge(){
+            window.ipc.sendSync('setPermissionScanner', false)
             events.send('render', data_Page)
             events.send('setfunc_btlogin', login)
         }
@@ -87,6 +88,7 @@ function createPageHome({window, container}){
             const user = window.ipc.sendSync('login', login_date)
             if(user){
                 if(login_date.password == user.password){
+
                     globalEvents.send('loginButtons', {
                         type: 'login',
                         permissions: user.permissions.pages

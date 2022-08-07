@@ -8,7 +8,7 @@ function createPageHome({window, container}){
 
         function getElements(){
             const elements = {
-                voltar:{id:'#voltar'},
+                case:{id:'#case'},
             }
             
             for(iten in elements){
@@ -18,7 +18,17 @@ function createPageHome({window, container}){
 
         function renderEvents(){
             getElements()
+            events.on('renderTable', (historico)=>{
+                page.case.innerHTML = ejs.createComponent({
+                    source: __dirname,
+                    filename: 'table.ejs',
+                    data: {
+                        dados: historico
+                    }
+                })
+            })
         }
+
 
         function render(dados, container){
             const html = ejs.create({
@@ -42,13 +52,22 @@ function createPageHome({window, container}){
 
     function createCore(){
 
-        const data_Page = {
-            conected: false,
-            user: 'leandro Santino'
-        }
-
         function toCharge(){
-            events.send('render', data_Page)
+            window.ipc.sendSync('setPermissionScanner', true)
+            events.send('render', {})
+
+            let historico = window.ipc.sendSync('getHistorico')
+            if(historico.length == 0){
+                historico = [
+                    ['', '', '', '', '', '', ''],
+                ]
+            }
+            events.send('renderTable', historico)
+
+
+            window.ipc.on('updateHistorico', (event, args)=>{
+                events.send('renderTable', args)
+            })
         }
 
         globalEvents.on('toChargeInventario', toCharge)
@@ -64,13 +83,8 @@ function createPageHome({window, container}){
 
     }
 
-    window.ipc.on('scanner', (event, args)=>{
-        console.log(args)
-    })
 
-    window.ipc.on('updateHistorico', (event, args)=>{
-        console.log(args)
-    })
+
 
     const page = createPage()
     const core  = createCore()

@@ -1,1 +1,22 @@
- 
+// Estilização da Tela de Inventário
+
+    @use '../../../../style/sass/mixins' as mix;
+    @use '../../../../style/sass/colors' as cor;
+
+
+    #case{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        margin-top: 45px;
+        overflow: auto;
+
+        #rotulo{
+            background-color: cor.$theme3;
+            color: #fff
+        }
+    }
+
+    

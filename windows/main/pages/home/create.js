@@ -38,6 +38,10 @@ function createPageHome(window){
                 globalEvents.send('toChargeRequisitar')
             })
 
+            events.DOM('click', page.inventario, ()=>{ 
+                globalEvents.send('toChargeInventario')
+            })
+
             events.DOM('click', page.logout, core.logout)
 
             events.DOM('click', page.btChangeSideBar, ()=>{
@@ -103,6 +107,7 @@ function createPageHome(window){
         }
 
         function toCharge(){
+            window.ipc.sendSync('setPermissionScanner', false)
             events.send('render', optionsPage)
         }
 
@@ -112,6 +117,7 @@ function createPageHome(window){
         
         function logout(){
             if(window.ipc.sendSync('logout')){
+                window.ipc.sendSync('setPermissionScanner', false)
                 globalEvents.send('loginButtons', 'logout')
                 globalEvents.send('toChargeLogin')
                 globalEvents.send('setUserName', optionsPage.user)

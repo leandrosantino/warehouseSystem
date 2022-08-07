@@ -72,6 +72,7 @@ function createExcelModel(ipcMain, dataBase){
         try{   
             const labels = [
                 'Data',
+                'Código',
                 'Tipo',
                 'Quantidade',
                 'Item',

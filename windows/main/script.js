@@ -7,6 +7,7 @@ try{
 
     const reqs = window.pages.create('requisitar', {window, container}) 
     const login = window.pages.create('login', {window, container})
+    const inventario = window.pages.create('inventario', {window, container})
 
     function startScanner(){
         const resp = window.ipc.sendSync('scannerInit', 'main')
@@ -15,10 +16,12 @@ try{
         }else{
             console.log('device disconnected')
         }
+        
     }
     setTimeout(startScanner, 0)
 
-    login.toCharge()
+    //login.toCharge()
+    //inventario.toCharge()
 
 }catch(err){
     console.log('app-error', err)

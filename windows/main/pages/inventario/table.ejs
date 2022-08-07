@@ -1,0 +1,35 @@
+
+<div>
+    <table id="rotulo" class="table">
+        <tbody >
+            <tr id="border" > 
+                <td style="width: 100px;" > Data           </td>
+                <td style="width: 100px;" > Código         </td>
+                <td style="width: 150px;" > Tipo           </td>
+                <td style="width: 60px;" > Quant           </td>
+                <td style="width: 250px;" > Descrição      </td>
+                <td style="width:  70px;" > E. Ante. </td>
+                <td style="width: 70px;"  > E. Atual   </td>
+
+            </tr>
+        </tr>
+    </table>            
+</div>
+
+<div id="tableArea">
+    <table id="tabela" class="table">
+        <tbody id="table" class="scroll">
+            <%dados.forEach(row => {%>
+                <tr>
+                    <td style="width: 100px;" > <%- row[0] %> </td>
+                    <td style="width: 100px;" > <%- row[1] %> </td>
+                    <td style="width: 150px;" > <%- row[2] %> </td>
+                    <td style="width:  50px;" > <%- row[3] %> </td>
+                    <td style="width: 260px;" > <%- row[4] %> </td>
+                    <td style="width: 70px;" > <%- row[5] %> </td>
+                    <td style="width: 70px;"  > <%- row[6] %> </td>
+                </tr>    
+            <%});%>   
+        </tbody>   
+    </table>                      
+</div>

@@ -42,6 +42,7 @@ function createPageHome({window, container}){
         }
 
         function toCharge(){
+            window.ipc.sendSync('setPermissionScanner', false)
             events.send('render', data_Page)
         }
 
@@ -59,10 +60,6 @@ function createPageHome({window, container}){
     }
 
     window.ipc.on('scanner', (event, args)=>{
-        console.log(args)
-    })
-
-    window.ipc.on('updateHistorico', (event, args)=>{
         console.log(args)
     })
 

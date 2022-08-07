@@ -5,6 +5,7 @@ function createSerialMonitor(ipcMain, excel){
     let port = null
     let produtos = {}
     let historico = []
+    let permission = false
 
     const actions = {
         getData({code}){
@@ -15,43 +16,51 @@ function createSerialMonitor(ipcMain, excel){
             }else{
                 return toCode({
                     status: 'erro',
-                    menssage: 'item não encontrado'
+                    message: 'item não encontrado'
                 })
             }
         },
         sendUpdate({code, estoque, windowName}){
-            const item = produtos[code]
-            if(item){
-                const diff  = item.estoque-estoque
-                const type = diff>0?'saída':'entrada' 
+            if(permission){
+                const item = produtos[code]
+                if(item){
+                    const diff  = item.estoque-estoque
+                    const type = diff>0?'saída':'entrada' 
 
-                const date = new Date()
-                const meses = ['01','02','03','04','05','06','07','08','09','10','11','12']
-                
-                historico.unshift([
-                    `${date.getDate()}/${meses[date.getMonth()]}/${date.getFullYear()}`,
-                    diff==0?'Inalterado':type,
-                    Math.abs(diff),
-                    item.descricao,
-                    item.estoque,
-                    estoque
-                ])
-                console.log(historico)
+                    const date = new Date()
+                    const meses = ['01','02','03','04','05','06','07','08','09','10','11','12']
+                    
+                    historico.unshift([
+                        `${date.getDate()}/${meses[date.getMonth()]}/${date.getFullYear()}`,
+                        code,
+                        diff==0?'Inalterado':type,
+                        Math.abs(diff),
+                        item.descricao,
+                        item.estoque,
+                        estoque
+                    ])
+                    console.log(historico)
 
-                const resp = excel.updateHistorico(historico)
+                    const resp = excel.updateHistorico(historico)
 
-                console.log(resp)
+                    console.log(resp)
 
-                windows[windowName].webContents.send('updateHistorico', historico)
-        
-                return toCode({
-                    status: 'ok',
-                    menssage: 'updade successfull'
-                })
+                    windows[windowName].webContents.send('updateHistorico', historico)
+            
+                    return toCode({
+                        status: 'ok',
+                        message: 'updade successfull'
+                    })
+                }else{
+                    return toCode({
+                        status: 'erro',
+                        message: 'item não encontrado'
+                    })
+                }
             }else{
                 return toCode({
                     status: 'erro',
-                    menssage: 'item não encontrado'
+                    message: 'O controlador não está em modo de inventário!'
                 })
             }
         },
@@ -61,7 +70,7 @@ function createSerialMonitor(ipcMain, excel){
 
             return toCode({
                 status: 'ok',
-                menssage: 'Scanner successfull'
+                message: 'Scanner successfull'
             })
         }
     }
@@ -91,7 +100,7 @@ function createSerialMonitor(ipcMain, excel){
                         console.log(err)
                         port.write(toCode({
                             status: 'erro',
-                            menssage: 'erro inesperado'
+                            message: 'erro inesperado'
                         }))
                     }
                     
@@ -129,6 +138,13 @@ function createSerialMonitor(ipcMain, excel){
         })
         ipcMain.on('scannerclose', async (event, args)=>{
             event.returnValue = await close()
+        })
+        ipcMain.on('getHistorico', (event, args)=>{
+            event.returnValue = historico
+        })
+        ipcMain.on('setPermissionScanner', (event, args)=>{
+            permission = args
+            event.returnValue = true
         })
     }
 

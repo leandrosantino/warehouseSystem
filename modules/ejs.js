@@ -10,7 +10,7 @@ function createScreen(){
         source, 
         data,
     }){
-
+ 
         const scssFile = path.join(options.source, 'style.scss')
         const ejsFile = path.join(options.source, 'template.ejs')
         const icons = ipcRenderer.sendSync('icons')
@@ -25,7 +25,19 @@ function createScreen(){
             icons,
             ...options.data,
         })
-    } 
+    }
+
+    function createComponent({source, data, filename}){
+        const ejsFile = path.join(source, filename)
+        const icons = ipcRenderer.sendSync('icons')
+
+        const str = fs.readFileSync(ejsFile,'utf8')
+        const template = ejs.compile(str);
+        return template({
+            icons,
+            ...data,
+        })
+    }
 
     function createString(str, data){
         const template = ejs.compile(`${linkCss}${str}`);
@@ -34,6 +46,7 @@ function createScreen(){
 
     return {
         create,
+        createComponent,
     }
 }
 
