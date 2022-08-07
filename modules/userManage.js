@@ -6,12 +6,13 @@ module.exports = (ipcMain, eventEmitter)=>{
         admin: {
             pages: [
                 'requisicoes',
+                'inventario',
                 'estoque',
             ],
             actions: [
                 'user manage',
             ], 
-        },
+        }, 
         editor: {
             pages: [
                 'requisicoes',

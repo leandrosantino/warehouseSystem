@@ -27,6 +27,7 @@ module.exports = ()=>{
         addForm: readSvg('addForm'),
         box: readSvg('box'),
         check: readSvg('check'),
+        checkList: readSvg('checkList'),
         list: readSvg('list'),
     }
 

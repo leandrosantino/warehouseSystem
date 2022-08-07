@@ -7,7 +7,13 @@ function createPageHome({window, container}){
         const ejs = window.ejs 
 
         function getElements(){
-            page.voltar = document.querySelector('#voltar')
+            const elements = {
+                voltar:{id:'#voltar'},
+            }
+            
+            for(iten in elements){
+                page[iten] = document.querySelector(elements[iten].id)
+            }
         }
 
         function renderEvents(){
@@ -45,7 +51,7 @@ function createPageHome({window, container}){
             events.send('render', data_Page)
         }
 
-        globalEvents.on('toChargeRequisitar', toCharge)
+        globalEvents.on('toChargeInventario', toCharge)
 
         function update(){
             console.log('Update')

@@ -7,7 +7,7 @@ function createPageHome(window){
         const ejs = window.ejs 
 
         function getElements(){
-
+ 
             const elements = {
                 login:{id:'#login'},
                 logout:{id:'#logout'},
@@ -15,6 +15,7 @@ function createPageHome(window){
                 mainCase :{id:'#mainCase'},
                 requisicoes :{id:'#requisicoes'},
                 estoque:{id:'#estoque'},
+                inventario:{id:'#inventario'},
                 btChangeSideBar:{id:'#iconUser'},
                 sideBar:{id:'#side-bar'},
                 nameUser:{id:'#nameUser'},
@@ -68,6 +69,7 @@ function createPageHome(window){
                     page.login.style.display = 'inherit'
                     page.logout.style.display = 'none'
                     page.requisicoes.style.display = 'none'
+                    page.inventario.style.display = 'none'
                     page.estoque.style.display = 'none'
                 }
             })

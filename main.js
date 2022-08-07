@@ -48,7 +48,7 @@ async function init(){
         console.log('erro')
         dialog.error('Falha ao carregar a Base de Dados')
     }
-
+    
     scannerServer.init(windows)
     userManege.init()
 

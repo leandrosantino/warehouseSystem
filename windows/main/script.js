@@ -1,12 +1,5 @@
 const app = document.querySelector('#app')
 
-function closed(){
-    const resp = window.ipc.sendSync('scannerclose')
-    if(!resp){
-        console.log('erro')
-    }
-}
-
 try{
     
     const home = window.pages.create('home', window)
@@ -15,22 +8,15 @@ try{
     const reqs = window.pages.create('requisitar', {window, container}) 
     const login = window.pages.create('login', {window, container})
 
-    window.ipc.on('scanner', (event, args)=>{
-        console.log(args)
-    })
-
-    window.ipc.on('updateHistorico', (event, args)=>{
-        console.log(args)
-    })
-
-    setTimeout(() => {
+    function startScanner(){
         const resp = window.ipc.sendSync('scannerInit', 'main')
         if(resp){
-            console.log('scanner server initializa', resp)
+            console.log('scanner server initializa')
         }else{
-            console.log('device disconnectedds')
+            console.log('device disconnected')
         }
-    }, 0);
+    }
+    setTimeout(startScanner, 0)
 
     login.toCharge()
 

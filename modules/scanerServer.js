@@ -7,15 +7,15 @@ function createSerialMonitor(ipcMain, excel){
     let historico = []
 
     const actions = {
-        getData({code, windowName}){
+        getData({code}){
             const produto = produtos[code]
             console.log(produto)
             if(produto){
-                return JSON.stringify(produto)
+                return toCode(produto)
             }else{
-                return JSON.stringify({
+                return toCode({
                     status: 'erro',
-                    message: 'item não encontrado'
+                    menssage: 'item não encontrado'
                 })
             }
         },
@@ -44,14 +44,14 @@ function createSerialMonitor(ipcMain, excel){
 
                 windows[windowName].webContents.send('updateHistorico', historico)
         
-                return JSON.stringify({
+                return toCode({
                     status: 'ok',
-                    message: 'updade successfull'
+                    menssage: 'updade successfull'
                 })
             }else{
-                return JSON.stringify({
+                return toCode({
                     status: 'erro',
-                    message: 'item não encontrado'
+                    menssage: 'item não encontrado'
                 })
             }
         },
@@ -59,9 +59,9 @@ function createSerialMonitor(ipcMain, excel){
 
             windows[windowName].webContents.send('scanner', code)
 
-            return JSON.stringify({
+            return toCode({
                 status: 'ok',
-                message: 'Scanner successfull'
+                menssage: 'Scanner successfull'
             })
         }
     }
@@ -70,6 +70,7 @@ function createSerialMonitor(ipcMain, excel){
         
         produtos = excel.getProdutos()
         historico = excel.getHistorico()
+        close()
         port = await SerialPort.init()
 
         if(port && !produtos.err){
@@ -88,9 +89,9 @@ function createSerialMonitor(ipcMain, excel){
                         port.write(resp)
                     }catch(err){
                         console.log(err)
-                        port.write(JSON.stringify({
+                        port.write(toCode({
                             status: 'erro',
-                            message: 'erro inesperado'
+                            menssage: 'erro inesperado'
                         }))
                     }
                     
@@ -113,8 +114,10 @@ function createSerialMonitor(ipcMain, excel){
     async function close(){
         try{
             port.close()
+            console.log('Scanner Closed')
             return true
-        }catch{
+        }catch(err){
+            console.log(err)
             return false
         }
     }
@@ -128,6 +131,19 @@ function createSerialMonitor(ipcMain, excel){
             event.returnValue = await close()
         })
     }
+
+    function toCode(object){
+        let str = ''
+        const keys = Object.keys(object)
+        keys.forEach((_key, index)=>{
+            const vrg = keys.length == index+1?'':';'
+            let key = _key.toLocaleUpperCase().split('')
+            key = `${key[0]}${key[1]}`
+            str+=`${key}:${object[_key]}${vrg}`
+        })
+        return str
+    }
+    
 
     function toJson(srt = ''){
         const data = {
