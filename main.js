@@ -12,7 +12,7 @@ const dataBase = require('./database/create')()
 const excel = require('./modules/excel')(ipcMain, dataBase)
 const scannerServer = require('./modules/scanerServer')(ipcMain, excel)
 
-const reload = 0
+const reload = 1
 if(reload == 1){
     require("electron-reload")(__dirname, {
         electron: require(`${__dirname}/node_modules/electron`),

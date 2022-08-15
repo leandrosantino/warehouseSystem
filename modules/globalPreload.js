@@ -12,6 +12,9 @@ module.exports = (args = {
     const sass = require('sass')
 
     const bridges = {
+        'require': (source, file)=>{
+            return require(path.join(source, file))
+        },
         'ipc': {
             send(channel, args){
                 ipcRenderer.sendSync(channel, args)

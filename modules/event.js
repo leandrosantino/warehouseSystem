@@ -35,6 +35,7 @@ function createEventEmitter(){
         sendSync,
         send,
         DOM,
+        events,
     }
 
 }
