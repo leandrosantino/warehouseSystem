@@ -1,4 +1,4 @@
-function createPage({eventEmitter, ejs, container}){
+function createPage({eventEmitter, ejs, container, globalEvents}){
 
     function getElements(){
         const elements = {

@@ -3,7 +3,7 @@ function createCore({window, container}){
     const { ipc, eventEmitterCreator, ejs, require,events} = window
     const eventEmitter = eventEmitterCreator()
     const globalEvents = events
-    const page = require(__dirname, './render')({eventEmitter, ejs, container})
+    const page = require(__dirname, './render')({eventEmitter, ejs, container, globalEvents})
 
  
     function login(){
@@ -33,7 +33,15 @@ function createCore({window, container}){
         page.input_password.value = ''
     }
 
-
+    function logout(){
+        if(ipc.sendSync('logout')){
+            ipc.sendSync('setPermissionScanner', false)
+            globalEvents.send('loginButtons', 'logout')
+            globalEvents.send('toChargeLogin')
+            globalEvents.send('setUserName', optionsPage.user)
+        }
+    }
+    globalEvents.on('logout', logout)
 
     function assignRoles(){
         eventEmitter.DOM('keypress', page.input_password, ({keyCode})=>{

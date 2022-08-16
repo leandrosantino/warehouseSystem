@@ -4,13 +4,13 @@ function createCore({window, container}){
     const eventEmitter = eventEmitterCreator()
     const globalEvents = events
     
-    const page = require(__dirname, './render')({eventEmitter, ejs, container})
-
+    const page = require(__dirname, './render')({eventEmitter, ejs, container, globalEvents})
+ 
     function toCharge(){
-        window.ipc.sendSync('setPermissionScanner', true)
+        ipc.sendSync('setPermissionScanner', true)
         eventEmitter.send('render', {})
 
-        let historico = window.ipc.sendSync('getHistorico')
+        let historico = ipc.sendSync('getHistorico')
         if(historico.length == 0){
             historico = [
                 ['', '', '', '', '', '', ''],
@@ -19,7 +19,7 @@ function createCore({window, container}){
 
         eventEmitter.send('renderTable', historico)
 
-        window.ipc.on('updateHistorico', (event, args)=>{
+        ipc.on('updateHistorico', (event, args)=>{
             eventEmitter.send('renderTable', args)
         })
 

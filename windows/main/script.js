@@ -5,7 +5,6 @@ try{
     const home = window.pages.create('home', window)
     const container = home.mainCase
 
-    const reqs = window.pages.create('requisitar', {window, container}) 
     const login = window.pages.create('login', {window, container})
     const inventario = window.pages.create('inventario', {window, container})
 

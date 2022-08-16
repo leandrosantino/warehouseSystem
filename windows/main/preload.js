@@ -4,8 +4,7 @@ const contextBridge = require('../../modules/globalPreload.js')({
 })
 
 contextBridge.addPages({
-    'home': require('./pages/home/create.js'),
-    'requisitar': require('./pages/requisitar/create.js'),
+    'home': require('./pages/home/core.js'),
     'login': require('./pages/login/core.js'),
     'inventario': require('./pages/inventario/core.js')
 })
