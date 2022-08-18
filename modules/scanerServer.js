@@ -1,4 +1,4 @@
-function createSerialMonitor(ipcMain, excel){
+function createSerialMonitor({ipcMain, events}, excel){
 
     const SerialPort = require('./serialPort')()
     let windows = null

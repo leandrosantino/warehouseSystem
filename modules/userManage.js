@@ -1,6 +1,5 @@
 // User Management
-
-module.exports = (ipcMain, eventEmitter)=>{
+module.exports = ({ipcMain, events})=>{
 
     const {admin, editor} = {
         admin: {
@@ -58,7 +57,7 @@ module.exports = (ipcMain, eventEmitter)=>{
     }
 
     function logout(){
-        if(eventEmitter.sendSync('dialogQuestion', {
+        if(events.sendSync('dialogQuestion', {
             msg: 'Atenção!!',
             detail: 'Realmente Dejeja fazer logout?',
             window: 'main',

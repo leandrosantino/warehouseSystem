@@ -20,7 +20,6 @@ try{
     setTimeout(startScanner, 0)
 
     //login.toCharge()
-    //inventario.toCharge()
 
 }catch(err){
     console.log('app-error', err)

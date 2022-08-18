@@ -14,7 +14,7 @@ function createCore({window, container}){
         if(historico.length == 0){
             historico = [
                 ['', '', '', '', '', '', ''],
-            ]
+            ]   
         }
 
         eventEmitter.send('renderTable', historico)

@@ -3,7 +3,7 @@ function dataBase(){
     const {Sequelize, Op} = require('sequelize')
     const connection = new Sequelize({
         dialect: 'sqlite',
-        storage: `./database/src/dataBase.sqlite`,
+        storage: `../src/dataBase.sqlite`,
     });
 
     const createModels = require('./models')
@@ -17,7 +17,7 @@ function dataBase(){
     async function close(){
         await connection.close()
     }
-
+ 
     async function getProdutos(){
         try{
             const resp = {}

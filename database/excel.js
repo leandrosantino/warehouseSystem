@@ -1,9 +1,9 @@
-function createExcelModel(ipcMain, dataBase){
+function createExcelModel(){
     
     const xlsx = require('node-xlsx')
     const path = require('path')
-    const source = path.join(__dirname, '../database/src')
-    const fs = require('fs')
+    const source = path.join(__dirname, './src')
+    const fs = require('fs') 
 
     function getProdutos(){
         try{

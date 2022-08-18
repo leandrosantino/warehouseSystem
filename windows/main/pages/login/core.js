@@ -8,20 +8,20 @@ function createCore({window, container}){
  
     function login(){
         const login_date = {
-            user: page.input_user.value,
-            password: page.input_password.value,
+            user: 'leandro_santino',//page.input_user.value,
+            password: 'alpha45c'//page.input_password.value,
         }
 
         const user = window.ipc.sendSync('login', login_date)
         if(user){
             if(login_date.password == user.password){
 
-                globalEvents.send('loginButtons', {
+                globalEvents.send('showAllowedScreens', {
                     type: 'login',
                     permissions: user.permissions.pages
                 })
                 globalEvents.send('setUserName', user.name)
-                globalEvents.send('toChargeRequisitar')
+                globalEvents.send('toChargeInventario')
             }else{
                 eventEmitter.send('loginAlert', 'Usuário ou senha Incorretos!')
             }
@@ -36,11 +36,12 @@ function createCore({window, container}){
     function logout(){
         if(ipc.sendSync('logout')){
             ipc.sendSync('setPermissionScanner', false)
-            globalEvents.send('loginButtons', 'logout')
-            globalEvents.send('toChargeLogin')
-            globalEvents.send('setUserName', optionsPage.user)
+            globalEvents.send('showAllowedScreens', 'logout')
+            //globalEvents.send('toChargeLogin')
+            globalEvents.send('setUserName', 'Adler Pelzer Group')
         }
     }
+
     globalEvents.on('logout', logout)
 
     function assignRoles(){
@@ -58,6 +59,7 @@ function createCore({window, container}){
         ipc.sendSync('setPermissionScanner', false)
         eventEmitter.send('render', data_Page)
         assignRoles()
+        login()
     }
 
     globalEvents.on('toChargeLogin', toCharge)

@@ -39,7 +39,7 @@ function createPage({eventEmitter, ejs, globalEvents}){
             page.nameUser.innerHTML = name
         })
 
-        globalEvents.on('loginButtons', (args)=>{
+        globalEvents.on('showAllowedScreens', (args)=>{
             if(args.type === 'login'){
                 page.login.style.display = 'none'
                 page.logout.style.display = 'inherit'
@@ -48,7 +48,6 @@ function createPage({eventEmitter, ejs, globalEvents}){
                         page[item].style.display = 'inherit'
                     }catch{}
                 })
-
             }else{
                 page.login.style.display = 'inherit'
                 page.logout.style.display = 'none'

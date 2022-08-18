@@ -1,4 +1,4 @@
-function createDialog(events){
+function createDialog({ipcMain, events}){
 
     const {dialog} = require('electron')
 

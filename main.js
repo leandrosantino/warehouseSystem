@@ -1,23 +1,26 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
-
 const createBrowserWindows = require('./modules/createWindow.js')
 
-const events = require('./modules/event.js')()
-const dialog = require('./modules/dialog.js')(events)
+const emitters = {
+    events: require('./modules/event.js')(),
+    ipcMain
+}
+
 const navBar = require('./navbar/navBar.js')
 const icons = require('./modules/readicons.js')()
-const userManege = require('./modules/userManage.js')(ipcMain, events)
-const dataBase = require('./database/create')()
-const excel = require('./modules/excel')(ipcMain, dataBase)
-const scannerServer = require('./modules/scanerServer')(ipcMain, excel)
 
-const reload = 1
+const dialog        = require('./modules/dialog.js')(emitters)
+const dataCore      = require('./database/dataCore')(emitters)
+const userManege    = require('./modules/userManage.js')(emitters)
+const scannerServer = require('./modules/scanerServer')(emitters, dataCore.excel)
+
+const reload = 0
 if(reload == 1){
     require("electron-reload")(__dirname, {
         electron: require(`${__dirname}/node_modules/electron`),
     });
-}
+} 
 
 const windows = createBrowserWindows({
     BrowserWindow,
@@ -42,16 +45,13 @@ async function init(){
 
     dialog.setIpc(windows)
     navBar.main(windows)
-    
-    const resp = await dataBase.init()
-    if(resp){
-        console.log('erro')
-        dialog.error('Falha ao carregar a Base de Dados')
-    }
+
+    await dataCore.init()? 
+    true:console.log('erro in dataCore')
     
     scannerServer.init(windows)
     userManege.init()
 
-    windows.main.show()
-    windows.main.maximize()
+    //windows.main.show()
+    //windows.main.maximize()
 }
