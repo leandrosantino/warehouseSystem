@@ -1,4 +1,4 @@
-function createSerialMonitor({ipcMain, events}, excel){
+function createSerialMonitor({ipcMain, events}){
 
     const SerialPort = require('./serialPort')()
     let windows = null
@@ -41,7 +41,7 @@ function createSerialMonitor({ipcMain, events}, excel){
                     ])
                     console.log(historico)
 
-                    const resp = excel.updateHistorico(historico)
+                    const resp = events.sendSync('updateHistorico', historico)
 
                     console.log(resp)
 
@@ -77,8 +77,8 @@ function createSerialMonitor({ipcMain, events}, excel){
 
     async function start(windowName){
         
-        produtos = excel.getProdutos()
-        historico = excel.getHistorico()
+        produtos = events.sendSync('getProducts') 
+        historico = events.sendSync('getHistorico')
         close()
         port = await SerialPort.init()
 

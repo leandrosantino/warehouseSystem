@@ -8,7 +8,7 @@ module.exports  = ()=>{
     async function writerData({header, data}){
         try{
             const csvWriter = createObjectCsvWriter({
-                path: source,
+                path: source, 
                 header
             });
              
@@ -30,7 +30,6 @@ module.exports  = ()=>{
             .on('data', (data) => results.push(data))
             .on('end', () => {
                 resolve(results)
-                console.log(results);
             })
             .on('error', err=>reject)
         })

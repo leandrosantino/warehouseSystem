@@ -7,7 +7,8 @@
         "pack": "electron-builder — dir",
         "start": "electron .",
         "rebuild": "electron-rebuild -f -w sqlite3",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "proto": "node ./test/datacore "
     },
     "build": {
         "asar": "false",

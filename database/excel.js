@@ -43,14 +43,8 @@ function createExcelModel(){
                     })
                 }
             })
-
-            const resp = {}
-            dataObject.forEach((produto, index)=>{                
-                const {codigo, descricao, endereco, estoque} = produto
-                resp[codigo] = {descricao, endereco, estoque}
-            })
-
-            return resp
+ 
+            return dataObject
    
         }catch(err){
             return {err}

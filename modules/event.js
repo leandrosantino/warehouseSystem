@@ -13,7 +13,7 @@ function createEventEmitter(){
             func(Obj, args)
             return Obj.returnValue
         }else{
-            console.error('event not exsists')
+            console.error(`"${event}" event does not exist`)
         }
     }
 

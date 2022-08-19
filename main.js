@@ -13,7 +13,7 @@ const icons = require('./modules/readicons.js')()
 const dialog        = require('./modules/dialog.js')(emitters)
 const dataCore      = require('./database/dataCore')(emitters)
 const userManege    = require('./modules/userManage.js')(emitters)
-const scannerServer = require('./modules/scanerServer')(emitters, dataCore.excel)
+const scannerServer = require('./modules/scanerServer')(emitters)
 
 const reload = 0
 if(reload == 1){
@@ -52,6 +52,6 @@ async function init(){
     scannerServer.init(windows)
     userManege.init()
 
-    //windows.main.show()
-    //windows.main.maximize()
+    windows.main.show()
+    windows.main.maximize()
 }
