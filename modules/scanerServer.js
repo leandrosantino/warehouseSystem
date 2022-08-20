@@ -77,7 +77,7 @@ function createSerialMonitor({ipcMain, events}){
 
     async function start(windowName){
         
-        produtos = events.sendSync('getProducts') 
+        produtos = await events.sendAsync('getProducts') 
         historico = events.sendSync('getHistorico')
         close()
         port = await SerialPort.init()

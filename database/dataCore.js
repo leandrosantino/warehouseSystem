@@ -37,12 +37,31 @@ module.exports = (props)=>{
         }
     }
 
+    async function getHistorico(){
+        try{
+
+            const historico = await sqlite.Historico.findAll({
+                where:{
+                    data: new Date(2022,1,21)
+                }
+            })
+
+            console.log(historico)
+
+
+            return true
+        }catch(err){
+            events.send('dialogError', `Erro dataCore - ${err}`)
+            return false
+        }
+    }
+ 
 
     
     function declareEvents(){
         //Produtos
-            events.on('getProducts', (event)=>{
-                event.returnValue = produtcs
+            events.on('getProducts', async (event)=>{
+                event.returnValue = await getProduts()
             })
             events.on('updateDataProducts', (event, args)=>{
                 const {code, estoque} = args
@@ -66,7 +85,7 @@ module.exports = (props)=>{
     async function init(){
         try{
             //await sqlite.init()
-            await getProduts()
+            await getHistorico()
             declareEvents()
             return true
         }catch(err){
