@@ -1,10 +1,11 @@
 function createSerialMonitor({ipcMain, events}){
 
+    const {getDate} = require('./dateFetures')()
+
     const SerialPort = require('./serialPort')()
     let windows = null
     let port = null
     let produtos = {}
-    let historico = []
     let permission = false
 
     const actions = {
@@ -24,29 +25,21 @@ function createSerialMonitor({ipcMain, events}){
             if(permission){
                 const item = produtos[code]
                 if(item){
-                    const diff  = item.estoque-estoque
-                    const type = diff>0?'saída':'entrada' 
 
-                    const date = new Date()
-                    const meses = ['01','02','03','04','05','06','07','08','09','10','11','12']
-                    
-                    historico.unshift([
-                        `${date.getDate()}/${meses[date.getMonth()]}/${date.getFullYear()}`,
-                        code,
-                        diff==0?'Inalterado':type,
-                        Math.abs(diff),
-                        item.descricao,
-                        item.estoque,
-                        estoque
-                    ])
-                    console.log(historico)
+                    events.sendAsync('registerInventoryCount',{
+                        codigo: code,
+                        endereco: item.endereco,
+                        descricao: item.descricao,
+                        anterior: item.estoque,
+                        atual: estoque,
+                    })
+                        .then((historico)=>{
+                            windows[windowName].webContents
+                                .send('updateHistorico', historico)
+                            
+                            produtos = events.sendSync('getProducts') 
+                        })
 
-                    const resp = events.sendSync('updateHistorico', historico)
-
-                    console.log(resp)
-
-                    windows[windowName].webContents.send('updateHistorico', historico)
-            
                     return toCode({
                         status: 'ok',
                         message: 'updade successfull'
@@ -77,8 +70,8 @@ function createSerialMonitor({ipcMain, events}){
 
     async function start(windowName){
         
-        produtos = await events.sendAsync('getProducts') 
-        historico = events.sendSync('getHistorico')
+        produtos = events.sendSync('getProducts') 
+
         close()
         port = await SerialPort.init()
 
@@ -140,7 +133,18 @@ function createSerialMonitor({ipcMain, events}){
             event.returnValue = await close()
         })
         ipcMain.on('getHistorico', (event, args)=>{
-            event.returnValue = historico
+            const now = getDate()
+            events.sendAsync('getHistorico', {
+                mes: now.mes,
+                ano: now.ano,
+                origen: 'inventario'
+            })
+            .then((historico)=>{
+                event.returnValue = historico
+            })
+            .catch(()=>{
+                event.returnValue = false
+            })
         })
         ipcMain.on('setPermissionScanner', (event, args)=>{
             permission = args

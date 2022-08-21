@@ -12,9 +12,16 @@ function createCore({window, container}){
 
         let historico = ipc.sendSync('getHistorico')
         if(historico.length == 0){
-            historico = [
-                ['', '', '', '', '', '', ''],
-            ]   
+            historico = [{
+                date      : '',
+                codigo    : '',
+                endereco  : '',
+                tipo      : '',
+                quantidade: '',
+                descricao : '',
+                anterior  : '',
+                atual     : '',
+            }]   
         }
 
         eventEmitter.send('renderTable', historico)

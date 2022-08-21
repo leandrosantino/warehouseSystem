@@ -1,16 +1,19 @@
 function dataBase(){
 
+    const path = require('path')
     const {Sequelize, Op} = require('sequelize')
     const connection = new Sequelize({
         dialect: 'sqlite',
-        storage: `../src/dataBase.sqlite`,
+        storage: path.join(__dirname, '../src/dataBase.sqlite'),
     });
+
+    const force = false//true//
 
     const createModels = require('./models')
     const models = createModels(connection)
 
     async function init(config = {}){
-        await connection.sync(config)
+        await connection.sync({force})
         console.clear()
     }
 
@@ -20,6 +23,9 @@ function dataBase(){
  
     async function getProdutos(){
         try{
+
+            
+
             const resp = {}
             const produtos = await models.Produto.findAll()
 

@@ -44,6 +44,7 @@ app.on('window-all-closed', ()=>{
 async function init(){
 
     dialog.setIpc(windows)
+
     navBar.main(windows)
 
     await dataCore.init()? 

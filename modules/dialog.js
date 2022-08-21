@@ -122,6 +122,7 @@ function createDialog({ipcMain, events}){
 
         events.on('dialogError', (event, args)=>{
             error(args)
+            event.returnValue = true 
         })
 
     }

@@ -38,8 +38,25 @@ function createModels(connection){
 
     models.Historico = {
         id,
-        data: {
-            type: DATE
+        semana: {
+            type: INTEGER,
+            alloNull: false
+        },
+        dia: {
+            type: INTEGER,
+            alloNull: false
+        },
+        mes: {
+            type: INTEGER,
+            alloNull: false
+        },
+        ano: {
+            type: INTEGER,
+            alloNull: false
+        },
+        date: {
+            type: STRING,
+            alloNull: false
         },
         codigo: {
             type: STRING,
@@ -68,7 +85,11 @@ function createModels(connection){
         atual: {
             type: STRING,
             alloNull: false
-        } 
+        },
+        origen: {
+            type: STRING,
+            alloNull: false
+        },
     }
 
     create();
