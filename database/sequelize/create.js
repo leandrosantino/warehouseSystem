@@ -5,6 +5,7 @@ function dataBase(){
     const connection = new Sequelize({
         dialect: 'sqlite',
         storage: path.join(__dirname, '../src/dataBase.sqlite'),
+        logging: false
     });
 
     const force = false//true//

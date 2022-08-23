@@ -2,7 +2,9 @@ function createPage({eventEmitter, ejs, container, globalEvents}){
 
     function getElements(){
         const elements = {
-            case:{id:'#case'},
+            case:{id:'#caseTable'},
+            btImport: {id: '#btImport'},
+            btPlanilha: {id: '#btPlanilha'}
         }
         
         for(iten in elements){ 

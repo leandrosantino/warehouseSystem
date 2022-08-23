@@ -3,24 +3,26 @@
     <table id="rotulo" class="table">
         <tbody >
             <tr id="border" > 
-                <td style="width: 100px;" > Data           </td>
-                <td style="width: 100px;" > Código         </td>
-                <td style="width: 150px;" > Tipo           </td>
-                <td style="width: 60px;" > Quant           </td>
-                <td style="width: 250px;" > Descrição      </td>
-                <td style="width:  70px;" > E. Ante. </td>
-                <td style="width: 70px;"  > E. Atual   </td>
+                <td style="width: 100px;" > Data      </td>
+                <td style="width: 100px;" > Código    </td>
+                <td style="width: 100px;" > Endereço  </td>
+                <td style="width: 150px;" > Tipo      </td>
+                <td style="width:  60px;" > Quant     </td>
+                <td style="width: 250px;" > Descrição </td>
+                <td style="width:  70px;" > E. Ante.  </td>
+                <td style="width: 70px;"  > E. Atual  </td>
+                <td style="width: 70px;"  >   </td>
 
             </tr>
-        </tr>
+        </tbody>
     </table>            
 </div>
 
 <div id="tableArea">
     <table id="tabela" class="table">
-        <tbody id="table" class="scroll">
+        <tbody  id="table" class="scroll">
             <%dados.forEach(row => {%>
-                <tr>
+                <tr style="height: 45px;">
                     <td style="width: 100px;" > <%- row.date       %> </td>
                     <td style="width: 100px;" > <%- row.codigo     %> </td>
                     <td style="width: 100px;" > <%- row.endereco   %> </td>
@@ -29,6 +31,9 @@
                     <td style="width: 260px;" > <%- row.descricao  %> </td>
                     <td style="width:  70px;" > <%- row.anterior   %> </td>
                     <td style="width:  70px;" > <%- row.atual      %> </td>
+                    <td style="width:  70px;" >
+                        <button id="BtDelete" onclick="deleteHistorico('<%- row.id %>')" ><%- icons.close%></button>
+                    </td>
                 </tr>    
             <%});%>   
         </tbody>   

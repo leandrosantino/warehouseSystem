@@ -12,7 +12,10 @@ function createLogicCore(window){
 
     function assignRoles(){
         eventEmitter.DOM('click', page.logout, 
-        ()=> globalEvents.send('logout'))
+        ()=> {
+            globalEvents.send('logout')
+            globalEvents.send('toChargeLogin')
+        })
 
         eventEmitter.DOM('click', page.login, 
         ()=> globalEvents.send('toChargeLogin'))

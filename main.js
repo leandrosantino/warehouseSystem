@@ -39,9 +39,13 @@ app.on('ready', ()=>{
 app.on('window-all-closed', ()=>{
     app.exit();
     app.quit();
-});
+}); 
 
 async function init(){
+
+    emitters.events.on('getWindows', (event, args)=>{
+        event.returnValue = windows[args]
+    })
 
     dialog.setIpc(windows)
 

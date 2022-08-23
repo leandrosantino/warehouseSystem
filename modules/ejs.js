@@ -15,9 +15,10 @@ function createScreen(){
         const ejsFile = path.join(options.source, 'template.ejs')
         const icons = ipcRenderer.sendSync('icons')
 
+        
         const style = sass.compile(scssFile)
         const linkCss = `
-            <style>${style.css}</style>\n
+        <style>${style.css}</style>\n
         `
         const str = fs.readFileSync(ejsFile,'utf8')
         const template = ejs.compile(`${linkCss}${str}`);

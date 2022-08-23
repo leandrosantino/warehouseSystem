@@ -33,12 +33,11 @@ function createDialog({ipcMain, events}){
         type,
         window,
         sync: false,
-        
     }){
         const options = {
             title: 'WarehouseSystem',
             message: args.msg,
-            type:  args.type,
+            type:  'info',
         }
 
         if(args.sync){
@@ -83,8 +82,8 @@ function createDialog({ipcMain, events}){
             const resp = directory({
                 title: args.title,
                 window: windows[args.window],
-                openDirectory: args.type = 'file'? true:false ,
-                openFile: args.type = 'folder'? true:false ,
+                openDirectory: args.type == 'folder'? true:false ,
+                openFile: args.type == 'file'? true:false ,
                 sync: true,
             })
     
@@ -99,7 +98,6 @@ function createDialog({ipcMain, events}){
         events.on('dialogSuccess', (event, args)=>{
             const resp = success({
                 msg: args.msg,
-                detail: args.detail,
                 window: windows[args.window],
                 sync: true,
             })
@@ -110,7 +108,7 @@ function createDialog({ipcMain, events}){
         
         events.on('dialogQuestion', (event, args)=>{
             const resp = question({
-                msg: args.msg,
+                msg: args.msg, 
                 detail: args.detail,
                 sync: true,
                 window: windows[args.window],

@@ -1,5 +1,7 @@
 const app = document.querySelector('#app')
 
+let deleteHistorico
+
 try{
     
     const home = window.pages.create('home', window)
@@ -12,12 +14,14 @@ try{
         const resp = window.ipc.sendSync('scannerInit', 'main')
         if(resp){
             console.log('scanner server initializa')
-        }else{
+        }else{ 
             console.log('device disconnected')
         }
         
     }
     setTimeout(startScanner, 0)
+
+    deleteHistorico = inventario.deleteHistorico
 
     //login.toCharge()
 

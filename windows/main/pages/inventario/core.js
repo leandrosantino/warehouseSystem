@@ -6,30 +6,35 @@ function createCore({window, container}){
     
     const page = require(__dirname, './render')({eventEmitter, ejs, container, globalEvents})
  
+    function assignRoles(){
+        eventEmitter.DOM('click', page.btImport, ()=>{
+            window.ipc.send('importProducts')
+        })
+        eventEmitter.DOM('click', page.btPlanilha, ()=>{
+            const now = new Date()
+            window.ipc.send('generateSheetHistoric', {
+                mes: now.getMonth(),
+                ano: now.getFullYear()
+            })
+        })
+    }
+
     function toCharge(){
         ipc.sendSync('setPermissionScanner', true)
         eventEmitter.send('render', {})
 
         let historico = ipc.sendSync('getHistorico')
-        if(historico.length == 0){
-            historico = [{
-                date      : '',
-                codigo    : '',
-                endereco  : '',
-                tipo      : '',
-                quantidade: '',
-                descricao : '',
-                anterior  : '',
-                atual     : '',
-            }]   
-        }
 
         eventEmitter.send('renderTable', historico)
-
+        
         ipc.on('updateHistorico', (event, args)=>{
             eventEmitter.send('renderTable', args)
         })
-
+        assignRoles()
+    }
+ 
+    function deleteHistorico(id){
+        window.ipc.send('deleteHistoricRecord', Number(id))
     }
 
     globalEvents.on('toChargeInventario', toCharge)
@@ -41,6 +46,7 @@ function createCore({window, container}){
     return {
         toCharge,
         update,
+        deleteHistorico,
     }
 
 }

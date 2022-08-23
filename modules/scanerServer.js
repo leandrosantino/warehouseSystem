@@ -5,13 +5,11 @@ function createSerialMonitor({ipcMain, events}){
     const SerialPort = require('./serialPort')()
     let windows = null
     let port = null
-    let produtos = {}
     let permission = false
 
     const actions = {
         getData({code}){
-            const produto = produtos[code]
-            console.log(produto)
+            const produto = events.sendSync('getProducts', code) 
             if(produto){
                 return toCode(produto)
             }else{
@@ -23,22 +21,13 @@ function createSerialMonitor({ipcMain, events}){
         },
         sendUpdate({code, estoque, windowName}){
             if(permission){
-                const item = produtos[code]
-                if(item){
+                const produto = events.sendSync('getProducts', code) 
+                if(produto){
 
                     events.sendAsync('registerInventoryCount',{
                         codigo: code,
-                        endereco: item.endereco,
-                        descricao: item.descricao,
-                        anterior: item.estoque,
                         atual: estoque,
                     })
-                        .then((historico)=>{
-                            windows[windowName].webContents
-                                .send('updateHistorico', historico)
-                            
-                            produtos = events.sendSync('getProducts') 
-                        })
 
                     return toCode({
                         status: 'ok',
@@ -69,25 +58,22 @@ function createSerialMonitor({ipcMain, events}){
     }
 
     async function start(windowName){
-        
-        produtos = events.sendSync('getProducts') 
 
         close()
         port = await SerialPort.init()
 
-        if(port && !produtos.err){
+        if(port){
             console.log('connected Scanner') 
             port.on('readable', ()=>{
                 try{
                     let msg = toJson(String(port.read()))
-                    console.log(String(port.read()), msg, 'teste')
+                    //console.log(String(port.read()), msg, 'teste')
                     const {type, params} = msg
 
                     params.windowName = windowName
                     
                     try{
                         const resp = actions[type](params)
-                        console.log(resp)
                         port.write(resp)
                     }catch(err){
                         console.log(err)
@@ -98,7 +84,7 @@ function createSerialMonitor({ipcMain, events}){
                     }
                     
                 }catch(err){
-                    //console.log('erro', err)
+                    console.log('erro', err)
                 }       
             })
             port.on('close', resp=>{

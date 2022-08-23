@@ -19,6 +19,14 @@ module.exports = ()=>{
         return date
     }
 
+    function getNumWeek(dia, mes, ano){
+        currentdate = new Date(ano, mes, dia);
+        var oneJan = new Date(currentdate.getFullYear(),0,1);
+        var numberOfDays = Math.floor((currentdate - oneJan) / (24 * 60 * 60 * 1000));
+        var result = Math.ceil(( currentdate.getDay() + 1 + numberOfDays) / 7);
+        return result
+    }
+
     function getDateStr(){
         const now = new Date()
         const dia = now.getDate()
@@ -46,6 +54,7 @@ module.exports = ()=>{
         getDateforHistorico,
         getDateStr,
         getDate,
+        getNumWeek,
         MonthNum,
         fullMonth,
     }

@@ -3,6 +3,10 @@
     @use '../../../../sass/mixins' as mix;
     @use '../../../../sass/colors' as cor;
 
+    table{
+        text-align: center;
+        
+    }
 
     #case{
         display: flex;
@@ -11,7 +15,41 @@
         height: 100%;
         flex-direction: column;
         margin-top: 45px;
-        overflow: auto;
+        
+        #tableArea{
+            overflow: auto;
+            height: 500px;
+        }
+        
+        #caseBts{
+            width: 87%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: row;
+            margin-bottom: 10px ;
+            .bts{
+                @include mix.button-class;
+
+                color: white;
+                background-color: cor.$secondary;
+  
+                width: 170px;
+                height: 35px;
+                margin-left: 5px;
+            }
+        }
+
+        #BtDelete{
+            border: none;
+            color: white;
+            background-color: cor.$cancel;
+            border-radius: 5px;
+        }
+
+        #table{
+            background-color: rgb(219, 219, 219);
+        }
 
         #rotulo{
             background-color: cor.$theme3;
