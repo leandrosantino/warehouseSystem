@@ -51,10 +51,11 @@ async function init(){
 
     navBar.main(windows)
 
-    await dataCore.init()? 
+    await dataCore.init()?  
     true:console.log('erro in dataCore')
     
     scannerServer.init(windows)
+    await scannerServer.start()
     userManege.init()
 
     windows.main.show()

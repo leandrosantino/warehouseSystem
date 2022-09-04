@@ -8,8 +8,8 @@ function createCore({window, container}){
  
     function login(){
         const login_date = {
-            user: page.input_user.value,//'leandro_santino',//
-            password: page.input_password.value,//'alpha45c'//
+            user: 'leandro_santino',//page.input_user.value,//
+            password: 'alpha45c'//page.input_password.value,//
         }
 
         const user = window.ipc.sendSync('login', login_date)
@@ -59,7 +59,7 @@ function createCore({window, container}){
         ipc.sendSync('setPermissionScanner', false)
         eventEmitter.send('render', data_Page)
         assignRoles()
-        //login()
+        login()
     }
 
     globalEvents.on('toChargeLogin', toCharge)

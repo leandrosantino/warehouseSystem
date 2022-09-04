@@ -1,30 +1,13 @@
 const app = document.querySelector('#app')
 
-let deleteHistorico
 
-try{
-    
-    const home = window.pages.create('home', window)
-    const container = home.mainCase
+const home = window.pages.create('home', window)
+const container = home.mainCase
 
-    const login = window.pages.create('login', {window, container})
-    const inventario = window.pages.create('inventario', {window, container})
+const login = window.pages.create('login', {window, container})
+const inventario = window.pages.create('inventario', {window, container})
+const requisitar = window.pages.create('requisitar', {window, container})
 
-    function startScanner(){
-        const resp = window.ipc.sendSync('scannerInit', 'main')
-        if(resp){
-            console.log('scanner server initializa')
-        }else{ 
-            console.log('device disconnected')
-        }
-        
-    }
-    setTimeout(startScanner, 0)
 
-    deleteHistorico = inventario.deleteHistorico
-
-    //login.toCharge()
-
-}catch(err){
-    console.log('app-error', err)
-}
+requisitar.toCharge()
+//login.toCharge()

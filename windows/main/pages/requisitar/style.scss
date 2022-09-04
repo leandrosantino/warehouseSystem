@@ -1,0 +1,41 @@
+// Estilização da Tela de Inventário
+
+    @use '../../../../sass/mixins' as mix;
+    @use '../../../../sass/colors' as cor;
+
+
+    #case{
+        @include mix.flex-center;
+        flex-direction: row;
+        width: 95%;
+        height: 95%;
+        #form{
+            width: 50%;
+            height: 100%;
+            border: 1px solid black;
+
+            #row{
+                @include mix.flex-center;
+                flex-direction: row;
+
+                #matricula, #tag{
+                    @include mix.input-class;
+                }
+                #matricula{
+                    width: 100px;
+                }
+                #tag{
+                    width: 100px;
+                }
+
+            }
+
+        }
+        #itens{
+            width: 50%;
+            height: 100%;
+            border: 1px solid black;
+        }
+    }
+
+    

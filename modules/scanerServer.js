@@ -19,7 +19,7 @@ function createSerialMonitor({ipcMain, events}){
                 })
             }
         },
-        sendUpdate({code, estoque, windowName}){
+        sendUpdate({code, estoque, windowName}){ 
             if(permission){
                 const produto = events.sendSync('getProducts', code) 
                 if(produto){
@@ -59,7 +59,7 @@ function createSerialMonitor({ipcMain, events}){
 
     async function start(windowName){
 
-        close()
+        await close()
         port = await SerialPort.init()
 
         if(port){

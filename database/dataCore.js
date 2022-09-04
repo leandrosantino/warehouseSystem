@@ -121,17 +121,17 @@ module.exports = (props)=>{
                 return false
             }
 
-            if(diff != 0){
+            //if(diff != 0){}
                 await itemOutput({
                     ...data,
                     endereco: produto.endereco,
                     descricao: produto.descricao,
                     anterior: produto.estoque,
-                    tipo: type,
+                    tipo: diff == 0?'inalterado':type,
                     quantidade,
                     origen: 'inventario',
                 })
-            }
+            
 
             const now = dateFetures.getDate()
             const historico = await getHistorico({
@@ -319,58 +319,7 @@ module.exports = (props)=>{
         }
     }
  
-    async function importHistoric(){
-        try{
-            const source = events.sendSync('dialogPath', {
-                title: 'Selecionar planilha de historico',
-                type: 'file',
-                window: 'main',
-            })
-
-            if(source){
-                const historic = excel.getHistorico(source)
-
-                console.log(historic.length)
-
-                historic.forEach(async (row, index)=>{
-
-                    const date = row[0].split('/')
-                    const dia = Number(date[0])
-                    const mes = Number(date[1])-1
-                    const ano = Number(date[2])
-                    const semana = dateFetures.getNumWeek(dia, mes, ano)
-                    
-                    await sqlite.Historico.create({
-                        semana,dia,mes,ano,
-                        date: row[0],
-                        codigo: row[1],
-                        endereco: row[2],
-                        tipo: row[3],
-                        descricao: row[4],
-                        quantidade: Number(row[5]),
-                        anterior:Number(row[6]),
-                        atual: Number(row[7]),
-                        origen: 'inventario',
-                    })
-
-                    if(index+1 == historic.length){
-                        events.sendSync('dialogSuccess', {
-                            msg: 'Historico importado com sucesso!!',
-                            window: 'main',
-                        })
-                    }
-                    console.log(index+1)
-                })
-
-                return true
-            }
-
-        }catch(err){
-            events.sendSync('dialogError', `Erro dataCore - ${err}`)
-            return false
-        }
-    }
-    
+   
     function declareEvents(){
         //Produtos
             events.on('getProducts', (event, args)=>{
@@ -402,9 +351,6 @@ module.exports = (props)=>{
             })
             ipcMain.on('deleteHistoricRecord', async (event, args)=>{
                 event.returnValue =  await deleteHistoricRecord(args)
-            })
-            ipcMain.on('importHistoric', async (event, args)=>{
-                event.returnValue =  await importHistoric()
             })
     }
 
