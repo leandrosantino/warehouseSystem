@@ -38,6 +38,8 @@ dist/
 Capturas/
 jspm_packages/
 session/
+python/
+test/
 
 # TypeScript v1 declaration files
 typings/
