@@ -1,4 +1,4 @@
-function createPage({eventEmitter, ejs, container, globalEvents}){
+    function createPage({eventEmitter, ejs, container, globalEvents}){
 
     function getElements(){
         page.login = document.querySelector('#btLogin')

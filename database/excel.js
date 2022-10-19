@@ -9,7 +9,7 @@ function createExcelModel(){
         try{
             //path.join(source, 'CONTROLE DE SPARE PARTS.xlsm')
             const workbook = xlsx.parse(source)
-            const sheet = workbook[1].data
+            let sheet = workbook[0].data
 
             let labels = [
                 'Codigo',
@@ -22,7 +22,7 @@ function createExcelModel(){
             ]
             labels = labels.map(item=>{
                 let index
-                sheet[1].forEach((row, _index)=>{
+                sheet[3].forEach((row, _index)=>{
                     if(row == item){
                         index = _index
                         return
@@ -31,7 +31,7 @@ function createExcelModel(){
                 return index
             })
 
-            sheet.splice(0,2)
+            sheet.splice(0,4)
             const dataObject = []
             sheet.forEach(row=>{
                 if(row[labels[2]]){

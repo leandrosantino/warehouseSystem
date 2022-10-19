@@ -20,7 +20,9 @@ function createCore({window, container}){
     }
 
     function toCharge(){
-        ipc.sendSync('setPermissionScanner', true)
+        setTimeout(()=>{
+            ipc.sendSync('setPermissionScanner', true)
+        },0)
         eventEmitter.send('render', {})
 
         let historico = ipc.sendSync('getHistorico')

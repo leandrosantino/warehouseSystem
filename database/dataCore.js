@@ -1,38 +1,47 @@
 module.exports = (props)=>{
 
     const path = require('path')
-
-    const {ipcMain, events} = props
-
+    const {ipcMain, events} = props 
     const dateFetures = require('../modules/dateFetures')()
     
     const sqlite = require('./sequelize/create')()
     const excel = require('./excel')()
     const csv = require('./csvWriter')()
     const json = require('./jsonCore')()
+    const macroExe = require('./macroExe')()
 
     let products = {}
 
-    async function importProducts(){
+    async function importProducts(source_){
         try{
-            const source = events.sendSync('dialogPath', {
-                title: 'Selecionar Planilha do Almoxarifado',
-                type: 'file',
-                window: 'main',
-            })
-    
+            let source
+            if(source_){
+                source = source_
+            }else{
+                source = events.sendSync('dialogPath', {
+                    title: 'Selecionar Planilha do Almoxarifado',
+                    type: 'file',
+                    window: 'main',
+                })
+            }
+
             if(source){
                 const data = excel.getProdutos(path.normalize(source))
+                json.setExcelDBpath(source)
                 const header = []
                 Object.keys(data[0]).forEach(key=>{
                     header.push({id: key, title: key})
                 })
                 await csv.writerData({header,data})
+
+                await getProducts(data)
                 
-                events.sendSync('dialogSuccess', {
-                    msg: 'Sucesso! - Importação de dados Finalizada!',
-                    window: 'main',
-                })
+                if(!source_){
+                    events.sendSync('dialogSuccess', {
+                        msg: 'Sucesso! - Importação de dados Finalizada!',
+                        window: 'main',
+                    })
+                }
             }
                 
             return true
@@ -43,9 +52,9 @@ module.exports = (props)=>{
         }
     }
 
-    async function getProducts(){
+    async function getProducts(data){
         try{
-            const data = await csv.readerData()
+            //const data = await csv.readerData()
             const resp = {}
             data.forEach((produto, index)=>{                
                 const {
@@ -318,6 +327,76 @@ module.exports = (props)=>{
             return false
         }
     }
+
+    /*
+    {
+        requisitante: 'Leandro Santino',
+        matricula: '792',
+        natureza: 'Preventva',
+        tag: 'M02',
+        itens: {
+            ALM00002: {
+            nome: 'FITA ISOLANTE ALTA | TENS├âO SCOTCH 23 - AUTOFUS├âO 19MM X 10M',
+            endereco: 'ARMARIO',
+            quant: 16,
+            quantR: 1,
+            quantE: 1,
+            func: `onclick="requisitar.selectIten('ALM00002', 1)"`
+            }
+        }
+    }
+    */
+
+    async function registerRequisição(dados){
+        const {itens} = dados
+        const moviments = []
+        const dateNow = dateFetures.getDateStr()
+
+        Object.keys(itens).forEach(key=>{
+            moviments.push({
+                data: dateNow,
+                codigo: key,
+                tipo: 'Saída',
+                quant: itens[key].quantE,
+            })
+        })
+        
+        try{
+            //console.log(dados)
+            console.log(moviments)
+            const source = json.getExcelDBpath()
+            await macroExe.executeMacro({
+                filePath: path.normalize(source),
+                macroName: 'Module1.registerMovement',
+                args: moviments,
+            }) 
+            await importProducts(source)
+
+            
+
+            events.sendSync('getWindows', 'main').webContents.send('resetMain', 'requisitar')
+            return true
+        }catch(err){
+            console.log(err)
+            return false
+        }
+    }    
+
+    function getMaquinas(){
+        return ['M01','M02','M03']
+    }
+
+    function getRequestsProducts(){
+        const products2 = {}
+        Object.keys(products).forEach(key=>{
+            products2[key]={
+                nome: products[key].descricao,
+                endereco: products[key].endereco,
+                quant:  products[key].estoque,
+            }
+        })
+        return products2
+    }
  
    
     function declareEvents(){
@@ -345,6 +424,7 @@ module.exports = (props)=>{
         //Ipc
             ipcMain.on('importProducts', async (event, args)=>{
                 event.returnValue = await importProducts()
+                events.sendSync('getWindows', 'main').webContents.send('resetMain', '')
             })
             ipcMain.on('generateSheetHistoric', async (event, args)=>{
                 event.returnValue =  await generateSheetHistoric(args)
@@ -352,15 +432,28 @@ module.exports = (props)=>{
             ipcMain.on('deleteHistoricRecord', async (event, args)=>{
                 event.returnValue =  await deleteHistoricRecord(args)
             })
+            ipcMain.on('getRequestsProducts', (event, args)=>{
+                event.returnValue = getRequestsProducts()
+            })
+            ipcMain.on('getMaquinas', (event, args)=>{
+                event.returnValue = getMaquinas()
+            })
+            ipcMain.on('getColaboradores', (event, args)=>{
+                const colaboradores = {
+                    '792': 'Leandro Santino'
+                }
+                event.returnValue = colaboradores
+            })
+            ipcMain.on('registerRequisição', async(event, args)=>{
+                event.returnValue = await registerRequisição(args)
+            })
     }
 
     async function init(){
         try{
             await sqlite.init()
-            await getProducts()
+            await importProducts(json.getExcelDBpath())
             declareEvents()
-
-            console.log(dateFetures.getNumWeek(22, 7, 2022))
 
             return true
         }catch(err){

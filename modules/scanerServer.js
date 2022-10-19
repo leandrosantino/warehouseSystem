@@ -37,7 +37,7 @@ function createSerialMonitor({ipcMain, events}){
                     return toCode({
                         status: 'erro',
                         message: 'item não encontrado'
-                    })
+                    }) 
                 }
             }else{
                 return toCode({
@@ -48,6 +48,7 @@ function createSerialMonitor({ipcMain, events}){
         },
         scanner({code, windowName}){
 
+            console.log(windowName, code)
             windows[windowName].webContents.send('scanner', code)
 
             return toCode({
@@ -57,7 +58,9 @@ function createSerialMonitor({ipcMain, events}){
         }
     }
 
-    async function start(windowName){
+    async function start(){
+        
+        const windowName = 'main'
 
         await close()
         port = await SerialPort.init()

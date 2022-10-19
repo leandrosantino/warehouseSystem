@@ -1,38 +1,337 @@
-// Estilização da Tela de Inventário
+// Estilização da Tela de Requisições
 
     @use '../../../../sass/mixins' as mix;
     @use '../../../../sass/colors' as cor;
 
+    @mixin inputs_props {
+        height: 10px;
+        font-size: 12pt;
+        margin-left: 6px;
+        margin-right: 6px
+    }
+
+    #iconsearch{
+        color: cor.$emphasis;
+    }
 
     #case{
+        //background-color: cor.$gray2;
         @include mix.flex-center;
-        flex-direction: row;
-        width: 95%;
+        flex-direction: row;    
+        width: 100%;
         height: 95%;
+        
         #form{
             width: 50%;
             height: 100%;
-            border: 1px solid black;
+            //border: 1px solid black;
 
-            #row{
-                @include mix.flex-center;
-                flex-direction: row;
+            .label{
+                font-weight: bold
+            }
 
-                #matricula, #tag{
-                    @include mix.input-class;
-                }
-                #matricula{
-                    width: 100px;
-                }
-                #tag{
-                    width: 100px;
+            .space-between{
+                justify-content: flex-start
+            }
+
+            #logo_case{
+                position: absolute;
+                margin-left: 218px;
+                margin-top: -5px;
+                #logo{
+                    
+                    width: 160px;
                 }
             }
+
+            .title{
+                margin-top: 20px;
+                font-size: 21pt;
+                padding: 7px;
+                font-weight: bold;
+                text-align: center;
+                color: cor.$theme3;
+            }
+
+            #margin_none{
+                margin-top: 0;
+            }
+ 
+            .row{
+                @include mix.flex-center;
+                flex-direction: row;
+                margin-top: 20px;
+
+                #matricula, #tag, #natureza, #produto, #requisitada, #entregue, #pesquisa{
+                    @include mix.input-class;
+                    @include inputs_props;
+                }
+                #matricula{width: 50px; }
+                #tag{
+                    padding: 0px;
+                    width: 120px;
+                    height: 25px;
+                    option{
+                        font-size: 10pt;
+                    }
+
+                }
+                #natureza{width: 150px;}
+                #produto{width: 65%}
+                #requisitada{width: 50px; text-align: center;}
+                #entregue{width: 50px; text-align: center;}
+                #pesquisa{
+                    width: 90%;
+                    z-index: 1;
+                    text-indent: 20px;
+                }
+
+                #row_1{
+                    width: 95%;
+                    @include mix.flex-center;
+                    flex-direction: column;
+                    div{
+                        width: 100%;
+                        margin-left: 30px;
+                        margin-top: 20px;
+                        @include mix.flex-center;
+                        justify-content: flex-start;
+                    }
+                }
+
+                #row_quant{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 95%;
+                }
+
+                #row_natureza{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 95%;
+                    #nat_title{
+                        justify-content: flex-start;
+                    }
+                    div{
+                        #label_nat{
+                            font-weight: normal;
+                            margin-right: 5px;
+                        }
+                        width: 100%;
+                        display: flex;
+                        flex-wrap: wrap;
+                        //justify-content: center;
+                        margin-top: 20px;
+                    }
+                }
+
+                #label_search{
+                    margin-right: -29px;
+                    margin-top: 3px;
+                    z-index: 100;                   
+                }
+
+                #close_search{
+                    z-index: 100;
+                    height: 23px;
+                    width: 25px;
+                    border-top-right-radius: 6px;
+                    border-bottom-right-radius: 6px;
+                    border: none;
+                    margin-left: -31.8px;
+                    margin-top: 1px;
+                    font-weight: 20;
+                    background-color: rgba(255, 255, 255, 0);
+                    &:hover{
+                        //background-color: rgb(209, 209, 209);
+                        color: cor.$cancel;
+                    }
+                }
+
+                #deleteItem{
+                    @include mix.button-class;
+                    background-color: cor.$cancel;
+                    color: cor.$white;
+                    height: 25px;
+                    width: 40px;
+                    font-size: 10pt;
+                    font-weight: bold;
+                    margin-right: 3px;
+                }
+
+                #adicionar{
+                    @include mix.button-class;
+                    background-color: cor.$primary;
+                    color: white;
+                    height: 25px;
+                    width: 40px;
+                    font-size: 16pt;
+                    font-weight: 200;
+
+                    #iconadd{
+                        height: 18px;
+                        width: 18px;
+                        margin-top: -1.5px;
+                    }
+                }
+ 
+                #search_case{
+                    @include mix.scroll;
+                    //border-left: 1.5px solid cor.$theme3;
+                    //border-right: 1.5px solid cor.$theme3;
+                    border-radius: 5px;
+                    width: 95%;
+                    height: 250px;
+                    padding: 5px;
+                    color: cor.$emphasis;
+                    background-color: cor.$background;
+                     
+
+                    #iten{
+                        @include mix.flex-center;
+                        border-bottom: 1px solid cor.$gray;
+                        font-size: 11px;
+                        padding: 3px;
+
+                        #nome{width: 80%;}
+                        #endereco{width: 15%;}
+                        #quant{width: 5%;}
+
+                        &:active{
+                            opacity: 85%;
+                        }
+
+                        &:hover{
+                            background-color: cor.$hover_background;
+                            font-size: 12px;
+                            cursor: pointer;
+                        }
+            
+                    }
+
+                }
+            }
+            #butons{
+                width: 95%;
+                justify-content: flex-end;
+
+                #cancelar{
+                    @include mix.button-class;
+                    background-color: cor.$cancel;
+                    color: white;
+                    width: 100px;
+                    height: 30px;
+                    margin-right: 10px;
+                }
+                #concluir{
+                    @include mix.button-class;
+                    background-color: cor.$primary;
+                    color: white;
+                    width: 100px;
+                    height: 30px;
+                }
+
+            }
+            
         }
         #itens{
-            width: 50%;
+            width: 49%;
             height: 100%;
-            border: 1px solid black;
+            border-left: 2px solid cor.$theme3;
+            
+            .row{
+                @include mix.flex-center;
+                flex-direction: row;
+                margin-top: 20px;
+                width: 100%;
+
+                #limite{
+                    @include mix.flex-center;
+                    justify-content: flex-end;
+                    width: 95%;
+                    margin-top: -15px;
+                    font-weight: bold;
+                    span{
+                        margin-left: 5px;
+                    }
+                }
+
+                #table{
+                    
+                    width: 98%;
+
+                    .cell{ 
+                        font-size: 9pt;
+                        
+                    }
+
+                    #desc{width: 61%;text-align: start;}
+                    #ende{width: 13%;text-align: center;}
+                    #quaR{width: 13%;text-align: center;}
+                    #quaE{width: 13%;text-align: center;}
+                    //#func{width: 10%;text-align: center;}
+                    
+                    #caselist{
+                        @include mix.scroll;
+                        border-bottom: 1px solid black;
+                        height: 460px;
+                    }
+
+                    #header{
+                        background-color: cor.$emphasis_background;
+                        font-weight: bold;
+                        height: 20px;
+                        #desc{padding-left: 3px;}
+                    }
+
+                    .body{
+                        padding: 3px;
+                        border-bottom: 1.5px dashed cor.$emphasis;
+                        #quaR, #quaE{ font-size: 11pt}
+                        #ende{font-size: 10pt}
+
+
+                        &:hover{
+                            background-color:cor.$background;
+                            cursor: pointer;
+                        }
+                        &:active{
+                            opacity: 70%;
+                        }
+                    }
+
+                    #header, .body{
+                        @include mix.flex-center;       
+                        justify-content: flex-start;
+                        
+                    }
+
+                }
+                
+            }
+
+            #title{
+                width: 100%;
+                text-align: start;
+                text-indent: 10px;
+                font-size: 21pt;
+                font-weight: bold;
+            }
+
+            #row-natureza, #row-requisitante{
+                width: calc(100% - 10px);
+                margin-top: 5px;
+                justify-content: flex-start;
+                padding-left: 10px;
+                label{
+                    font-weight: bold;
+                }
+            }
+
+
         }
     }
 

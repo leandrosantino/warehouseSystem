@@ -55,7 +55,7 @@ function createDialog({ipcMain, events}){
         window,
         sync: false,
     }, callback){
-
+ 
         const options = {
             title: 'WarehouseSystem',
             message: args.msg,
@@ -75,50 +75,54 @@ function createDialog({ipcMain, events}){
         dialog.showErrorBox('Alerta!!', msg)
     }
 
+    function dialogPath(args, windows){
+        const resp = directory({
+            title: args.title,
+            window: windows[args.window],
+            openDirectory: args.type == 'folder'? true:false ,
+            openFile: args.type == 'file'? true:false ,
+            sync: true,
+        })
+
+        if(resp){
+            return resp[0]
+        }else{
+            return false
+        }
+    }
+
+    function dialogSuccess(args, windows){
+        return success({
+            msg: args.msg,
+            window: windows[args.window],
+            sync: true,
+        })
+    }
+
+    function dialogQuestion(args, windows){
+        const resp = question({
+            msg: args.msg, 
+            detail: args.detail,
+            sync: true,
+            window: windows[args.window],
+        })
+        return resp == 0 ? true: false
+    }
+
     function setIpc(windows){
 
-        events.on('dialogPath', (event, args)=>{
-     
-            const resp = directory({
-                title: args.title,
-                window: windows[args.window],
-                openDirectory: args.type == 'folder'? true:false ,
-                openFile: args.type == 'file'? true:false ,
-                sync: true,
-            })
-    
-            if(resp){
-                event.returnValue = resp[0]
-            }else{
-                event.returnValue = false
-            }
-    
-        })
-
-        events.on('dialogSuccess', (event, args)=>{
-            const resp = success({
-                msg: args.msg,
-                window: windows[args.window],
-                sync: true,
-            })
-
-            event.returnValue = resp
-            
-        })
-        
-        events.on('dialogQuestion', (event, args)=>{
-            const resp = question({
-                msg: args.msg, 
-                detail: args.detail,
-                sync: true,
-                window: windows[args.window],
-            })
-
-            event.returnValue = resp == 0 ? true: false
-            
-        })
-
+        events.on('dialogPath', (event, args)=>event.returnValue = dialogPath(args, windows))
+        events.on('dialogSuccess', (event, args)=>event.returnValue = dialogSuccess(args, windows))
+        events.on('dialogQuestion', (event, args)=>event.returnValue = dialogQuestion(args, windows))
         events.on('dialogError', (event, args)=>{
+            error(args)
+            event.returnValue = true 
+        })
+
+        ipcMain.on('dialogPath', (event, args)=>event.returnValue = dialogPath(args, windows))
+        ipcMain.on('dialogSuccess', (event, args)=>event.returnValue = dialogSuccess(args, windows))
+        ipcMain.on('dialogQuestion', (event, args)=>event.returnValue = dialogQuestion(args, windows))
+        ipcMain.on('dialogError', (event, args)=>{
             error(args)
             event.returnValue = true 
         })

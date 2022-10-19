@@ -36,7 +36,7 @@ function createPage({eventEmitter, ejs, globalEvents}){
         })
 
         globalEvents.on('setUserName', (name)=>{
-            page.nameUser.innerHTML = name
+            //page.nameUser.innerHTML = name
         })
 
         globalEvents.on('showAllowedScreens', (args)=>{

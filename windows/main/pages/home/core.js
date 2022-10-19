@@ -7,7 +7,7 @@ function createLogicCore(window){
     const page = require(__dirname, './render')({eventEmitter, ejs, globalEvents})
 
     const optionsPage = {
-        user: 'Adler Pelzer Group'
+        user: 'Menu'
     }
 
     function assignRoles(){
@@ -28,7 +28,9 @@ function createLogicCore(window){
     }
 
     function toCharge(){
-        ipc.sendSync('setPermissionScanner', false)
+        setTimeout(()=>{
+            ipc.sendSync('setPermissionScanner', true)
+        },0)  
         eventEmitter.send('render', optionsPage)
         assignRoles()
         home.mainCase = page.mainCase
@@ -39,9 +41,10 @@ function createLogicCore(window){
     }
     
     const home = {
-        update
+        update,
+        toCharge
     }
-    
+
     toCharge()
 
     return home

@@ -1,41 +1,45 @@
 {
-    "name": "warehouseSystem",
-    "version": "1.0.0",
-    "main": "main.js",
-    "scripts": {
-        "dist": "electron-builder",
-        "pack": "electron-builder — dir",
-        "start": "electron .",
-        "rebuild": "electron-rebuild -f -w sqlite3",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "proto": "node ./test/datacore "
-    },
-    "build": {
-        "asar": "false",
-        "productName": "warehouseSystem",
-        "win": {
-            "icon": "./src/icon.png"
-        }
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "csv-parser": "^3.0.0",
-        "csv-writer": "^1.6.0",
-        "ejs": "^3.1.8",
-        "luxon": "^3.0.1",
-        "node-xlsx": "^0.21.0",
-        "python-shell": "^3.0.1",
-        "sass": "^1.52.3",
-        "sequelize": "^6.20.0",
-        "serialport": "^10.4.0",
-        "sqlite3": "^5.0.8"
-    },
-    "devDependencies": {
-        "electron": "^18.2.3",
-        "electron-builder": "^22.13.1",
-        "electron-rebuild": "^3.2.7",
-        "electron-reload": "^2.0.0-alpha.1"
-    },
-    "description": ""
+  "name": "warehousesystem",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "dist": "electron-builder",
+    "pack": "electron-builder — dir",
+    "start": "electron .",
+    "rebuild": "electron-rebuild -f -w sqlite3",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "proto": "node ./test/datacore ",
+    "py": "node ./test/python"
+  },
+  "build": {
+    "asar": "false",
+    "productName": "warehouseSystem",
+    "win": {
+      "icon": "./src/icon.png"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "csv-writer": "^1.6.0",
+    "ejs": "^3.1.8",
+    "luxon": "^3.0.1",
+    "node-xlsx": "^0.21.0",
+    "python-shell": "^3.0.1",
+    "sass": "^1.52.3",
+    "sequelize": "^6.20.0",
+    "serialport": "^10.4.0",
+    "sqlite3": "^5.0.8"
+  },
+  "devDependencies": {
+    "electron": "^18.2.3",
+    "electron-builder": "^22.13.1",
+    "electron-rebuild": "^3.2.7",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "description": "Um aplicação construída com base electron, tem o objetivo de emitir e gerenciar requisições de saídas de item de um almoxarife.",
+  "directories": {
+    "test": "test"
+  }
 }

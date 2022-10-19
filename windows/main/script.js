@@ -1,13 +1,23 @@
 const app = document.querySelector('#app')
 
+const screens = {}
 
-const home = window.pages.create('home', window)
-const container = home.mainCase
+function main(){
+    screens.home = window.pages.create('home', window)
+    container = screens.home.mainCase
 
-const login = window.pages.create('login', {window, container})
-const inventario = window.pages.create('inventario', {window, container})
-const requisitar = window.pages.create('requisitar', {window, container})
+    screens.login = window.pages.create('login', {window, container})
+    screens.inventario = window.pages.create('inventario', {window, container})
+    screens.requisitar = window.pages.create('requisitar', {window, container})
 
+    //requisitar.toCharge()
+    //screens.login.toCharge()
+}
 
-requisitar.toCharge()
-//login.toCharge()
+window.ipc.on('resetMain', (event, args)=>{
+    main()
+    try{screens[args].toCharge()}catch{}
+    console.log('update')
+})
+
+main()

@@ -24,6 +24,23 @@
         justify-content: center;
     }
 
+    @mixin scroll{
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+          
+        &::-webkit-scrollbar-track {
+            
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: cor.$primary;
+            border-radius: 10px;
+        }
+ 
+    }
 
     @mixin button-class{
         border: none;

@@ -12,7 +12,7 @@ module.exports = (args = {
     const sass = require('sass')
 
     const bridges = {
-        'require': (source, file)=>{
+        'require': (source, file)=>{ 
             return require(path.join(source, file))
         },
         'ipc': {

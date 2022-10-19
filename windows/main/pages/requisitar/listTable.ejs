@@ -1,0 +1,15 @@
+<%
+    Object.keys(dados).forEach(key=>{
+    const item = dados[key]
+%>
+    
+   <div class="body" id="<%-key%>" <%-item.func%> >
+        <div class="cell" id="desc" >
+            <%-item.nome%>
+        </div>
+        <div class="cell" id="ende" ><%-item.endereco%></div>
+        <div class="cell" id="quaR" ><%-item.quantR  %></div>
+        <div class="cell" id="quaE" ><%-item.quantE  %></div>
+    </div> 
+    
+<%})%>
