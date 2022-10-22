@@ -46,10 +46,10 @@ function createSerialMonitor({ipcMain, events}){
                 })
             }
         },
-        scanner({code, windowName}){
+        scanner({code, quant, windowName}){
 
             console.log(windowName, code)
-            windows[windowName].webContents.send('scanner', code)
+            windows[windowName].webContents.send('scanner', {code, quant})
 
             return toCode({
                 status: 'ok',
@@ -162,10 +162,10 @@ function createSerialMonitor({ipcMain, events}){
         const keys = {
             c: 'code',
             e: 'estoque',
+            q: 'quant',
             GD: 'getData',
             SU: 'sendUpdate',
             SC: 'scanner'
-            
         }
         const params = srt.split(';')
     
@@ -178,6 +178,8 @@ function createSerialMonitor({ipcMain, events}){
             }else{
                 let resp = val[1].replace('\r\n', '')
                 if(val[0] == 'e'){resp = Number(resp)}
+                if(val[0] == 'q'){resp = Number(resp)}
+                
                 data.params[keys[val[0]]] = resp
             }
         })

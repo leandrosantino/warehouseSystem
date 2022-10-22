@@ -64,12 +64,19 @@ function createCore({window, container}){
         }
     }
 
-    ipc.on('scanner', (event, code)=>{
-        const item = products[code]
-        item.quantR = 1
-        item.quantE = 1
-        listItems[code]= products[code]
-        item.func = `onclick="requisitar.selectIten('${code}', 1)"`
+    ipc.on('scanner', (event, args)=>{
+        const {code, quant} = args
+        const itemBase = products[code]
+        if(!(itemBase.quant < quant)){
+            listItems[code] = itemBase
+            const item = listItems[code]
+            item.quantR = quant
+            item.quantE = quant
+            item.func = `onclick="screens.requisitar.selectIten('${code}', 1)"`
+            page.inputs.produto.value = ''
+        }else{
+            error('Estoque Insuficiente!!')
+        }
         updateQuantItems()
         loadItemList()
     })

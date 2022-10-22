@@ -476,6 +476,8 @@ module.exports = (props)=>{
         try{
             await sqlite.init()
             await importProducts(json.getExcelDBpath())
+
+            console.log(products)
             declareEvents()
 
             return true

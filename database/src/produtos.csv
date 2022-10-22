@@ -1,6 +1,6 @@
 codigo,classificacao,descricao,endereco,estoque,minimo,maximo
 ALM00001,,"MODULO DE FREIO SEW | 13000063 Uin24V DC Ue 20...30V DC  I n 5,0A DC",B1103,0,0,0
-ALM00002,,FITA ISOLANTE ALTA | TENSÃO SCOTCH 23 - AUTOFUSÃO 19MM X 10M,ARMARIO,13,0,0
+ALM00002,,FITA ISOLANTE ALTA | TENSÃO SCOTCH 23 - AUTOFUSÃO 19MM X 10M,ARMARIO,16,0,0
 ALM00003,,FITA ISOLANTE BAIXA | TENSÃO PRETA  / 19MM X 20M 33+,ARMARIO,28,0,0
 ALM00004,,TOMADAS | 10  AMPERES ,A1402,4,0,0
 ALM00005,,REATOR ELETRÔNICO | PHILIPS 2X32W 127/230V - REF. EB232A16/26P,A1405,2,0,0
@@ -10,9 +10,9 @@ ALM00008,,FUSIVEL CERAMICO | 10A,A1204,70,0,0
 ALM00009,,"FUSIVEL DE VIDRO | 1,5A",A1204,0,0,0
 ALM00010,,"FUSIVEL DE VIDRO | 2,5A",A1204,0,0,0
 ALM00011,,FUSIVEL DE VIDRO | 3A,A1204,0,0,0
-ALM00012,, FUSIVEL DE VIDRO | 6A                                                                                                                                                                                                                                                                                                                                                                ,A1204,22,0,0
+ALM00012,, FUSIVEL DE VIDRO | 6A                                                                                                                                                                                                                                                                                                                                                                ,A1204,21,0,0
 ALM00013,,FUSIVEL DE VIDRO | 4A,A1204,0,0,0
-ALM00014,,FUSIVEL CARTUCHO ULTRA RAPIDO | 10X38 4A,A1204,1,0,0
+ALM00014,,FUSIVEL CARTUCHO ULTRA RAPIDO | 10X38 4A,A1204,0,0,0
 ALM00015,,FUSIVEL CARTUCHO ULTRA RAPIDO | 10X38 2A,A1204,9,0,0
 ALM00016,,FUSIVEL CARTUCHO ULTRA RAPIDO | 10X38 6A,A1204,1,0,0
 ALM00017,,FUSIVEL CARTUCHO ULTRA RAPIDO | 10X38 10A,A1204,2,0,0
