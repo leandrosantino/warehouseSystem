@@ -8,7 +8,7 @@
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sqlite3",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "proto": "node ./test/datacore ",
+    "proto": "node ./test/pdf ",
     "py": "node ./test/python"
   },
   "build": {
@@ -26,6 +26,7 @@
     "ejs": "^3.1.8",
     "luxon": "^3.0.1",
     "node-xlsx": "^0.21.0",
+    "puppeteer": "^19.1.0",
     "python-shell": "^3.0.1",
     "sass": "^1.52.3",
     "sequelize": "^6.20.0",

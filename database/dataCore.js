@@ -9,8 +9,18 @@ module.exports = (props)=>{
     const csv = require('./csvWriter')()
     const json = require('./jsonCore')()
     const macroExe = require('./macroExe')()
+    const PDF = require('../modules/PDF/PDFgenerator')()
 
     let products = {}
+    let utes = {
+        'M01': 'UTE-1',
+        'M02': 'UTE-2',
+        'M03': 'UTE-3',
+    }
+
+    const naturezas = {
+        'Quebra': 0, 'Preventiva': 1, 'Melhoria': 2, 'Segurança': 3, 'Outros': 4,
+    }
 
     async function importProducts(source_){
         try{
@@ -35,6 +45,7 @@ module.exports = (props)=>{
                 await csv.writerData({header,data})
 
                 await getProducts(data)
+                
                 
                 if(!source_){
                     events.sendSync('dialogSuccess', {
@@ -328,29 +339,44 @@ module.exports = (props)=>{
         }
     }
 
-    /*
-    {
-        requisitante: 'Leandro Santino',
-        matricula: '792',
-        natureza: 'Preventva',
-        tag: 'M02',
-        itens: {
-            ALM00002: {
-            nome: 'FITA ISOLANTE ALTA | TENS├âO SCOTCH 23 - AUTOFUS├âO 19MM X 10M',
-            endereco: 'ARMARIO',
-            quant: 16,
-            quantR: 1,
-            quantE: 1,
-            func: `onclick="requisitar.selectIten('ALM00002', 1)"`
+    function PDFformatData(dados){
+        dados.numero = json.getRequestNumber()
+        dados.turno = dateFetures.getTurno()
+        dados.ute = utes[dados.tag]
+        const arrayNat = ['', '', '', '', '']
+        arrayNat[naturezas[dados.natureza]] = 'X'
+        dados.natureza = arrayNat
+        dados.material = []
+
+        Object.keys(dados.itens).forEach((key, index)=>{
+            const {nome, quantR, quantE} = dados.itens[key]
+            index++
+            dados.material.push({
+                index, codigo: key, descricao: nome, quantR, quantE,
+            })
+        })
+
+        const materialLen = dados.material.length
+        if(materialLen < 6){
+            const diff = 6 - materialLen
+            let index = materialLen
+            for(let i=1;i<=diff;i++){
+                index++
+                dados.material.push({
+                    index, codigo:'', descricao:'', quantR:'', quantE:'',
+                })
             }
         }
+
+        return dados
     }
-    */
 
     async function registerRequisição(dados){
         const {itens} = dados
         const moviments = []
         const dateNow = dateFetures.getDateStr()
+        dados.data = dateNow
+        dados.hora = dateFetures.getHourstr()
 
         Object.keys(itens).forEach(key=>{
             moviments.push({
@@ -360,21 +386,18 @@ module.exports = (props)=>{
                 quant: itens[key].quantE,
             })
         })
-        
+
         try{
-            //console.log(dados)
-            console.log(moviments)
             const source = json.getExcelDBpath()
             await macroExe.executeMacro({
                 filePath: path.normalize(source),
                 macroName: 'Module1.registerMovement',
                 args: moviments,
             }) 
+            await PDF.generate(PDFformatData(dados))
             await importProducts(source)
-
-            
-
             events.sendSync('getWindows', 'main').webContents.send('resetMain', 'requisitar')
+
             return true
         }catch(err){
             console.log(err)

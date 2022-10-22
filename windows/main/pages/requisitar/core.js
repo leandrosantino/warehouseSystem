@@ -101,7 +101,7 @@ function createCore({window, container}){
 
     function defineNatureza(){
         let resp = false
-        const names = ['Quebra','Preventva','Melhoria','Segurança','Outros',]
+        const names = ['Quebra','Preventiva','Melhoria','Segurança','Outros',]
         page.inputs.natureza.forEach((item, index)=>{
             if(item.checked){
                 resp = names[index]
@@ -214,17 +214,17 @@ function createCore({window, container}){
 
     function toCharge(){
         setTimeout(()=>{},0)
-            ipc.sendSync('setPermissionScanner', true)
-            products = ipc.sendSync('getRequestsProducts')   
-            maquinas = ipc.sendSync('getMaquinas')
-            colaboradores = ipc.sendSync('getColaboradores')
-            eventEmitter.send('render', {})
-            updateNatureza()
-            loadSearch()
-            tagPopulate()
-            updateQuantItems()
-            assignRoles()
-            console.log(products)
+        ipc.sendSync('setPermissionScanner', true)
+        products = ipc.sendSync('getRequestsProducts')   
+        maquinas = ipc.sendSync('getMaquinas')
+        colaboradores = ipc.sendSync('getColaboradores')
+        eventEmitter.send('render', {})
+        updateNatureza()
+        loadSearch()
+        tagPopulate()
+        updateQuantItems()
+        assignRoles()
+        console.log(products)
     }
     
 

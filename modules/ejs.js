@@ -40,6 +40,13 @@ function createScreen(){
         })
     }
 
+    function createPDFtemplate({source, data}){
+        const ejsFile = path.normalize(source)
+        const str = fs.readFileSync(ejsFile,'utf8')
+        const template = ejs.compile(str);
+        return template(data)
+    }
+
     function createString(str, data){
         const template = ejs.compile(`${linkCss}${str}`);
         return template(data)
@@ -48,6 +55,7 @@ function createScreen(){
     return {
         create,
         createComponent,
+        createPDFtemplate,
     }
 }
 

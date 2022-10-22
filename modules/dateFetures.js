@@ -35,6 +35,44 @@ module.exports = ()=>{
         return `${dia}/${mes}/${ano}`
     }
 
+    function getHourstr(){
+        const now = new Date()
+        let hour = now.getHours()
+        let minute = now.getMinutes()
+        if(String(hour).length < 2){_hour = `0${hour}`}
+        if(String(minute).length < 2){_minute = `0${minute}`}
+        return `${hour}:${minute}`
+    }
+
+    function getHourObj(){
+        const now = new Date()
+        const hour = now.getHours()
+        const minute = now.getMinutes()
+        return {hour, minute}
+    }
+
+    function getTurno(){
+        let turno = '0'
+
+        const now = new Date()
+        const y = now.getFullYear()
+        const m = now.getMonth()
+        const d = now.getDate()
+    
+        const h1 = new Date(y, m, d, 6, 10, 00)
+        const h2 = new Date(y, m, d, 15, 48, 00)
+        const h3 = new Date(y, m, d, 23, 59, 00)
+        const h4 = new Date(y, m, d, 0, 0, 00)
+        const h5 = new Date(y, m, d, 1, 9, 00)
+    
+        if(now >= h1 && now < h2){turno = '1º Truno'}
+        if(now >= h2 && now < h3){turno = '2º Truno'}
+        if(now >= h4 && now < h5){turno = '2º Truno'}
+        if(now >= h5 && now < h1){turno = '3º Truno'}
+    
+        return turno
+    }
+
     function getDate(){
         const now = new Date()
         return {
@@ -55,6 +93,9 @@ module.exports = ()=>{
         getDateStr,
         getDate,
         getNumWeek,
+        getHourstr,
+        getHourObj,
+        getTurno,
         MonthNum,
         fullMonth,
     }
