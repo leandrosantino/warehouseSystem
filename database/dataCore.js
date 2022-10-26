@@ -10,19 +10,14 @@ module.exports = (props)=>{
     const json = require('./jsonCore')()
     const macroExe = require('./macroExe')()
     const PDF = require('../modules/PDF/PDFgenerator')()
-
-    let products = {}
-    let utes = {
-        'M01': 'UTE-1',
-        'M02': 'UTE-2',
-        'M03': 'UTE-3',
-    }
+    
+    const dataBase = {}
 
     const naturezas = {
         'Quebra': 0, 'Preventiva': 1, 'Melhoria': 2, 'Segurança': 3, 'Outros': 4,
     }
 
-    async function importProducts(source_){
+    async function importDataBase(source_){
         try{
             let source
             if(source_){
@@ -36,17 +31,12 @@ module.exports = (props)=>{
             }
 
             if(source){
-                const data = excel.getProdutos(path.normalize(source))
                 json.setExcelDBpath(source)
-                const header = []
-                Object.keys(data[0]).forEach(key=>{
-                    header.push({id: key, title: key})
-                })
-                await csv.writerData({header,data})
-
-                await getProducts(data)
-                
-                
+                const {products, colaboradores, utes, maquinas} = excel.getSheetData(path.normalize(source))
+                dataBase.products = products
+                dataBase.colaboradores = colaboradores
+                dataBase.utes = utes
+                dataBase.maquinas = maquinas
                 if(!source_){
                     events.sendSync('dialogSuccess', {
                         msg: 'Sucesso! - Importação de dados Finalizada!',
@@ -63,44 +53,11 @@ module.exports = (props)=>{
         }
     }
 
-    async function getProducts(data){
-        try{
-            //const data = await csv.readerData()
-            const resp = {}
-            data.forEach((produto, index)=>{                
-                const {
-                    codigo, 
-                    classificacao,
-                    descricao, 
-                    endereco,
-                    estoque, 
-                    minimo, 
-                    maximo
-                } = produto
-                resp[codigo] = {
-                    descricao, 
-                    classificacao,
-                    endereco, 
-                    estoque: Number(estoque), 
-                    minimo: Number(minimo), 
-                    maximo: Number(maximo)
-                }
-            })
-
-            products = resp
-            
-            return resp
-        }catch(err){
-            console.log(err)
-            return false
-        }
-    }
-
     async function updateProducts(){
         try{
             const data = []
-            Object.keys(products).forEach(key=>{
-                const item = products[key]
+            Object.keys(dataBase.products).forEach(key=>{
+                const item = dataBase.products[key]
                 data.push({...item, codigo: key})
             })
 
@@ -121,16 +78,16 @@ module.exports = (props)=>{
     function changeStock(data){
         const {quantidade, type, code} = data
         if(type == 'entrada'){
-            products[code].estoque += quantidade
+            dataBase.products[code].estoque += quantidade
         }else{
-            products[code].estoque -= quantidade
+            dataBase.products[code].estoque -= quantidade
         }
         updateProducts()
     }
 
     async function registerInventoryCount(data){
         try{
-            const produto = products[data.codigo]
+            const produto = dataBase.products[data.codigo]
 
             const diff  = produto.estoque-data.atual
             const type = diff>0?'saída':'entrada' 
@@ -174,7 +131,7 @@ module.exports = (props)=>{
     async function registerRequisition(data){
         try{
             const {code, quantidade, type} = data
-            const produto = products[code]
+            const produto = dataBase.products[code]
             if(!produto){
                 events.sendSync('dialogError', `Item não encontrado!`)
                 return false
@@ -203,7 +160,7 @@ module.exports = (props)=>{
                 origen: 'requisicao',
             })
 
-            console.log(products[code])
+            console.log(dataBase.products[code])
 
             return true
 
@@ -342,7 +299,7 @@ module.exports = (props)=>{
     function PDFformatData(dados){
         dados.numero = json.getRequestNumber()
         dados.turno = dateFetures.getTurno()
-        dados.ute = utes[dados.tag]
+        dados.ute = dataBase.utes[dados.tag]
         const arrayNat = ['', '', '', '', '']
         arrayNat[naturezas[dados.natureza]] = 'X'
         dados.natureza = arrayNat
@@ -395,7 +352,7 @@ module.exports = (props)=>{
                 args: moviments,
             }) 
             await PDF.generate(PDFformatData(dados))
-            await importProducts(source)
+            await importDataBase(source)
             events.sendSync('getWindows', 'main').webContents.send('resetMain', 'requisitar')
 
             return true
@@ -405,17 +362,14 @@ module.exports = (props)=>{
         }
     }    
 
-    function getMaquinas(){
-        return ['M01','M02','M03']
-    }
 
     function getRequestsProducts(){
         const products2 = {}
-        Object.keys(products).forEach(key=>{
+        Object.keys(dataBase.products).forEach(key=>{
             products2[key]={
-                nome: products[key].descricao,
-                endereco: products[key].endereco,
-                quant:  products[key].estoque,
+                nome: dataBase.products[key].descricao,
+                endereco: dataBase.products[key].endereco,
+                quant:  dataBase.products[key].estoque,
             }
         })
         return products2
@@ -425,7 +379,7 @@ module.exports = (props)=>{
     function declareEvents(){
         //Produtos
             events.on('getProducts', (event, args)=>{
-                event.returnValue = args?products[args]:products
+                event.returnValue = args?dataBase.products[args]:dataBase.products
             })
             events.on('changeStock', (event, args)=>{
                 changeStock(args)
@@ -445,8 +399,8 @@ module.exports = (props)=>{
                 event.returnValue = await registerInventoryCount(args)
             })
         //Ipc
-            ipcMain.on('importProducts', async (event, args)=>{
-                event.returnValue = await importProducts()
+            ipcMain.on('importDataBase', async (event, args)=>{
+                event.returnValue = await importDataBase()
                 events.sendSync('getWindows', 'main').webContents.send('resetMain', '')
             })
             ipcMain.on('generateSheetHistoric', async (event, args)=>{
@@ -459,13 +413,10 @@ module.exports = (props)=>{
                 event.returnValue = getRequestsProducts()
             })
             ipcMain.on('getMaquinas', (event, args)=>{
-                event.returnValue = getMaquinas()
+                event.returnValue = dataBase.maquinas
             })
             ipcMain.on('getColaboradores', (event, args)=>{
-                const colaboradores = {
-                    '792': 'Leandro Santino'
-                }
-                event.returnValue = colaboradores
+                event.returnValue = dataBase.colaboradores
             })
             ipcMain.on('registerRequisição', async(event, args)=>{
                 event.returnValue = await registerRequisição(args)
@@ -475,9 +426,7 @@ module.exports = (props)=>{
     async function init(){
         try{
             await sqlite.init()
-            await importProducts(json.getExcelDBpath())
-
-            console.log(products)
+            await importDataBase(json.getExcelDBpath())
             declareEvents()
 
             return true

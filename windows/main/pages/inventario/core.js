@@ -8,7 +8,7 @@ function createCore({window, container}){
  
     function assignRoles(){
         eventEmitter.DOM('click', page.btImport, ()=>{
-            window.ipc.send('importProducts')
+            window.ipc.send('importDataBase')
         })
         eventEmitter.DOM('click', page.btPlanilha, ()=>{
             const now = new Date()
