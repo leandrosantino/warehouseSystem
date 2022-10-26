@@ -12,6 +12,12 @@ module.exports = ()=>{
     }
     const getExcelDBpath = ()=>{return config.ExcelDBpath}
 
+    function setPDFpath(directory){
+        config.PDFpath = path.normalize(directory)
+        saveJson()
+    }
+    const getPDFpath = ()=>{return config.PDFpath}
+
     function getRequestNumber(){
         config.requestNumber += 1
         saveJson()
@@ -19,9 +25,10 @@ module.exports = ()=>{
     }
  
     return {
-        maquinas: config.maquinas,
         setExcelDBpath,
         getExcelDBpath,
         getRequestNumber,
+        setPDFpath,
+        getPDFpath,
     }
 }

@@ -9,6 +9,7 @@ function createPage({eventEmitter, ejs, globalEvents}){
             mainCase :{id:'#mainCase'},
             requisicoes :{id:'#requisicoes'},
             estoque:{id:'#estoque'},
+            config:{id:'#config'},
             inventario:{id:'#inventario'},
             btChangeSideBar:{id:'#iconUser'},
             sideBar:{id:'#side-bar'},
@@ -24,7 +25,7 @@ function createPage({eventEmitter, ejs, globalEvents}){
     function renderEvents(){
         getElements()
 
-        eventEmitter.DOM('click', page.btChangeSideBar, ()=>{
+        /*eventEmitter.DOM('click', page.btChangeSideBar, ()=>{
             const type = page.sideBar.getAttribute('class')
             if(type == 'sideBar_reduce'){
                 page.sideBar.setAttribute('class', 'sideBar_normal')
@@ -33,7 +34,7 @@ function createPage({eventEmitter, ejs, globalEvents}){
                 page.sideBar.setAttribute('class', 'sideBar_reduce')
             }
             
-        })
+        })*/
 
         globalEvents.on('setUserName', (name)=>{
             //page.nameUser.innerHTML = name
@@ -50,10 +51,10 @@ function createPage({eventEmitter, ejs, globalEvents}){
                 })
             }else{
                 page.login.style.display = 'inherit'
+                page.config.style.display = 'none'
                 page.logout.style.display = 'none'
                 page.requisicoes.style.display = 'none'
                 page.inventario.style.display = 'none'
-                page.estoque.style.display = 'none'
             }
         })
 

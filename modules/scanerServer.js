@@ -142,7 +142,7 @@ function createSerialMonitor({ipcMain, events}){
     }
 
     function toCode(object){
-        let str = ''
+        let str = '' 
         const keys = Object.keys(object)
         keys.forEach((_key, index)=>{
             const vrg = keys.length == index+1?'':';'

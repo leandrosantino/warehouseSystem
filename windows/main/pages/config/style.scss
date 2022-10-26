@@ -1,0 +1,73 @@
+ // Estilização da Tela de Login
+
+    @use '../../../../sass/mixins' as mix;
+    @use '../../../../sass/colors' as cor;
+
+   
+   #case{
+      @include mix.flex-center;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      padding-top: 15px;
+
+      #title{
+         height: 10%;
+         font-size: 30pt;
+         font-weight: bold;
+      }
+
+      #body{
+         height: 90%;
+         width: 60%
+      }
+      .caseInput{
+         @include mix.flex-center;
+         flex-direction: column;
+         align-items: flex-start;
+         width: 100%;
+         margin-top: 30px;
+
+         .bts{
+            @include mix.button-class;
+
+            color: white;
+            background-color: cor.$secondary;
+
+            width: 170px;
+            height: 35px;
+            margin-left: 5px;
+        }
+
+         #caseBt{
+            margin-top: -34px;
+            margin-left: 87.2%;
+            .bt{
+               font-size: 14pt;
+               height: 34px;
+               width: 35px;
+               @include mix.button-class;
+               border-bottom-left-radius: 0;
+               border-top-left-radius: 0;
+               border: 1px solid black;
+               background-color: rgb(190, 190, 190);
+            }
+         }
+         label{
+            font-size: 14pt;
+         }
+         .input{
+            width: 85%;
+            padding-left: 50px;
+            margin-top: 10px;
+            
+            &:disabled{
+               @include mix.input-class;
+               border-bottom-right-radius: 0;
+               border-top-right-radius: 0;
+               font-size: 12pt;
+            }
+         }
+      }
+   }
+ 

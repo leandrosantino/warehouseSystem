@@ -7,6 +7,7 @@ module.exports = ({ipcMain, events})=>{
                 'requisicoes',
                 'inventario',
                 'estoque',
+                'config',
             ],
             actions: [
                 'user manage',

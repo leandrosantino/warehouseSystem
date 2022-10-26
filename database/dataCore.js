@@ -1,6 +1,7 @@
 module.exports = (props)=>{
 
     const path = require('path')
+    const fs = require('fs')
     const {ipcMain, events} = props 
     const dateFetures = require('../modules/dateFetures')()
     
@@ -9,40 +10,42 @@ module.exports = (props)=>{
     const csv = require('./csvWriter')()
     const json = require('./jsonCore')()
     const macroExe = require('./macroExe')()
-    const PDF = require('../modules/PDF/PDFgenerator')()
+    const PDF = require('../modules/PDF/PDFgenerator')(events)
     
-    const dataBase = {}
-
+    const dataBase = {
+        products: {},
+        colaboradores: {},
+        utes: {},
+        maquinas: [],
+    }
     const naturezas = {
         'Quebra': 0, 'Preventiva': 1, 'Melhoria': 2, 'Segurança': 3, 'Outros': 4,
     }
 
-    async function importDataBase(source_){
+    async function importDataBase(dialog){
         try{
-            let source
-            if(source_){
-                source = source_
-            }else{
-                source = events.sendSync('dialogPath', {
-                    title: 'Selecionar Planilha do Almoxarifado',
-                    type: 'file',
-                    window: 'main',
-                })
-            }
+            const source = json.getExcelDBpath()
 
-            if(source){
+            if(fs.existsSync(source)){
                 json.setExcelDBpath(source)
                 const {products, colaboradores, utes, maquinas} = excel.getSheetData(path.normalize(source))
                 dataBase.products = products
                 dataBase.colaboradores = colaboradores
                 dataBase.utes = utes
                 dataBase.maquinas = maquinas
-                if(!source_){
+                if(dialog){
                     events.sendSync('dialogSuccess', {
                         msg: 'Sucesso! - Importação de dados Finalizada!',
                         window: 'main',
                     })
                 }
+            }else{
+                events.sendSync('dialogSuccess', {
+                    msg: `Atenção!!! - Base de Dados não Selecionada! \n 
+                    Escolha o local da Base de Dados na janela de configurações
+                    para que o programa funcione normalmente!`,
+                    window: 'main',
+                })
             }
                 
             return true
@@ -83,7 +86,7 @@ module.exports = (props)=>{
             dataBase.products[code].estoque -= quantidade
         }
         updateProducts()
-    }
+    } 
 
     async function registerInventoryCount(data){
         try{
@@ -196,6 +199,7 @@ module.exports = (props)=>{
                     ['id', 'DESC'],
                 ],
             })
+
             const resp = []
             historico.forEach(row=>{
                 resp.push(row.dataValues)
@@ -345,23 +349,32 @@ module.exports = (props)=>{
         })
 
         try{
-            const source = json.getExcelDBpath()
-            await macroExe.executeMacro({
-                filePath: path.normalize(source),
-                macroName: 'Module1.registerMovement',
-                args: moviments,
-            }) 
-            await PDF.generate(PDFformatData(dados))
-            await importDataBase(source)
-            events.sendSync('getWindows', 'main').webContents.send('resetMain', 'requisitar')
-
-            return true
+            if(fs.existsSync(json.getPDFpath())){
+                const source = json.getExcelDBpath()
+                await macroExe.executeMacro({
+                    filePath: path.normalize(source),
+                    macroName: 'Module1.registerMovement',
+                    args: moviments,
+                }) 
+                await PDF.generate(PDFformatData(dados))
+                await importDataBase()
+                events.sendSync('getWindows', 'main').webContents.send('resetMain', 'requisitar')
+                
+                return true
+            }else{
+                events.sendSync('dialogSuccess', {
+                    msg: `Atenção!!! - Pasta de PDFs não selecionada! \n 
+                    Escolha o local para salvar os PDFs na janela de configurações
+                    para que o programa funcione normalmente!`,
+                    window: 'main',
+                })
+                return false
+            }
         }catch(err){
             console.log(err)
             return false
         }
     }    
-
 
     function getRequestsProducts(){
         const products2 = {}
@@ -374,8 +387,36 @@ module.exports = (props)=>{
         })
         return products2
     }
+
+    function selectExcelDBpath(){
+        const source = events.sendSync('dialogPath', {
+            title: 'Selecionar Planilha do Almoxarifado',
+            type: 'file',
+            window: 'main',
+        })
+        if(source){
+            json.setExcelDBpath(source)
+            return source
+        }else{
+            return false
+        }
+    }
+
+    function seletcPDFpath(){
+        const source = events.sendSync('dialogPath', {
+            title: 'Selecionar Pasta para PDFs',
+            type: 'folder',
+            window: 'main',
+        })
+        if(source){
+            json.setPDFpath(source)
+            return source
+        }else{
+            return false
+        } 
+           
+    }
  
-   
     function declareEvents(){
         //Produtos
             events.on('getProducts', (event, args)=>{
@@ -400,7 +441,7 @@ module.exports = (props)=>{
             })
         //Ipc
             ipcMain.on('importDataBase', async (event, args)=>{
-                event.returnValue = await importDataBase()
+                event.returnValue = await importDataBase(true)
                 events.sendSync('getWindows', 'main').webContents.send('resetMain', '')
             })
             ipcMain.on('generateSheetHistoric', async (event, args)=>{
@@ -421,12 +462,24 @@ module.exports = (props)=>{
             ipcMain.on('registerRequisição', async(event, args)=>{
                 event.returnValue = await registerRequisição(args)
             })
+            ipcMain.on('setExcelDBpath', (event, args)=>{
+                event.returnValue = selectExcelDBpath()
+            })
+            ipcMain.on('setPDFpath', (event, args)=>{
+                event.returnValue = seletcPDFpath()
+            })
+            ipcMain.on('getExcelDBpath', (event, args)=>{
+                event.returnValue = json.getExcelDBpath()
+            })
+            ipcMain.on('getPDFpath', (event, args)=>{
+                event.returnValue = json.getPDFpath()
+            })
     }
 
     async function init(){
         try{
             await sqlite.init()
-            await importDataBase(json.getExcelDBpath())
+            await importDataBase()
             declareEvents()
 
             return true

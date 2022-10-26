@@ -1,9 +1,5 @@
 {
-    "maquinas": [
-        "M01",
-        "M02",
-        "M03"
-    ],
+    "requestNumber": 358,
     "ExcelDBpath": "C:\\Users\\leand\\Desktop\\Dev\\warehouseSystem\\database\\src\\CONTROLE DE SPARE PARTS-2.0.xlsm",
-    "requestNumber": 351
+    "PDFpath": "C:\\Users\\leand\\Desktop\\Dev\\warehouseSystem\\database\\src\\PDFs"
 }

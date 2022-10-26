@@ -12,10 +12,10 @@ function createLogicCore(window){
 
     function assignRoles(){
         eventEmitter.DOM('click', page.logout, 
-        ()=> {
-            globalEvents.send('logout')
-            globalEvents.send('toChargeLogin')
-        })
+        ()=> globalEvents.send('logout'))
+
+        eventEmitter.DOM('click', page.config, 
+        ()=>globalEvents.send('toChargeConfig'))
 
         eventEmitter.DOM('click', page.login, 
         ()=> globalEvents.send('toChargeLogin'))
@@ -29,7 +29,7 @@ function createLogicCore(window){
 
     function toCharge(){
         setTimeout(()=>{
-            ipc.sendSync('setPermissionScanner', true)
+            ipc.sendSync('setPermissionScanner', false)
         },0)  
         eventEmitter.send('render', optionsPage)
         assignRoles()
@@ -46,6 +46,8 @@ function createLogicCore(window){
     }
 
     toCharge()
+
+    globalEvents.on('toChargeHome', toCharge)
 
     return home
 }

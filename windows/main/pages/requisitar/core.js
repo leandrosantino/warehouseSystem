@@ -64,9 +64,23 @@ function createCore({window, container}){
         }
     }
 
+    function removeSpaceStr(str){
+        let resp = ''   
+        const array = str.split('')
+        array.forEach(char=>{
+            if(char != ' '){
+                resp += char
+            }
+        })
+        return resp
+    }
+
     ipc.on('scanner', (event, args)=>{
-        const {code, quant} = args
+        const {quant} = args
+        const code = removeSpaceStr(args.code)
+        console.log(args)
         const itemBase = products[code]
+
         if(!(itemBase.quant < quant)){
             listItems[code] = itemBase
             const item = listItems[code]
@@ -221,7 +235,7 @@ function createCore({window, container}){
 
     function toCharge(){
         setTimeout(()=>{},0)
-        ipc.sendSync('setPermissionScanner', true)
+        ipc.sendSync('setPermissionScanner', false)
         products = ipc.sendSync('getRequestsProducts')   
         maquinas = ipc.sendSync('getMaquinas')
         colaboradores = ipc.sendSync('getColaboradores')

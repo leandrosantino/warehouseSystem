@@ -21,7 +21,7 @@ function createCore({window, container}){
                     permissions: user.permissions.pages
                 })
                 globalEvents.send('setUserName', user.name)
-                globalEvents.send('toChargeInventario')
+                globalEvents.send('toChargeRequisitar')                
             }else{
                 eventEmitter.send('loginAlert', 'Usuário ou senha Incorretos!')
             }
@@ -35,10 +35,8 @@ function createCore({window, container}){
 
     function logout(){
         if(ipc.sendSync('logout')){
-            ipc.sendSync('setPermissionScanner', false)
+            globalEvents.send('resetWindow')
             globalEvents.send('showAllowedScreens', 'logout')
-            //globalEvents.send('toChargeLogin')
-            globalEvents.send('setUserName', 'Adler Pelzer Group')
         }
     }
 
@@ -56,10 +54,10 @@ function createCore({window, container}){
             conected: false,
             user: 'Adler'
         }
-        setTimeout(()=>{ ipc.sendSync('setPermissionScanner', true) },0)
+        setTimeout(()=>{ ipc.sendSync('setPermissionScanner', false) },0)
         eventEmitter.send('render', data_Page)
         assignRoles()
-        login()
+        //login()
     }
 
     globalEvents.on('toChargeLogin', toCharge)

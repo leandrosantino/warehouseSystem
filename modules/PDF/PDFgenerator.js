@@ -8,7 +8,6 @@ module.exports = ()=>{
     const fs = require('fs')
 
     const htmlPath = path.join(__dirname, 'pdf.html')
-    const savePath = path.join(__dirname, 'requisição.pdf')
     const ejsPath = path.join(__dirname, 'template.ejs')
 
     function renderHTML(data){
@@ -18,10 +17,16 @@ module.exports = ()=>{
         })
         fs.writeFileSync(htmlPath, html, 'utf-8')
     }
+
+    function setPDFname(dados){
+        const date = dados.data.split('/')
+        return `${date[0]}-${date[1]}-${date[2]}_Rec(${dados.numero}).pdf`
+    }
     
     async function generate(data){
         const browser = await puppe.launch()
         const page = await browser.newPage()
+        const savePath = json.getPDFpath()
 
         renderHTML(data)
 
@@ -34,7 +39,7 @@ module.exports = ()=>{
             format: 'A4',
         })
 
-        fs.writeFileSync(savePath, pdf ,'binary');
+        fs.writeFileSync(path.join(savePath, setPDFname(data)), pdf ,'binary');
         await browser.close()
 
     }

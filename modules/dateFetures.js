@@ -39,8 +39,8 @@ module.exports = ()=>{
         const now = new Date()
         let hour = now.getHours()
         let minute = now.getMinutes()
-        if(String(hour).length < 2){_hour = `0${hour}`}
-        if(String(minute).length < 2){_minute = `0${minute}`}
+        if(String(hour).length < 2){hour = `0${hour}`}
+        if(String(minute).length < 2){minute = `0${minute}`}
         return `${hour}:${minute}`
     }
 

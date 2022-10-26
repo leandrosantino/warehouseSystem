@@ -39,7 +39,7 @@
             background: cor.$primary;
             border-radius: 10px;
         }
- 
+  
     }
 
     @mixin button-class{
@@ -52,7 +52,7 @@
 
     @mixin input-class{
         border: 1.5px solid cor.$gray;
-        border-radius: 6px;
+        border-radius: 7px;
         padding: .4rem;
         text-indent: .2rem;
         font-size: 14pt;
