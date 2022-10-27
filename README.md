@@ -1,6 +1,6 @@
 # warehouseSystem
  
-Um aplicação construída com electron, que tem o objetivo de emitir e gerenciar requisições de saídas de item de um almoxarifado.
+Uma aplicação construída com electron, que tem o objetivo de emitir e gerenciar requisições de saídas de item de um almoxarifado.
 
 - Algumas das tecnologias aplicadas no projeto são: 
   - electron
