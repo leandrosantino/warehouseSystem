@@ -5,10 +5,10 @@
             <tr id="border" > 
                 <td style="width: 100px;" > Data      </td>
                 <td style="width: 100px;" > Código    </td>
-                <td style="width: 100px;" > Endereço  </td>
-                <td style="width: 150px;" > Tipo      </td>
+                <td style="width: 360px;" > Descrição </td>
+                <td style="width:  80px;" > Endereço  </td> 
+                <td style="width:  80px;" > Tipo      </td>
                 <td style="width:  60px;" > Quant     </td>
-                <td style="width: 250px;" > Descrição </td>
                 <td style="width:  70px;" > E. Ante.  </td>
                 <td style="width: 70px;"  > E. Atual  </td>
                 <td style="width: 70px;"  >   </td>
@@ -21,20 +21,23 @@
 <div id="tableArea">
     <table id="tabela" class="table">
         <tbody  id="table" class="scroll">
-            <%dados.forEach(row => {%>
+            <%
+                Object.keys(dados).forEach(key => {
+                    const row = dados[key]
+            %>
                 <tr style="height: 45px;">
                     <td style="width: 100px;" > <%- row.date       %> </td>
-                    <td style="width: 100px;" > <%- row.codigo     %> </td>
-                    <td style="width: 100px;" > <%- row.endereco   %> </td>
-                    <td style="width: 150px;" > <%- row.tipo       %> </td>
-                    <td style="width:  50px;" > <%- row.quantidade %> </td>
-                    <td style="width: 260px;" > <%- row.descricao  %> </td>
+                    <td style="width: 100px;" > <%- key            %> </td>
+                    <td style="width: 360px;" > <%- row.descricao  %> </td>
+                    <td style="width:  80px;" > <%- row.endereco   %> </td>
+                    <td style="width:  80px;" > <%- row.tipo       %> </td>
+                    <td style="width:  60px;" > <%- row.quantidade %> </td>
                     <td style="width:  70px;" > <%- row.anterior   %> </td>
                     <td style="width:  70px;" > <%- row.atual      %> </td>
                     <td style="width:  70px;" >
-                        <button id="BtDelete" onclick="screens.inventario.deleteHistorico('<%- row.id %>')" ><%- icons.close%></button>
+                        <button id="BtDelete" onclick="screens.inventario.deleteHistorico('<%- key %>')" ><%- icons.close%></button>
                     </td>
-                </tr>    
+                </tr>     
             <%});%>   
         </tbody>   
     </table>                      

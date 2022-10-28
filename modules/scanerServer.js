@@ -67,7 +67,7 @@ function createSerialMonitor({ipcMain, events}){
 
         if(port){
             console.log('connected Scanner') 
-            port.on('readable', ()=>{
+            port.on('readable', ()=>{ 
                 try{
                     let msg = toJson(String(port.read()))
                     //console.log(String(port.read()), msg, 'teste')

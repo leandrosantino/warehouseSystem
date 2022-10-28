@@ -14,12 +14,13 @@ function createPage({eventEmitter, ejs, container, globalEvents}){
 
     function rendereventEmitter(){
         getElements()
-        eventEmitter.on('renderTable', (historico)=>{
+        eventEmitter.on('renderTable', (inventory)=>{
+            console.log(inventory)
             page.case.innerHTML = ejs.createComponent({
                 source: __dirname,
                 filename: 'table.ejs',
                 data: {
-                    dados: historico
+                    dados: inventory
                 }
             })
         })

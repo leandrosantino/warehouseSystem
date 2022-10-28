@@ -52,6 +52,7 @@ function createCore({window, container}){
                     item.quantE = quantE 
                     item.func = `onclick="screens.requisitar.selectIten('${selected_item}', 1)"`
                     page.inputs.produto.value = ''
+                    selected_item = ''
                 }else{
                     error('Estoque Insuficiente!!')
                 }
@@ -245,7 +246,6 @@ function createCore({window, container}){
         tagPopulate()
         updateQuantItems()
         assignRoles()
-        console.log(products)
     }
     
 

@@ -17,9 +17,10 @@ module.exports = (props)=>{
         colaboradores: {},
         utes: {},
         maquinas: [],
-    }
-    const naturezas = {
-        'Quebra': 0, 'Preventiva': 1, 'Melhoria': 2, 'Segurança': 3, 'Outros': 4,
+        inventory: {},
+        naturezas:{
+            'Quebra': 0, 'Preventiva': 1, 'Melhoria': 2, 'Segurança': 3, 'Outros': 4,
+        },
     }
 
     async function importDataBase(dialog){
@@ -33,6 +34,7 @@ module.exports = (props)=>{
                 dataBase.colaboradores = colaboradores
                 dataBase.utes = utes
                 dataBase.maquinas = maquinas
+                dataBase.inventory = await csv.importInventoryFile()
                 if(dialog){
                     events.sendSync('dialogSuccess', {
                         msg: 'Sucesso! - Importação de dados Finalizada!',
@@ -56,72 +58,34 @@ module.exports = (props)=>{
         }
     }
 
-    async function updateProducts(){
-        try{
-            const data = []
-            Object.keys(dataBase.products).forEach(key=>{
-                const item = dataBase.products[key]
-                data.push({...item, codigo: key})
-            })
-
-            const header = []
-            Object.keys(data[0]).forEach(key=>{
-                header.push({id: key, title: key})
-            })
-
-            await csv.writerData({header,data})
-            return true
-        }catch(err){
-            events.sendSync('dialogError', `Erro dataCore - ${err}`)
-            return false
-        }
-
-    }
-
-    function changeStock(data){
-        const {quantidade, type, code} = data
-        if(type == 'entrada'){
-            dataBase.products[code].estoque += quantidade
-        }else{
-            dataBase.products[code].estoque -= quantidade
-        }
-        updateProducts()
-    } 
-
     async function registerInventoryCount(data){
         try{
-            const produto = dataBase.products[data.codigo]
-
-            const diff  = produto.estoque-data.atual
+            const {codigo, atual} = data
+            const produto = dataBase.products[codigo]
+            const diff  = produto.estoque-atual
             const type = diff>0?'saída':'entrada' 
             const quantidade = Math.abs(diff)
-            
+
             if(!produto){
                 events.sendSync('dialogError', `Item não encontrado!`)
                 return false
             }
 
-            //if(diff != 0){}
-                await itemOutput({
-                    ...data,
-                    endereco: produto.endereco,
-                    descricao: produto.descricao,
-                    anterior: produto.estoque,
-                    tipo: diff == 0?'inalterado':type,
-                    quantidade,
-                    origen: 'inventario',
-                })
+            dataBase.inventory[codigo] = {
+                date: dateFetures.getDateStr(),
+                descricao: produto.descricao,
+                endereco: produto.endereco,
+                tipo: diff == 0?'inalterado':type,
+                quantidade,
+                atual,
+                anterior: produto.estoque,
+                origen: 'inventario',
+            }
             
-
-            const now = dateFetures.getDate()
-            const historico = await getHistorico({
-                mes: now.mes,
-                ano: now.ano,
-                origen: 'inventario'
-            })
+            await csv.updateInventoryFile(dataBase.inventory)
             
             const window = events.sendSync('getWindows', 'main')
-            window.webContents.send('updateHistorico', historico)
+            window.webContents.send('updateHistorico', dataBase.inventory)
             
             return true
 
@@ -131,41 +95,36 @@ module.exports = (props)=>{
         }
     }
 
-    async function registerRequisition(data){
+    async function deleteInventoryCount(code){
         try{
-            const {code, quantidade, type} = data
-            const produto = dataBase.products[code]
-            if(!produto){
-                events.sendSync('dialogError', `Item não encontrado!`)
-                return false
-            }
-            console.log(produto)
 
-            const atual =  type=='entrada'?
-            produto.estoque+quantidade:
-            produto.estoque-quantidade
-
-            console.log(produto.estoque, atual, quantidade, type)
-
-            if(atual < 0){
-                events.sendSync('dialogError', `Estoque insuficiente`)
-                return false
-            }
-
-            await itemOutput({
-                codigo: code,
-                endereco: produto.endereco,
-                descricao: produto.descricao,
-                anterior: produto.estoque,
-                atual,
-                tipo: type,
-                quantidade,
-                origen: 'requisicao',
+            const quest = events.sendSync('dialogQuestion', {
+                msg: 'Realmente deseja excluir o registro?',
+                detail: 'Esta ação não pode ser revertida!',
+                window: 'main',
             })
 
-            console.log(dataBase.products[code])
+            if(quest){
+                
+                if(dataBase.inventory[code]){
+                    delete dataBase.inventory[code]
+                }else{
+                    events.sendSync('dialogError', `Erro dataCore - ${err}`)
+                    return false
+                }
+                
+                csv.updateInventoryFile(dataBase.inventory)
 
-            return true
+                const window = events.sendSync('getWindows', 'main')
+                window.webContents.send('updateHistorico', dataBase.inventory)
+
+                events.sendSync('dialogSuccess', {
+                    msg: 'Registro excluido com sucesso!',
+                    window: 'main',
+                })
+    
+                return true
+            }
 
         }catch(err){
             events.sendSync('dialogError', `Erro dataCore - ${err}`)
@@ -178,11 +137,6 @@ module.exports = (props)=>{
             await sqlite.Historico.create({
                 ...dateFetures.getDateforHistorico(),
                 ...data,
-            })
-            changeStock({
-                code: data.codigo,
-                quantidade: data.quantidade,
-                type: data.tipo
             })
             return true
         }catch(err){
@@ -211,51 +165,7 @@ module.exports = (props)=>{
         }
     }
 
-    async function deleteHistoricRecord(id){
-        try{
-
-            const quest = events.sendSync('dialogQuestion', {
-                msg: 'Realmente deseja excluir o registro?',
-                detail: 'Esta ação não pode ser revertida!',
-                window: 'main',
-            })
-
-            if(quest){
-                const record = await sqlite.Historico.findOne({where: {id}})
-                const {codigo, quantidade, tipo} = record.dataValues
-
-                if(record){record.destroy()}
-    
-                const now = dateFetures.getDate()
-                const historico = await getHistorico({
-                    mes: now.mes,
-                    ano: now.ano,
-                    origen: 'inventario'
-                })
-
-                changeStock({
-                    code: codigo,
-                    quantidade,
-                    type: tipo=='entrada'?'saída':'entrada'
-                })
-    
-                const window = events.sendSync('getWindows', 'main')
-                window.webContents.send('updateHistorico', historico)
-
-                events.sendSync('dialogSuccess', {
-                    msg: 'Registro excluido com sucesso!',
-                    window: 'main',
-                })
-    
-                return true
-            }
-
-        }catch(err){
-            events.sendSync('dialogError', `Erro dataCore - ${err}`)
-            return false
-        }
-    }
-
+   
     async function generateSheetHistoric(conditions){
         try{ 
 
@@ -305,7 +215,7 @@ module.exports = (props)=>{
         dados.turno = dateFetures.getTurno()
         dados.ute = dataBase.utes[dados.tag]
         const arrayNat = ['', '', '', '', '']
-        arrayNat[naturezas[dados.natureza]] = 'X'
+        arrayNat[dataBase.naturezas[dados.natureza]] = 'X'
         dados.natureza = arrayNat
         dados.material = []
 
@@ -375,7 +285,7 @@ module.exports = (props)=>{
             return false
         }
     }    
-
+ 
     function getRequestsProducts(){
         const products2 = {}
         Object.keys(dataBase.products).forEach(key=>{
@@ -436,8 +346,15 @@ module.exports = (props)=>{
             events.on('itemOutput', async (event, args)=>{
                 event.returnValue = await itemOutput(args)
             })
+        //Inventário
             events.on('registerInventoryCount', async (event, args)=>{
                 event.returnValue = await registerInventoryCount(args)
+            })
+            ipcMain.on('deleteInventoryCount', async (event, args)=>{
+                event.returnValue =  await deleteInventoryCount(args)
+            })
+            ipcMain.on('getInventory', (event, args)=>{
+                event.returnValue = dataBase.inventory
             })
         //Ipc
             ipcMain.on('importDataBase', async (event, args)=>{
@@ -446,9 +363,6 @@ module.exports = (props)=>{
             })
             ipcMain.on('generateSheetHistoric', async (event, args)=>{
                 event.returnValue =  await generateSheetHistoric(args)
-            })
-            ipcMain.on('deleteHistoricRecord', async (event, args)=>{
-                event.returnValue =  await deleteHistoricRecord(args)
             })
             ipcMain.on('getRequestsProducts', (event, args)=>{
                 event.returnValue = getRequestsProducts()

@@ -19,15 +19,13 @@ function createCore({window, container}){
         })
     }
 
-    function toCharge(){
+    function toCharge(){ 
         setTimeout(()=>{
             ipc.sendSync('setPermissionScanner', true)
+            eventEmitter.send('renderTable', ipc.sendSync('getInventory'))
         },0)
         eventEmitter.send('render', {})
-
-        let historico = ipc.sendSync('getHistorico')
-
-        eventEmitter.send('renderTable', historico)
+        
         
         ipc.on('updateHistorico', (event, args)=>{
             eventEmitter.send('renderTable', args)
@@ -35,8 +33,8 @@ function createCore({window, container}){
         assignRoles()
     }
  
-    function deleteHistorico(id){
-        window.ipc.send('deleteHistoricRecord', Number(id))
+    function deleteHistorico(code){
+        window.ipc.send('deleteInventoryCount', code)
     }
 
     globalEvents.on('toChargeInventario', toCharge)

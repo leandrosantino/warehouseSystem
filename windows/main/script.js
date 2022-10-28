@@ -11,6 +11,7 @@ function main(){
     screens.requisitar = window.pages.create('requisitar', {window, container})
     screens.config = window.pages.create('config', {window, container})
 
+    //screens.inventario.toCharge()
 }
 
 window.events.on('resetWindow', main)
