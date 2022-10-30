@@ -5,7 +5,7 @@ function createCore({window, container}){
     const globalEvents = events
     
     const page = require(__dirname, './render')({eventEmitter, ejs, container, globalEvents})
-    let maquinas, products, colaboradores
+    let machines, products, colaboradores
 
     const requisição = {
         requisitante: '',
@@ -38,9 +38,9 @@ function createCore({window, container}){
     const updateQuantItems = ()=> page.quant_items.innerHTML = Object.keys(listItems).length
     
     function adicionarItens(){
-        if(Object.keys(listItems).length < 15){
+        if(Object.keys(listItems).length < 21){
             if(selected_item != ''){
-                
+                 
                 const itemBase = products[selected_item]
                 const quantR = Number(page.inputs.quant_Req.value)
                 const quantE = Number(page.inputs.quant_Ent.value)
@@ -114,7 +114,7 @@ function createCore({window, container}){
 
     function tagPopulate(){
         let html = ''
-        maquinas.forEach(tag=>{
+        machines.forEach(tag=>{
             html += `<option value="${tag}">${tag}</option>`
         }) 
         page.inputs.tag.innerHTML = html
@@ -197,14 +197,18 @@ function createCore({window, container}){
                     detail: 'Realmente deseja concluir?',
                     window: 'main'
                 })){
-                    if(ipc.sendSync('registerRequisição', requisição)){
+                    const resp = ipc.sendSync('registerRequests', requisição)
+                    console.log(resp.erro)
+                    if(!resp.erro){
                         clear()
                         ipc.sendSync('dialogSuccess', {
                             msg:'Requisição registrada com sucesso!!!',
                             window: 'main'
                         })
                     }else{
-                        error('Erro inesperado! reinicie o programa e tente novamente!')
+                        if(!(resp.erro == 'source')){
+                            error(resp.erro)
+                        }
                     }
                 }
             }else{
@@ -234,11 +238,22 @@ function createCore({window, container}){
         }
     }
 
+    function formatProducts(products){
+        const products2 = {}
+        Object.keys(products).forEach(key=>{
+            products2[key]={
+                nome: products[key].descricao,
+                endereco: products[key].endereco,
+                quant:  products[key].estoque,
+            }
+        })
+        return products2
+    }
+
     function toCharge(){
-        setTimeout(()=>{},0)
         ipc.sendSync('setPermissionScanner', false)
-        products = ipc.sendSync('getRequestsProducts')   
-        maquinas = ipc.sendSync('getMaquinas')
+        products = formatProducts(ipc.sendSync('getProducts')) 
+        machines = ipc.sendSync('getMachines')
         colaboradores = ipc.sendSync('getColaboradores')
         eventEmitter.send('render', {})
         updateNatureza()

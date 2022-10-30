@@ -62,6 +62,10 @@ function createModels(connection){
             type: STRING,
             alloNull: false
         },
+        descricao: {
+            type: STRING,
+            alloNull: false
+        },
         endereco: {
             type: STRING,
             alloNull: false
@@ -74,22 +78,27 @@ function createModels(connection){
             type: INTEGER,
             alloNull: false
         },
-        descricao: {
-            type: STRING,
-            alloNull: false
-        },
         anterior:{
-            type: STRING,
+            type: INTEGER,
             alloNull: false
         },
         atual: {
+            type: INTEGER,
+            alloNull: false
+        },
+        origem: {
             type: STRING,
             alloNull: false
         },
-        origen: {
+        maquina: {
             type: STRING,
             alloNull: false
         },
+        matricula: {
+            type: STRING,
+            alloNull: false
+        },
+
     }
 
     create();

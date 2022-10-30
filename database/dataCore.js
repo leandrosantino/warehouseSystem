@@ -16,11 +16,8 @@ module.exports = (props)=>{
         products: {},
         colaboradores: {},
         utes: {},
-        maquinas: [],
+        machines: [],
         inventory: {},
-        naturezas:{
-            'Quebra': 0, 'Preventiva': 1, 'Melhoria': 2, 'Segurança': 3, 'Outros': 4,
-        },
     }
 
     async function importDataBase(dialog){
@@ -29,11 +26,11 @@ module.exports = (props)=>{
 
             if(fs.existsSync(source)){
                 json.setExcelDBpath(source)
-                const {products, colaboradores, utes, maquinas} = excel.getSheetData(path.normalize(source))
+                const {products, colaboradores, utes, machines} = excel.getSheetData(path.normalize(source))
                 dataBase.products = products
                 dataBase.colaboradores = colaboradores
                 dataBase.utes = utes
-                dataBase.maquinas = maquinas
+                dataBase.machines = machines
                 dataBase.inventory = await csv.importInventoryFile()
                 if(dialog){
                     events.sendSync('dialogSuccess', {
@@ -42,12 +39,14 @@ module.exports = (props)=>{
                     })
                 }
             }else{
-                events.sendSync('dialogSuccess', {
-                    msg: `Atenção!!! - Base de Dados não Selecionada! \n 
-                    Escolha o local da Base de Dados na janela de configurações
-                    para que o programa funcione normalmente!`,
-                    window: 'main',
-                })
+                if(dialog){
+                    events.sendSync('dialogSuccess', {
+                        msg: `Atenção!!! - Base de Dados não Selecionada! \n 
+                        Escolha o local da Base de Dados na janela de configurações
+                        para que o programa funcione normalmente!`,
+                        window: 'main',
+                    })
+                }
             }
                 
             return true
@@ -58,12 +57,73 @@ module.exports = (props)=>{
         }
     }
 
+    async function saveInventory(){
+        try{
+            const dateNow = dateFetures.getDateStr()
+            const excelSource = json.getExcelDBpath()
+            const moviments = []
+
+            Object.keys(dataBase.inventory).forEach(key=>{
+                if(dataBase.inventory[key].tipo == 'inalterado'){
+                    delete dataBase.inventory[key]
+                }
+            })
+    
+            Object.keys(dataBase.inventory).forEach(key=>{
+                const {date, tipo, quantidade} = dataBase.inventory[key]
+                if(tipo == 'Entrada' || tipo == 'Saída'){
+                    moviments.push({
+                        data: date,
+                        codigo: key,
+                        tipo,
+                        quant: quantidade,
+                    })
+                }
+            })
+            
+            if(fs.existsSync(excelSource)){
+
+                if(moviments.length > 0){
+                    await macroExe.executeMacro({   
+                        filePath: path.normalize(excelSource),
+                        macroName: 'Module1.registerMovement',
+                        args: moviments,
+                    })
+                    await updateHistory(dataBase.inventory)
+                }
+
+                dataBase.inventory = {}
+                await csv.updateInventoryFile(dataBase.inventory)
+
+                importDataBase()
+
+                events.sendSync('dialogSuccess', {
+                    msg: 'Sucesso! - Inventário Salvo!!',
+                    window: 'main',
+                })
+
+                return true
+
+            }else{
+                events.sendSync('dialogSuccess', {
+                    msg: `Atenção!!! - Base de Dados não Selecionada! \n 
+                    Escolha o local da Base de Dados na janela de configurações
+                    para que o programa funcione normalmente!`,
+                    window: 'main',
+                })
+                return false
+            }
+        }catch{
+            return false
+        }
+    }    
+
     async function registerInventoryCount(data){
         try{
             const {codigo, atual} = data
             const produto = dataBase.products[codigo]
             const diff  = produto.estoque-atual
-            const type = diff>0?'saída':'entrada' 
+            const type = diff>0?'Saída':'Entrada' 
             const quantidade = Math.abs(diff)
 
             if(!produto){
@@ -73,8 +133,6 @@ module.exports = (props)=>{
 
             dataBase.inventory[codigo] = {
                 date: dateFetures.getDateStr(),
-                descricao: produto.descricao,
-                endereco: produto.endereco,
                 tipo: diff == 0?'inalterado':type,
                 quantidade,
                 atual,
@@ -132,20 +190,7 @@ module.exports = (props)=>{
         }
     }
 
-    async function itemOutput(data){
-        try{
-            await sqlite.Historico.create({
-                ...dateFetures.getDateforHistorico(),
-                ...data,
-            })
-            return true
-        }catch(err){
-            events.sendSync('dialogError', `Erro dataCore - ${err}`)
-            return false
-        }
-    }
-
-    async function getHistorico(conditions){
+    async function getHistory(conditions){
         try{ 
             const historico = await sqlite.Historico.findAll({
                 where: conditions,
@@ -160,16 +205,52 @@ module.exports = (props)=>{
             })
             return resp
         }catch(err){ 
-            events.sendSync('dialogError', `Erro dataCore - ${err}`)
+            events.sendSync('dialogError', `Erro ao importar histórico!  - ${err}`)
             return false
         }
     }
 
+    async function updateHistory(data){
+        try{
+            const formatData = []
+            const obj = data.itens?data.itens:data
+            
+            Object.keys(obj).forEach(key=>{
+                const item = obj[key]
+                formatData.push({
+                    codigo: key,
+                    descricao: item.nome?item.nome:dataBase.products[key].descricao,
+                    endereco: item.endereco?item.endereco:dataBase.products[key].endereco,
+                    tipo: item.tipo?item.tipo:'Saída',
+                    quantidade: item.quantE?item.quantE:item.quantidade,
+                    anterior: item.anterior?item.anterior:item.quant,
+                    atual: item.atual?item.atual:item.quant-item.quantE,
+                    origem: item.origem?item.origem:'Requisição',
+                    maquina: data.tag?data.tag:'outros',
+                    matricula: data.matricula?data.matricula: '188'
+                })
+            })
+            
+            console.log(formatData)
+
+            formatData.forEach(async item=>{
+                await sqlite.Historico.create({
+                    ...dateFetures.getDateforHistorico(),
+                    ...item,
+                })
+            })
+            
+            return true
+        }catch(err){
+            events.sendSync('dialogError', `Erro ao salvar histórico! - ${err}`)
+            return false
+        }
+    }
    
     async function generateSheetHistoric(conditions){
         try{ 
 
-            const historic = await getHistorico(conditions)
+            const historic = await getHistory(conditions)
 
             if(historic.length != 0){
                 const sheetData = []
@@ -210,44 +291,13 @@ module.exports = (props)=>{
         }
     }
 
-    function PDFformatData(dados){
-        dados.numero = json.getRequestNumber()
-        dados.turno = dateFetures.getTurno()
-        dados.ute = dataBase.utes[dados.tag]
-        const arrayNat = ['', '', '', '', '']
-        arrayNat[dataBase.naturezas[dados.natureza]] = 'X'
-        dados.natureza = arrayNat
-        dados.material = []
-
-        Object.keys(dados.itens).forEach((key, index)=>{
-            const {nome, quantR, quantE} = dados.itens[key]
-            index++
-            dados.material.push({
-                index, codigo: key, descricao: nome, quantR, quantE,
-            })
-        })
-
-        const materialLen = dados.material.length
-        if(materialLen < 6){
-            const diff = 6 - materialLen
-            let index = materialLen
-            for(let i=1;i<=diff;i++){
-                index++
-                dados.material.push({
-                    index, codigo:'', descricao:'', quantR:'', quantE:'',
-                })
-            }
-        }
-
-        return dados
-    }
-
-    async function registerRequisição(dados){
+    async function registerRequests(dados){
         const {itens} = dados
         const moviments = []
         const dateNow = dateFetures.getDateStr()
-        dados.data = dateNow
-        dados.hora = dateFetures.getHourstr()
+        dados.ute = dataBase.utes[dados.tag]
+
+        console.log(dados)
 
         Object.keys(itens).forEach(key=>{
             moviments.push({
@@ -259,44 +309,47 @@ module.exports = (props)=>{
         })
 
         try{
-            if(fs.existsSync(json.getPDFpath())){
-                const source = json.getExcelDBpath()
-                await macroExe.executeMacro({
-                    filePath: path.normalize(source),
-                    macroName: 'Module1.registerMovement',
-                    args: moviments,
-                }) 
-                await PDF.generate(PDFformatData(dados))
-                await importDataBase()
-                events.sendSync('getWindows', 'main').webContents.send('resetMain', 'requisitar')
-                
-                return true
+            
+            const excelSource = json.getExcelDBpath()
+            if(fs.existsSync(excelSource)){
+                if(fs.existsSync(json.getPDFpath())){
+
+                    await PDF.generate(dados)
+                    await macroExe.executeMacro({
+                        filePath: path.normalize(excelSource),
+                        macroName: 'Module1.registerMovement',
+                        args: moviments,
+                    }) 
+
+                    updateHistory(dados)
+
+                    await importDataBase()
+                    events.sendSync('getWindows', 'main').webContents.send('resetMain', 'requisitar')
+                    return {}
+                    
+                }else{
+                    events.sendSync('dialogSuccess', {
+                        msg: `Atenção!!! - Pasta de PDFs não selecionada! \n 
+                        Escolha o local para salvar os PDFs na janela de configurações
+                        para que o programa funcione normalmente!`,
+                        window: 'main',
+                    })
+                    return {erro: 'source'}
+                }
             }else{
                 events.sendSync('dialogSuccess', {
-                    msg: `Atenção!!! - Pasta de PDFs não selecionada! \n 
-                    Escolha o local para salvar os PDFs na janela de configurações
+                    msg: `Atenção!!! - Base de Dados não Selecionada! \n 
+                    Escolha o local da Base de Dados na janela de configurações
                     para que o programa funcione normalmente!`,
                     window: 'main',
                 })
-                return false
+                return {erro: 'source'}
             }
+            
         }catch(err){
-            console.log(err)
-            return false
+            return {erro: String(err)}
         }
     }    
- 
-    function getRequestsProducts(){
-        const products2 = {}
-        Object.keys(dataBase.products).forEach(key=>{
-            products2[key]={
-                nome: dataBase.products[key].descricao,
-                endereco: dataBase.products[key].endereco,
-                quant:  dataBase.products[key].estoque,
-            }
-        })
-        return products2
-    }
 
     function selectExcelDBpath(){
         const source = events.sendSync('dialogPath', {
@@ -329,22 +382,21 @@ module.exports = (props)=>{
  
     function declareEvents(){
         //Produtos
-            events.on('getProducts', (event, args)=>{
+            events.on('getProduct', (event, args)=>{
                 event.returnValue = args?dataBase.products[args]:dataBase.products
-            })
-            events.on('changeStock', (event, args)=>{
-                changeStock(args)
-                event.returnValue = true
-            })            
+            })  
+            ipcMain.on('getProducts', (event, args)=>{
+                event.returnValue = dataBase.products
+            })       
         //Histórico
-            events.on('getHistorico', async (event, args)=>{
-                event.returnValue = await getHistorico(args)
-            })
-            events.on('updateHistorico', (event, args)=>{
-                event.returnValue = excel.updateHistorico(args)
+            events.on('getHistory', async (event, args)=>{
+                event.returnValue = await getHistory(args)
             })
             events.on('itemOutput', async (event, args)=>{
                 event.returnValue = await itemOutput(args)
+            })
+            ipcMain.on('generateSheetHistoric', async (event, args)=>{
+                event.returnValue =  await generateSheetHistoric(args)
             })
         //Inventário
             events.on('registerInventoryCount', async (event, args)=>{
@@ -356,25 +408,23 @@ module.exports = (props)=>{
             ipcMain.on('getInventory', (event, args)=>{
                 event.returnValue = dataBase.inventory
             })
+            ipcMain.on('saveInventory', async (event, args)=>{
+                event.returnValue = await saveInventory()
+            })
         //Ipc
             ipcMain.on('importDataBase', async (event, args)=>{
                 event.returnValue = await importDataBase(true)
                 events.sendSync('getWindows', 'main').webContents.send('resetMain', '')
             })
-            ipcMain.on('generateSheetHistoric', async (event, args)=>{
-                event.returnValue =  await generateSheetHistoric(args)
-            })
-            ipcMain.on('getRequestsProducts', (event, args)=>{
-                event.returnValue = getRequestsProducts()
-            })
-            ipcMain.on('getMaquinas', (event, args)=>{
-                event.returnValue = dataBase.maquinas
+           
+            ipcMain.on('getMachines', (event, args)=>{
+                event.returnValue = dataBase.machines
             })
             ipcMain.on('getColaboradores', (event, args)=>{
                 event.returnValue = dataBase.colaboradores
             })
-            ipcMain.on('registerRequisição', async(event, args)=>{
-                event.returnValue = await registerRequisição(args)
+            ipcMain.on('registerRequests', async(event, args)=>{
+                event.returnValue = await registerRequests(args)
             })
             ipcMain.on('setExcelDBpath', (event, args)=>{
                 event.returnValue = selectExcelDBpath()
@@ -405,6 +455,8 @@ module.exports = (props)=>{
 
     return {
         init,
+        getHistory,
+        updateHistory,
     }
 
 }

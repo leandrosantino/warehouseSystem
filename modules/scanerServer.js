@@ -9,7 +9,7 @@ function createSerialMonitor({ipcMain, events}){
 
     const actions = {
         getData({code}){
-            const produto = events.sendSync('getProducts', code) 
+            const produto = events.sendSync('getProduct', code.replace(' ', '')) 
             if(produto){
                 return toCode(produto)
             }else{
@@ -21,7 +21,7 @@ function createSerialMonitor({ipcMain, events}){
         },
         sendUpdate({code, estoque, windowName}){ 
             if(permission){
-                const produto = events.sendSync('getProducts', code) 
+                const produto = events.sendSync('getProduct', code) 
                 if(produto){
 
                     events.sendAsync('registerInventoryCount',{
@@ -108,7 +108,7 @@ function createSerialMonitor({ipcMain, events}){
             console.log('Scanner Closed')
             return true
         }catch(err){
-            console.log(err)
+            //console.log(err)
             return false
         }
     }
@@ -121,25 +121,12 @@ function createSerialMonitor({ipcMain, events}){
         ipcMain.on('scannerclose', async (event, args)=>{
             event.returnValue = await close()
         })
-        ipcMain.on('getHistorico', (event, args)=>{
-            const now = getDate()
-            events.sendAsync('getHistorico', {
-                mes: now.mes,
-                ano: now.ano,
-                origen: 'inventario'
-            })
-            .then((historico)=>{
-                event.returnValue = historico
-            })
-            .catch(()=>{
-                event.returnValue = false
-            })
-        })
         ipcMain.on('setPermissionScanner', (event, args)=>{
             permission = args
             event.returnValue = true
         })
     }
+    
 
     function toCode(object){
         let str = '' 

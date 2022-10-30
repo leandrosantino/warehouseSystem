@@ -21,4 +21,4 @@ window.ipc.on('resetMain', (event, args)=>{
     console.log('update')
 })
 
-main()
+setTimeout(main, 500)

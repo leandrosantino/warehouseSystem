@@ -54,7 +54,7 @@ function createCore({window, container}){
             conected: false,
             user: 'Adler'
         }
-        setTimeout(()=>{ ipc.sendSync('setPermissionScanner', false) },0)
+        ipc.sendSync('setPermissionScanner', false)
         eventEmitter.send('render', data_Page)
         assignRoles()
         //login()

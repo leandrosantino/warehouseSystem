@@ -29,6 +29,8 @@ const windows = createBrowserWindows({
     icon: path.join(__dirname, './src/icon.png')
 })
 
+app.disableHardwareAcceleration()
+
 app.on('ready', ()=>{
     windows.createMain({
         width: 1000, 
@@ -42,7 +44,6 @@ app.on('window-all-closed', ()=>{
 }); 
 
 async function init(){
-
     emitters.events.on('getWindows', (event, args)=>{
         event.returnValue = windows[args]
     })

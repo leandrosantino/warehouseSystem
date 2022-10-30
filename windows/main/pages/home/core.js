@@ -28,9 +28,7 @@ function createLogicCore(window){
     }
 
     function toCharge(){
-        setTimeout(()=>{
-            ipc.sendSync('setPermissionScanner', false)
-        },0)  
+        ipc.sendSync('setPermissionScanner', false)
         eventEmitter.send('render', optionsPage)
         assignRoles()
         home.mainCase = page.mainCase

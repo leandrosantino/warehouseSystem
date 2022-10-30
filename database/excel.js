@@ -46,7 +46,7 @@ function createExcelModel(){
                     dataObject.push({
                         codigo: row[labels[0]],
                         classificacao: row[labels[1]]?row[labels[1]]:'',
-                        descricao: row[labels[2]],
+                        descricao: removeSpecialChar(row[labels[2]]),
                         endereco: row[labels[3]],
                         estoque: row[labels[4]],
                         minimo: row[labels[5]]?row[labels[5]]:0,
@@ -86,12 +86,12 @@ function createExcelModel(){
         try{
             const {sheet, start} = getWorksheet(workbook, 'DB_UTEs', 'Máquina')
             sheet.splice(0,start)
-            const utes = {}, maquinas = []
+            const utes = {}, machines = []
             sheet.forEach(item=>{
                 utes[item[0]] = item[1]
-                maquinas.push(item[0])
+                machines.push(item[0])
             })
-            return {utes, maquinas}
+            return {utes, machines}
         }catch(err){
             return {err}
         }
@@ -125,12 +125,12 @@ function createExcelModel(){
 
     function getSheetData(source){
         const workbook = xlsx.parse(source)
-        const {utes, maquinas} = getDButes(workbook)
+        const {utes, machines} = getDButes(workbook)
 
         return {
             products: getProducts(workbook),
             colaboradores: getColaboradores(workbook),
-            utes, maquinas,
+            utes, machines,
         }
     }
 
@@ -173,6 +173,23 @@ function createExcelModel(){
     function createXlsx({path, name, data}){
         const buffer = xlsx.build([{name, data}])
         fs.writeFileSync(path, buffer, {encoding: 'utf-8'})
+    }
+
+    function removeSpecialChar(str = String()){
+        let resp = str.replace(':', '')
+        resp = resp.replace(';', '')
+        resp = resp.replace(',', '')
+        resp = resp.replace(/(\r\n|\n|\r)/gm, '')
+        array= resp.split(' ')
+        resp = ''
+        array.forEach((char, index)=>{
+            const space = index==array.length-1?'': ' '
+            if(char != ''){
+                resp += `${char}${space}`
+            }
+        })
+    
+        return resp
     }
 
     return {

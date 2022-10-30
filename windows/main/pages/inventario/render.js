@@ -3,8 +3,7 @@ function createPage({eventEmitter, ejs, container, globalEvents}){
     function getElements(){
         const elements = {
             case:{id:'#caseTable'},
-            btImport: {id: '#btImport'},
-            btPlanilha: {id: '#btPlanilha'}
+            btRegistar: {id: '#btRegistar'}
         }
         
         for(iten in elements){ 
@@ -14,16 +13,14 @@ function createPage({eventEmitter, ejs, container, globalEvents}){
 
     function rendereventEmitter(){
         getElements()
-        eventEmitter.on('renderTable', (inventory)=>{
-            console.log(inventory)
+        eventEmitter.on('renderTable', (data)=>{ 
             page.case.innerHTML = ejs.createComponent({
                 source: __dirname,
                 filename: 'table.ejs',
-                data: {
-                    dados: inventory
-                }
-            })
+                data
+            }) 
         })
+        
     }
 
     function render(dados, container){

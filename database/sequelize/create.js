@@ -21,26 +21,6 @@ function dataBase(){
     async function close(){
         await connection.close()
     }
- 
-    async function getProdutos(){
-        try{
-
-            
-
-            const resp = {}
-            const produtos = await models.Produto.findAll()
-
-            produtos.forEach(produto=>{                
-                const {codigo, descricao, endereco, estoque} = produto
-                resp[codigo] = {descricao, endereco, estoque}
-            })
-
-            return resp
-   
-        }catch(err){
-            return {err}
-        }
-    }
 
     return {
         connection,
@@ -48,7 +28,6 @@ function dataBase(){
         close,
         ...models,
         Op,
-        getProdutos
     }
 }
   

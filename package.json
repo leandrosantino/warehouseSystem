@@ -8,7 +8,7 @@
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sqlite3",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "proto": "node ./test/db ",
+    "proto": "node ./test/datacore ",
     "py": "node ./test/python"
   },
   "build": {

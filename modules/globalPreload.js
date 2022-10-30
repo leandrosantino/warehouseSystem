@@ -2,7 +2,7 @@ module.exports = (args = {
     window
 })=>{
     const {
-        contextBridge,
+        contextBridge, 
         ipcRenderer,
     } = require("electron");
     const path = require('path')

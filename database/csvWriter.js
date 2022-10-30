@@ -57,7 +57,7 @@ module.exports  = ()=>{
         const data = await readerData()
         const obj = {}
 
-        if(data.length <= 1){
+        if(data.length <= 0){
             return {}
         }else{            
             data.forEach(item=>{

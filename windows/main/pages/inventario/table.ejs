@@ -22,14 +22,17 @@
     <table id="tabela" class="table">
         <tbody  id="table" class="scroll">
             <%
-                Object.keys(dados).forEach(key => {
-                    const row = dados[key]
+                Object.keys(dados).forEach(key => { 
+                const row = dados[key]
+
+                const product = products[key]
+
             %>
                 <tr style="height: 45px;">
                     <td style="width: 100px;" > <%- row.date       %> </td>
                     <td style="width: 100px;" > <%- key            %> </td>
-                    <td style="width: 360px;" > <%- row.descricao  %> </td>
-                    <td style="width:  80px;" > <%- row.endereco   %> </td>
+                    <td style="width: 360px;" > <%- product.descricao  %> </td>
+                    <td style="width:  80px;" > <%- product.endereco   %> </td>
                     <td style="width:  80px;" > <%- row.tipo       %> </td>
                     <td style="width:  60px;" > <%- row.quantidade %> </td>
                     <td style="width:  70px;" > <%- row.anterior   %> </td>
