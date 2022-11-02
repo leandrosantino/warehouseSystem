@@ -59,7 +59,6 @@ module.exports = (props)=>{
 
     async function saveInventory(){
         try{
-            const dateNow = dateFetures.getDateStr()
             const excelSource = json.getExcelDBpath()
             const moviments = []
 
@@ -193,7 +192,7 @@ module.exports = (props)=>{
     async function getHistory(conditions){
         try{ 
             const historico = await sqlite.Historico.findAll({
-                where: conditions,
+                where: conditions?conditions:{},
                 order: [
                     ['id', 'DESC'],
                 ],
@@ -227,11 +226,10 @@ module.exports = (props)=>{
                     atual: item.atual?item.atual:item.quant-item.quantE,
                     origem: item.origem?item.origem:'Requisição',
                     maquina: data.tag?data.tag:'outros',
-                    matricula: data.matricula?data.matricula: '188'
+                    matricula: data.matricula?data.matricula: '',
+                    class: dataBase.products[key].classificacao
                 })
             })
-            
-            console.log(formatData)
 
             formatData.forEach(async item=>{
                 await sqlite.Historico.create({
@@ -296,8 +294,6 @@ module.exports = (props)=>{
         const moviments = []
         const dateNow = dateFetures.getDateStr()
         dados.ute = dataBase.utes[dados.tag]
-
-        console.log(dados)
 
         Object.keys(itens).forEach(key=>{
             moviments.push({
@@ -389,11 +385,8 @@ module.exports = (props)=>{
                 event.returnValue = dataBase.products
             })       
         //Histórico
-            events.on('getHistory', async (event, args)=>{
+            ipcMain.on('getHistory', async (event, args)=>{
                 event.returnValue = await getHistory(args)
-            })
-            events.on('itemOutput', async (event, args)=>{
-                event.returnValue = await itemOutput(args)
             })
             ipcMain.on('generateSheetHistoric', async (event, args)=>{
                 event.returnValue =  await generateSheetHistoric(args)

@@ -3,12 +3,6 @@
     @use '../../../../sass/mixins' as mix;
     @use '../../../../sass/colors' as cor;
 
-    @mixin inputs_props {
-        height: 10px;
-        font-size: 12pt;
-        margin-left: 6px;
-        margin-right: 6px
-    }
 
     #iconsearch{
         color: cor.$emphasis;
@@ -25,6 +19,20 @@
             width: 50%;
             height: 100%;
             //border: 1px solid black;
+
+            #voltar{
+                position: absolute;
+                @include mix.button-class;
+                @include mix.flex-center;
+                background-color: white;
+                color: cor.$theme3;
+                width: 100px;
+                height: 30px;
+                font-size: 12pt;
+                #iconBt{
+                    width: 30px;
+                }
+            }
 
             .label{
                 font-weight: bold
@@ -64,7 +72,7 @@
 
                 #matricula, #tag, #natureza, #produto, #requisitada, #entregue, #pesquisa{
                     @include mix.input-class;
-                    @include inputs_props;
+                    @include mix.inputs_props;
                 }
                 #matricula{width: 50px; }
                 #tag{

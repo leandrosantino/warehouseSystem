@@ -29,7 +29,8 @@ module.exports = ()=>{
 
     function getDateStr(){
         const now = new Date()
-        const dia = now.getDate()
+        let dia = now.getDate()
+        if(String(dia).length < 2) dia = `0${dia}`
         const mes = MonthNum[now.getMonth()]
         const ano = now.getFullYear()
         return `${dia}/${mes}/${ano}`

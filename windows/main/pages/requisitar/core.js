@@ -231,6 +231,10 @@ function createCore({window, container}){
         eventEmitter.DOM('change', page.inputs.tag, updateTag)
         eventEmitter.DOM('change', page.inputs.matricula, updateRequisitante)
         eventEmitter.DOM('click', page.buttons.cancelar, cancelar)
+        eventEmitter.DOM('click', page.buttons.voltar, ()=>{
+            globalEvents.send('resetWindow')
+        })
+
         for(index in page.buttons.natureza){
             if(!isNaN(index)){
                 eventEmitter.DOM('click', page.buttons.natureza[index], updateNatureza)
@@ -250,7 +254,7 @@ function createCore({window, container}){
         return products2
     }
 
-    function toCharge(){
+    function toCharge(matricula = ''){
         ipc.sendSync('setPermissionScanner', false)
         products = formatProducts(ipc.sendSync('getProducts')) 
         machines = ipc.sendSync('getMachines')
@@ -261,6 +265,14 @@ function createCore({window, container}){
         tagPopulate()
         updateQuantItems()
         assignRoles()
+
+        if(colaboradores[matricula]){
+            requisição.requisitante = colaboradores[matricula]
+            requisição.matricula = matricula
+            page.inputs.matricula.value = matricula
+            page.labels.requisitante.style.color = '#000'
+            page.labels.requisitante.innerHTML = requisição.requisitante
+        }
     }
     
 

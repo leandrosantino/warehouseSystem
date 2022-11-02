@@ -98,7 +98,10 @@ function createModels(connection){
             type: STRING,
             alloNull: false
         },
-
+        class: {
+            type: STRING,
+            alloNull: false
+        },
     }
 
     create();

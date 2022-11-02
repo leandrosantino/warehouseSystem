@@ -61,10 +61,11 @@ $width_sideBar: 250px;
             align-items: center;
         }
     
-        #requisicoes{display: none;}
+        #requests{display: none;}
         #estoque{display: none;}
         #inventario{display: none;}
         #config{display: none;}
+        #requisitar{display: none;}
 
         .btOption{
             border: none;
@@ -166,13 +167,79 @@ $width_sideBar: 250px;
     }
 
 #welcomePage{
-    display: flex;
-    align-items: center;
+    @include mix.flex-center;
     flex-direction: column;
+    margin-top: -50px;
     width: 100%;
     height: 100%;
 
-    div{
+    .row{
+        @include mix.flex-center;
+        #title{
+            font-size: 70pt;
+            font-weight: bold;
+        }
+        #sub-title{
+            font-size: 20pt;
+            font-style: italic;
+            font-weight: 200;
+        }
+        #info{
+            margin-top: 20px;
+            font-size: 12pt;
+            font-style: italic;
+            font-weight: 200;
+        }
+        &#caseTitle{
+            flex-direction: column;
+            height: 30%;
+        }
+        &#caseInput{
+            height: 5%;
+
+            label{
+                margin-right: 10px;
+                font-weight: bold;
+                font-size: 14pt;
+            }
+
+            input{
+                @include mix.input-class;
+                font-size: 11pt;
+                width: 80px;
+            }
+
+            button{
+                @include mix.button-class;
+                background-color: cor.$primary;
+                color: white;
+                width: 75px;
+                padding: .5rem;
+                margin-left: 10px;
+            }
+
+        }
+    }
+
+
+    #logoAdler{
+        height: 60px;
+    }
+    #caseImg{
+        display: flex;
+        justify-content: center;
+    }
+   
+
+}
+
+
+
+
+
+/*
+
+     div{
         width: 80%;
         h1{
             font: bold 40pt arial;
@@ -193,14 +260,5 @@ $width_sideBar: 250px;
         }
     }
 
-}
 
-
-#logoAdler{
-    height: 60px;
-    margin-top: 20px;
-}
-#caseImg{
-    display: flex;
-    justify-content: center;
-}
+*/

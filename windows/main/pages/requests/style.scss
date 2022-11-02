@@ -1,0 +1,169 @@
+// Estilização da Tela de Inventário
+
+    @use '../../../../sass/mixins' as mix;
+    @use '../../../../sass/colors' as cor;
+
+    table{
+        text-align: center;
+        
+    }
+
+    #case{ 
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        margin-top: 20px;
+        
+        
+        #title{
+            font-size: 21pt;
+            font-weight: bold;
+            color: cor.$emphasis;
+        }
+
+        #tableArea{
+            overflow: auto;
+            height: 500px;
+        }
+
+        #BtDelete{
+            border: none;
+            color: white;
+            background-color: cor.$cancel;
+            border-radius: 5px;
+        }
+
+        #table{
+            background-color: rgb(219, 219, 219);
+        }
+
+        #rotulo{
+            
+            background-color: cor.$theme3;
+            color: #fff
+        }
+
+        #caseTable{
+            @include mix.flex-center;
+            flex-direction: column;
+            margin-top: 15px;
+            width: 95%;
+
+            #Data        {width:  8%;}
+            #Descrição   {width: 25%;}
+            #Endereço    {width:  7%;}
+            #Tipo        {width:  7%;}
+            #Quant       {width:  5%;}
+            #E-Ante      {width:  5%;}
+            #E-Atual     {width:  5%;}
+            #Origen      {width:  8%;}
+            #Máquina     {width:  6%;}
+            #Requisitante{width: 15%;}
+            #func        {width:  4%;}
+    
+        }
+
+        .row{
+            @include mix.flex-center;
+            flex-direction: row;
+            justify-content: center;
+            margin-top: 15px;
+            width: 95%;
+
+
+            .col{
+                @include mix.flex-center;
+                margin-right: 5px;
+                #labelMaterial{
+                    margin-right: 10px;
+                }
+            }
+
+            .select{
+                padding: 0px;
+                width: 160px;
+                height: 25px;
+                font-size: 11pt;
+                border-radius: 7px;
+                margin-left: 3px;
+                option{
+                    font-size: 10pt;
+                }
+                &#ano{width: 60px;}
+                &#mes{width: 60px;}
+                &#class{width: 80px;}
+                &#origem{width: 100px;}
+                &#tipo{width: 80px;}
+            }
+
+            #dia{width: 40px;}
+
+            #label_search{
+                margin-right: -29px;
+                margin-top: 3px;
+                z-index: 100;   
+            }
+
+            #filter{
+                @include mix.button-class;
+                background-color: cor.$primary;
+                color: white;
+                font-size: 12pt;
+                width: 90px;
+                height: 25px;
+            }
+
+            #close_search{
+                z-index: 100;
+                height: 23px;
+                width: 25px;
+                border-top-right-radius: 6px;
+                border-bottom-right-radius: 6px;
+                border: none;
+                margin-left: -31.8px;
+                margin-top: 1px;
+                font-weight: 20;
+                background-color: rgba(255, 255, 255, 0);
+                &:hover{
+                    //background-color: rgb(209, 209, 209);
+                    color: cor.$cancel;
+                }
+            }
+
+            .inputs{
+                @include mix.input-class;
+                @include mix.inputs_props;
+            }
+            #pesquisa{
+                width: 200px;
+                z-index: 1;
+                text-indent: 20px;
+            }
+    
+            .label{
+                font-weight: bold
+            }
+    
+            #iconsearch{
+                color: cor.$emphasis;
+            }
+
+            .bts{
+                @include mix.button-class;
+                color: white;
+                background-color: cor.$secondary;
+                width: 170px;
+                height: 35px;
+                margin-left: 5px;
+            }
+
+            
+
+        }
+
+
+    }
+
+    

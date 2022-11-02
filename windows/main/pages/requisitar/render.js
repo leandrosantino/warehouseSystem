@@ -12,7 +12,7 @@ function createPage({eventEmitter, ejs, container, globalEvents}){
             inputs: {
                 matricula: query('#matricula'),
                 tag: query('#tag'),
-                produto: query('#produto'),
+                produto: query('#produto'), 
                 quant_Req: query('#requisitada'),
                 quant_Ent: query('#entregue'),
                 pesquisa: query('#pesquisa'),
@@ -31,7 +31,8 @@ function createPage({eventEmitter, ejs, container, globalEvents}){
                 delete_iten: query('#deleteItem'),
                 concluir: query('#concluir'),
                 cancelar: query('#cancelar'),
-                natureza: document.getElementsByName('natureza')
+                natureza: document.getElementsByName('natureza'),
+                voltar: query('#voltar')
             },
             labels: {
                 requisitante: query('#requisitante'),

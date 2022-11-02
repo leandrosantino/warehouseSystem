@@ -5,15 +5,17 @@ function createPage({eventEmitter, ejs, globalEvents}){
         const elements = {
             login:{id:'#login'},
             logout:{id:'#logout'},
-            requisitar:{id:'#requisitar'},
+            requisitar:{id:'#requisitar'},  
             mainCase :{id:'#mainCase'},
-            requisicoes :{id:'#requisicoes'},
+            requests :{id:'#requests'},
             estoque:{id:'#estoque'},
             config:{id:'#config'},
             inventario:{id:'#inventario'},
             btChangeSideBar:{id:'#iconUser'},
             sideBar:{id:'#side-bar'},
             nameUser:{id:'#nameUser'},
+            matricula: {id: '#matricula'},
+            btEntrar: {id: '#btEntrar'}
         }
         
         for(iten in elements){

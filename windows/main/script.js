@@ -10,8 +10,9 @@ function main(){
     screens.inventario = window.pages.create('inventario', {window, container})
     screens.requisitar = window.pages.create('requisitar', {window, container})
     screens.config = window.pages.create('config', {window, container})
+    screens.requests = window.pages.create('requests', {window, container})
 
-    //screens.inventario.toCharge()
+    //screens.requisitar.toCharge()
 }
 
 window.events.on('resetWindow', main)
@@ -21,4 +22,4 @@ window.ipc.on('resetMain', (event, args)=>{
     console.log('update')
 })
 
-setTimeout(main, 500)
+setTimeout(main, 1000)

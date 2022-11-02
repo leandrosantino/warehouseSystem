@@ -58,3 +58,10 @@
         font-size: 14pt;
     }
 
+    @mixin inputs_props {
+        height: 10px;
+        font-size: 12pt;
+        margin-left: 6px;
+        margin-right: 6px
+    }
+

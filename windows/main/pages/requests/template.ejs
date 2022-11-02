@@ -1,0 +1,72 @@
+<div id="case">
+
+    <div class="row" id="title">
+        REQUISIÇÕES
+    </div>
+
+    <div class="row">
+
+        <div class="col">
+            <label for="pesquisa" id="label_search" class="label">
+                <span id="iconsearch" >
+                    <%- icons.search %> 
+                </span>
+            </label>
+            <input type="text" id="pesquisa" class="inputs">
+            <button id="close_search">X</button>
+        </div>
+
+        <div class="col">            
+            <label for="tipo" class="label">Tipo:</label>
+            <select id="tipo" class="select">
+                <option value="todos" selected >Todos</option>
+                <option value="Entrada" >Entrada</option>
+                <option value="Saída" >Saída</option>
+                <option value="Retorno" >Retorno</option>
+            </select>
+        </div>
+
+        <div class="col">            
+            <label for="origem" class="label">Origem:</label>
+            <select id="origem" class="select">
+                <option value="todos" selected >Todos</option>
+                <option value="Requisição" >Requisição</option>
+                <option value="Inventário" >Inventário</option>
+            </select>
+        </div>
+
+        <div class="col">            
+            <label for="class" class="label">Class.:</label>
+            <select id="class" class="select">
+                <option value="todos" selected >Todos</option>
+                <option value="A"  >Crítico</option>
+                <option value="" >Normal</option>
+            </select>
+        </div>
+
+        <div class="col">            
+            <label for="dia" class="label">Dia:</label>
+            <input type="number" value="1" min="1" max="31" class="inputs" id="dia">
+        </div>
+
+        <div class="col">            
+            <label for="mes" class="label">Mês:</label>
+            <select id="mes" class="select"></select>
+        </div>
+
+        <div class="col">            
+            <label for="ano" class="label">Ano:</label>
+            <select id="ano" class="select"></select>
+        </div>
+
+        <div class="col">
+            <button id="filter" >Filtrar</button>
+        </div>
+
+    </div>
+
+    <div id="caseTable">
+        
+    </div>
+    
+</div>  

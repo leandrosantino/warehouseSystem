@@ -4,10 +4,11 @@ module.exports = ({ipcMain, events})=>{
     const {admin, editor} = {
         admin: {
             pages: [
-                'requisicoes',
+                'requests',
                 'inventario',
                 'estoque',
                 'config',
+                'requisitar',
             ],
             actions: [
                 'user manage',

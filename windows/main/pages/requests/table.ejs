@@ -1,0 +1,49 @@
+
+<div style="width: 100%;">
+    <table id="rotulo" class="table"style="width: 100%;">
+        <tbody style="width: 100%;">
+            <tr id="border" > 
+                <td id="Data"         > Data          </td>
+                <td id="Descrição"    > Descrição     </td>
+                <td id="Endereço"     > Endereço      </td> 
+                <td id="Tipo"         > Tipo          </td>
+                <td id="Quant"        > Quant         </td>
+                <td id="E-Ante"       > E. Ante.      </td>
+                <td id="E-Atual"      > E. Atual      </td>
+                <td id="Origen"       > Origem        </td>
+                <td id="Máquina"      > Máqui.       </td>
+                <td id="Requisitante" > Colab.  </td>
+                <td id="func"         >   </td>
+
+            </tr>
+        </tbody> 
+    </table>            
+</div>
+ 
+<div id="tableArea" style="width: 100%;">
+    <table id="tabela" class="table" style="width: 100%;">
+        <tbody  id="table" class="scroll" style="width: 100%;">
+            <%
+                dados.forEach(row => { 
+                const colab = colaboradores[row.matricula]
+
+            %>
+                <tr style="height: 45px;">
+                    <td id="Data"         > <%- row.date       %> </td>
+                    <td id="Descrição"    > <%- row.descricao  %> </td>
+                    <td id="Endereço"     > <%- row.endereco   %> </td>
+                    <td id="Tipo"         > <%- row.tipo       %> </td>
+                    <td id="Quant"        > <%- row.quantidade %> </td>
+                    <td id="E-Ante"       > <%- row.anterior   %> </td>
+                    <td id="E-Atual"      > <%- row.atual      %> </td>
+                    <td id="Origen"       > <%- row.origem      %>  </td>
+                    <td id="Máquina"      > <%- row.maquina      %> </td>
+                    <td id="Requisitante" > <%- colab?colab:''%>  </td>
+                    <td id="func"         >
+                        <button id="BtDelete" onclick="" ><%- icons.close%></button>
+                    </td>
+                </tr>     
+            <%});%>   
+        </tbody>   
+    </table>                      
+</div>
