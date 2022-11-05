@@ -18,17 +18,32 @@ module.exports = ()=>{
     }
     const getPDFpath = ()=>{return config.PDFpath}
 
+    function setRequestNumber(num){
+        config.requestNumber = num
+        saveJson()
+    }
+
     function getRequestNumber(){
         config.requestNumber += 1
         saveJson()
         return config.requestNumber
+    }
+
+    const getUserData = () => {return config.user}
+
+    function setUserData(userData){
+        config.userData = userData
+        saveJson()
     }
  
     return {
         setExcelDBpath,
         getExcelDBpath,
         getRequestNumber,
+        setRequestNumber,
         setPDFpath,
         getPDFpath,
+        getUserData,
+        setUserData,
     }
 }

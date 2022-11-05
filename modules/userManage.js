@@ -1,53 +1,55 @@
 // User Management
 module.exports = ({ipcMain, events})=>{
 
-    const {admin, editor} = {
-        admin: {
-            pages: [
-                'requests',
-                'inventario',
-                'estoque',
-                'config',
-                'requisitar',
-            ],
-            actions: [
-                'user manage',
-            ], 
-        }, 
-        editor: {
-            pages: [
-                'requisicoes',
-            ],
-            actions: [], 
-        }
+    const json = require('../database/jsonCore')()
+
+    const permissions = {
+        pages: [
+            'requests',
+            'inventario',
+            'estoque',
+            'config',
+            'requisitar',
+        ],
+        actions: [
+            'user manage',
+        ], 
     }
 
-    const users = {
-        'leandro_santino': {
-            name: 'Leandro Santino',
-            password: 'alpha45c',
-            permissions: admin
-        },
-        'eliabe_carlos': {
-            name: 'Eliabe Carlos',
-            password: 'calanguinho',
-            permissions: editor
-        },
-    }
+    const user = json.getUserData()
+
+    console.log(user)
 
     let userConneted = {}
 
-    function createUser(){
+    const getSecurityQuestion = () => {return user.securityQuestion}
 
+    function loginWithSecurityQuestion(email, response){
+        if(user.securityQuestionResponse === response){
+            if(user.email === email ){
+                user.permissions = permissions
+                userConneted = user
+                return user
+            }else{
+                return false
+            }
+        }else{
+            false
+        }
+    }
+
+    function createUser(UserData){
+        json.setUserData(UserData)
+        return true
     }
 
     function login(loginData = {
-        user,
+        email,
         pass,
     }){ 
-        const user = users[loginData.user]
-        if(user){
-            if(users.pass === loginData.pass){
+        if(loginData.email === user.email){
+            if(user.pass === loginData.pass){
+                user.permissions = permissions
                 userConneted = user
                 return user
             }else{
@@ -84,11 +86,21 @@ module.exports = ({ipcMain, events})=>{
             event.returnValue = getConectedUser()
         })
 
+        ipcMain.on('getSecurityQuestion', (event, args)=>{
+            event.returnValue = getSecurityQuestion()
+        })
+
+        ipcMain.on('loginWithSecurityQuestion', (event, args)=>{
+            event.returnValue = loginWithSecurityQuestion(args)
+        })
+
+        ipcMain.on('createUser', (event, args)=>{
+            event.returnValue = createUser(args)
+        })
+
+
         ipcMain.on('login', (event, args)=>{
-            event.returnValue = login({
-                user: args.user,
-                pass: args.pass
-            })
+            event.returnValue = login(args)
         })
 
         ipcMain.on('logout', (event, args)=>{
@@ -102,6 +114,9 @@ module.exports = ({ipcMain, events})=>{
         init,
         login,
         getConectedUser,
+        getSecurityQuestion,
+        loginWithSecurityQuestion,
+        createUser,
     }
 
     return product

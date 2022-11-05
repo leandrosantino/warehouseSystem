@@ -15,6 +15,24 @@
         border-radius: 15px;
         color: cor.$theme3;
 
+        #voltar{
+            position: absolute;
+            top: 45px;
+            left: 230px;
+            @include mix.button-class;
+            @include mix.flex-center;
+            background-color: white;
+            color: cor.$theme3;
+            width: 100px;
+            height: 30px;
+            font-size: 12pt;
+            
+            #iconBt{
+                width: 30px;
+            }
+        }
+
+
         div{ 
             @include mix.flex-center;
             width: 100%;

@@ -6,6 +6,7 @@
         page.input_password = document.querySelector('#input-senha')
         page.checkbox = document.querySelector('#checkbox')
         page.loginAlert = document.querySelector('#login-alert')
+        page.voltar = document.querySelector('#voltar')
     }
 
     function renderEvents(){

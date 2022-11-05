@@ -218,6 +218,13 @@ function createCore({window, container}){
             error('Matricula não cadastrada!')
         }
     }
+
+    function setBtVoltar(){
+        const user = ipc.sendSync('getConectedUser')
+        if(user?.name){
+            page.buttons.voltar.style.display = 'none'
+        }
+    }
  
     function assignRoles(){ 
         eventEmitter.DOM('click', page.buttons.close_search, ()=>{
@@ -265,6 +272,7 @@ function createCore({window, container}){
         tagPopulate()
         updateQuantItems()
         assignRoles()
+        setBtVoltar()
 
         if(colaboradores[matricula]){
             requisição.requisitante = colaboradores[matricula]

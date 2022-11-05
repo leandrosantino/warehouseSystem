@@ -8,8 +8,8 @@ function createCore({window, container}){
  
     function login(){
         const login_date = {
-            user: 'leandro_santino',//page.input_user.value,//
-            password: 'alpha45c'//page.input_password.value,//
+            email: page.input_user.value,
+            password: page.input_password.value,
         }
 
         const user = window.ipc.sendSync('login', login_date)
@@ -47,6 +47,9 @@ function createCore({window, container}){
             if(keyCode == 13){login()}
         })
         eventEmitter.DOM('click', page.login, login)
+        eventEmitter.DOM('click', page.voltar, ()=>{
+            globalEvents.send('resetWindow')
+        })  
     }
 
     function toCharge(){

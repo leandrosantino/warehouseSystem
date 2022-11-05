@@ -12,7 +12,7 @@ function main(){
     screens.config = window.pages.create('config', {window, container})
     screens.requests = window.pages.create('requests', {window, container})
 
-    //screens.requisitar.toCharge()
+    //screens.login.toCharge()
 }
 
 window.events.on('resetWindow', main)

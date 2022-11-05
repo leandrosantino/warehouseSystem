@@ -55,7 +55,7 @@ function createPage({eventEmitter, ejs, globalEvents}){
                 page.login.style.display = 'inherit'
                 page.config.style.display = 'none'
                 page.logout.style.display = 'none'
-                page.requisicoes.style.display = 'none'
+                page.requests.style.display = 'none'
                 page.inventario.style.display = 'none'
             }
         })
