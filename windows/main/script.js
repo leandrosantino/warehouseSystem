@@ -11,9 +11,18 @@ function main(){
     screens.requisitar = window.pages.create('requisitar', {window, container})
     screens.config = window.pages.create('config', {window, container})
     screens.requests = window.pages.create('requests', {window, container})
+    screens.moviments = window.pages.create('moviments', {window, container})
 
-    //screens.login.toCharge()
+    //screens.moviments.toCharge()
+
 }
+
+window.ipc.on('refreshRequestData', (event, args)=>{
+    screens.requisitar.setData()
+})
+window.ipc.on('refreshMovimentsData', (event, args)=>{
+    screens.moviments.setData()
+})
 
 window.events.on('resetWindow', main)
 window.ipc.on('resetMain', (event, args)=>{
@@ -22,4 +31,4 @@ window.ipc.on('resetMain', (event, args)=>{
     console.log('update')
 })
 
-setTimeout(main, 1000)
+setTimeout(main, 1500)

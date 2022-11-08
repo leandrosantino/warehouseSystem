@@ -3,7 +3,7 @@
    <div id="title">Configurações</div>
 
    <div id="body">
-
+ 
       <div class="caseInput">
          <label for="DBpath">Local da Planilha da Base de Dados:</label>
          <input type="text" id="DBpath" class='input' disabled>
@@ -25,8 +25,37 @@
       </div>
 
       <div class="caseInput">
-         
+         <div id="userTitle">Atualizar Dados de Usuario</div>
       </div>
+
+      <div class="caseInput UserData" >
+         <label for="upUser">Usuário:</label>
+         <input type="text" id="upUser" class='input' >
+      </div>
+      
+      <div class="caseInput UserData" >
+         <label for="Pass">Nova Senha:</label>
+         <input type="password" id="NewPass" maxlength="8" class='input' >
+      </div>
+
+      <div class="caseInput UserData" >
+         <label for="Pass">Senha Atual:</label>
+         <input type="password" id="Pass" maxlength="8" class='input' >
+      </div>
+
+      <div class="caseInput UserData">
+         <label for="checkbox" id="passView">
+            <input type="checkbox" name="view" id="checkbox">
+            <div><%- icons.check %></div>
+         </label>
+         <label for="checkbox" id="passlabel">Mostrar Senha</label>
+      </div>
+
+      <div class="caseInput UserData bt" >
+         <button id="btSalvar" >Salvar</button>
+      </div>
+
+      
 
    </div>
 

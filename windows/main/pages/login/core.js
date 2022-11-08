@@ -8,23 +8,20 @@ function createCore({window, container}){
  
     function login(){
         const login_date = {
-            email: page.input_user.value,
-            password: page.input_password.value,
+            email: page.input_user.value,//'arduino',//
+            password: page.input_password.value,//'esp8266',//
         }
 
         const user = window.ipc.sendSync('login', login_date)
         if(user){
-            if(login_date.password == user.password){
-
-                globalEvents.send('showAllowedScreens', {
-                    type: 'login',
-                    permissions: user.permissions.pages
-                })
-                globalEvents.send('setUserName', user.name)
-                globalEvents.send('toChargeRequisitar')                
-            }else{
-                eventEmitter.send('loginAlert', 'Usuário ou senha Incorretos!')
-            }
+            
+            globalEvents.send('showAllowedScreens', {
+                type: 'login',
+                permissions: user.permissions.pages
+            })
+            globalEvents.send('setUserName', user.name)
+            globalEvents.send('toChargeRequisitar')                
+            
         }else{
             eventEmitter.send('loginAlert', 'Usuário ou senha Incorretos!')
         }

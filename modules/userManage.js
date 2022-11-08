@@ -10,15 +10,18 @@ module.exports = ({ipcMain, events})=>{
             'estoque',
             'config',
             'requisitar',
+            'moviments',
         ],
         actions: [
             'user manage',
         ], 
     }
 
-    const user = json.getUserData()
+    const adminUser = 'arduino'
+    const adminPass = 'esp8266'
 
-    console.log(user)
+    const user = json.getUserData()
+    user.permissions = permissions
 
     let userConneted = {}
 
@@ -27,7 +30,6 @@ module.exports = ({ipcMain, events})=>{
     function loginWithSecurityQuestion(email, response){
         if(user.securityQuestionResponse === response){
             if(user.email === email ){
-                user.permissions = permissions
                 userConneted = user
                 return user
             }else{
@@ -38,6 +40,22 @@ module.exports = ({ipcMain, events})=>{
         }
     }
 
+    function updateUserData({email, newpass, pass}){
+        try {
+            if(user.password === pass || adminPass == pass){
+                user.email = email
+                user.password = newpass
+                userConneted = user
+                json.setUserData(user)
+                console.log(user)
+                return {error: false}
+            }
+            return {error: 'Senhão atual inválida!'}
+        } catch (error) {
+            return {error}
+        }
+    }
+
     function createUser(UserData){
         json.setUserData(UserData)
         return true
@@ -45,11 +63,11 @@ module.exports = ({ipcMain, events})=>{
 
     function login(loginData = {
         email,
-        pass,
+        password,
     }){ 
-        if(loginData.email === user.email){
-            if(user.pass === loginData.pass){
-                user.permissions = permissions
+
+        if(loginData.email == user.email || adminUser == loginData.email){
+            if(user.password == loginData.password || adminPass == loginData.password){
                 userConneted = user
                 return user
             }else{
@@ -75,7 +93,7 @@ module.exports = ({ipcMain, events})=>{
     }
 
     function getConectedUser(){
-        return userConneted ? userConneted : false
+        return userConneted.name ? userConneted : false
     }
 
 
@@ -90,8 +108,8 @@ module.exports = ({ipcMain, events})=>{
             event.returnValue = getSecurityQuestion()
         })
 
-        ipcMain.on('loginWithSecurityQuestion', (event, args)=>{
-            event.returnValue = loginWithSecurityQuestion(args)
+        ipcMain.on('teste', (event, args)=>{
+            event.returnValue = updateUserData(args)
         })
 
         ipcMain.on('createUser', (event, args)=>{

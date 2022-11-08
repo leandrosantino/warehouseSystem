@@ -28,6 +28,65 @@
          width: 100%;
          margin-top: 30px;
 
+         #userTitle{
+            font-size: 22pt;
+            font-weight: bold;
+         }
+
+         &.UserData{
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            width: 50%;
+            margin-top: 15px;
+
+            label{
+               margin-right: 5px;
+               
+            }
+
+            #passlabel{
+               font-size: 12pt;
+            }
+
+            &.bt{
+               justify-content: flex-end;
+               margin-top: 0;
+            }
+
+            #btSalvar{
+               @include mix.button-class;
+               background-color: cor.$primary;
+               padding: 6px;
+               color: white;
+               width: 70px;
+               
+            }
+            .input{
+              margin: 0;
+              padding: 0;
+              @include mix.input-class;
+              padding: 3px;
+              font-size: 12pt;
+              text-indent: 5px;
+              width: 60%;
+            }
+         }
+
+         #passView{
+            & input {display: none;}
+            & div {
+                width: 13px;
+                height: 13px;
+                @include mix.flex-center;
+                background-color: rgb(178, 178, 178);
+                color:  #fff;
+                margin-right: 5px;
+                border-radius: 3px;
+            }
+            & input:checked + div{background-color: cor.$secondary;}
+        }
+
          .bts{
             @include mix.button-class;
 

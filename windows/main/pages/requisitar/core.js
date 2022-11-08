@@ -261,15 +261,19 @@ function createCore({window, container}){
         return products2
     }
 
-    function toCharge(matricula = ''){
-        ipc.sendSync('setPermissionScanner', false)
+    function setData(){
         products = formatProducts(ipc.sendSync('getProducts')) 
         machines = ipc.sendSync('getMachines')
         colaboradores = ipc.sendSync('getColaboradores')
-        eventEmitter.send('render', {})
-        updateNatureza()
         loadSearch()
         tagPopulate()
+    }
+
+    function toCharge(matricula = ''){
+        ipc.sendSync('setPermissionScanner', false)
+        eventEmitter.send('render', {})
+        setData()
+        updateNatureza()
         updateQuantItems()
         assignRoles()
         setBtVoltar()
@@ -284,13 +288,15 @@ function createCore({window, container}){
     }
     
 
+
     globalEvents.on('toChargeRequisitar', toCharge)
 
 
     return {
         toCharge,
         selectIten,
-        selected_item
+        selected_item,
+        setData,
     }
 
 }

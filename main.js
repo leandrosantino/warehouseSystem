@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 const createBrowserWindows = require('./modules/createWindow.js')
+const isdev = require('electron-is-dev')
 
 const emitters = {
     events: require('./modules/event.js')(),
@@ -15,8 +16,8 @@ const dataCore      = require('./database/dataCore')(emitters)
 const userManege    = require('./modules/userManage.js')(emitters)
 const scannerServer = require('./modules/scanerServer')(emitters)
 
-const reload = 0
-if(reload == 1){
+
+if(false){
     require("electron-reload")(__dirname, {
         electron: require(`${__dirname}/node_modules/electron`),
     });

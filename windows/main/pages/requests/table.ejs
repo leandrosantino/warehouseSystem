@@ -40,10 +40,15 @@
                     <td id="Máquina"      > <%- row.maquina      %> </td>
                     <td id="Requisitante" > <%- colab?colab:''%>  </td>
                     <td id="func"         >
-                        <button id="BtDelete" onclick="" ><%- icons.close%></button>
+                        <button 
+                            id="BtDelete"
+                            onclick="screens.requests.deleteRequest('<%- row.id %>')"
+                        >
+                            <%- icons.close%>
+                        </button>
                     </td>
                 </tr>     
             <%});%>   
         </tbody>   
-    </table>                      
+    </table>                       
 </div>

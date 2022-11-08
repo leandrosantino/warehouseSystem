@@ -32,7 +32,7 @@ module.exports = ()=>{
     const getUserData = () => {return config.user}
 
     function setUserData(userData){
-        config.userData = userData
+        config.user = userData
         saveJson()
     }
  

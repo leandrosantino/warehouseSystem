@@ -30,7 +30,8 @@ module.exports = ()=>{
         checkList: readSvg('checkList'),
         list: readSvg('list'),
         add: readSvg('add'),
-        back: readSvg('back')
+        back: readSvg('back'),
+        movement: readSvg('movement')
     }
 
     ipcMain.on('icons', (event, name)=>{

@@ -3,12 +3,18 @@
     function getElements(){
         const query = (id)=>document.querySelector(id)
 
-        const elements = {
+        const elements = { 
             btDB: query('#btDB'),
             btPDF: query('#btPDF'),
             btImport: query('#btImport'),
             DBpath: query('#DBpath'),
             PDFpath: query('#PDFpath'),
+            user: query('#upUser'),
+            newpass: query('#NewPass'),
+            pass: query('#Pass'),
+            checkbox: query('#checkbox'),
+            btSalvar: query('#btSalvar'),
+
         } 
 
         for(iten in elements){ 
@@ -18,6 +24,16 @@
 
     function renderEvents(){
         getElements()
+
+        eventEmitter.DOM('change', page.checkbox, ()=>{
+            if(page.checkbox.checked){
+                page.pass.type = 'text'
+                page.newpass.type = 'text'
+            }else{
+                page.pass.type = 'password'
+                page.newpass.type = 'password'
+            }
+        }) 
     }
 
     function render(dados, container){

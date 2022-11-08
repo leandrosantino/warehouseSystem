@@ -5,7 +5,7 @@
   "scripts": {
     "dist": "electron-builder",
     "pack": "electron-builder — dir",
-    "start": "electron .",
+    "start": "cls && electron .",
     "rebuild": "electron-rebuild -f -w sqlite3",
     "test": "echo \"Error: no test specified\" && exit 1",
     "proto": "node ./test/datacore ",
@@ -36,6 +36,7 @@
   "devDependencies": {
     "electron": "^18.2.3",
     "electron-builder": "^22.13.1",
+    "electron-is-dev": "^2.0.0",
     "electron-rebuild": "^3.2.7",
     "electron-reload": "^2.0.0-alpha.1"
   },

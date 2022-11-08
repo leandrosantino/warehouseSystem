@@ -1,0 +1,56 @@
+ <div id="case">
+
+   <div id="body"> 
+
+      <div class="row">
+         <div id="title">Movimentações</div>
+      </div>
+ 
+      <div class="row">
+         <label for="data">Data:</label>
+         <input type="text" maxlength="10" id="data" class="input">
+
+         <label for="tipo">Tipo:</label>
+         <select id="tipo"  class="input">
+            <option value="Entrada" selected >Entrada</option>
+            <option value="Saída">Saída</option>
+            <option value="Retorno">Retorno</option>
+         </select>
+                  
+         <label for="quant">Quant.:</label>
+         <input type="number" min="1" id="quant" class="input">
+
+      </div>
+
+      <div class="row">
+         <label for="material">Material:</label>
+         <input type="text" id="material" disabled class="input">
+         <button id="btSalvar" >Salvar</button>
+      </div>
+
+      <div class="row">
+            
+         <label for="pesquisa" id="label_search" class="label">
+             <span id="iconsearch" >
+                 <%- icons.search %> 
+             </span>
+         </label>
+         <input type="text" id="pesquisa">
+
+         <button id="close_search">X</button>
+         
+     </div>
+     
+      
+
+     <div class="row">
+         <div id="search_case">
+
+             
+
+         </div>
+     </div>
+      
+   </div>
+
+ </div> 

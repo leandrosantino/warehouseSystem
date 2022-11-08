@@ -16,6 +16,9 @@ function createLogicCore(window){
         const mat = page.matricula.value
         if(colaboradores[mat]){
             globalEvents.send('toChargeRequisitar', mat)
+            setTimeout(()=>{
+                toCharge()
+            }, 10* 60* 1000)
         }else{
             ipc.sendSync('dialogError', 'Matricula não cadastrada!!!')
         }
@@ -39,6 +42,9 @@ function createLogicCore(window){
 
         eventEmitter.DOM('click', page.requests, 
         ()=>globalEvents.send('toChargeRequests'))
+
+        eventEmitter.DOM('click', page.moviments, 
+        ()=>globalEvents.send('toChargeMoviments'))
 
         eventEmitter.DOM('click', page.btEntrar, openRequest)
 

@@ -209,6 +209,48 @@ module.exports = (props)=>{
         }
     }
 
+    async function deleteHistory(id){
+        try {
+            const request = await sqlite.Historico.findOne({
+                where: {id}
+            })
+
+            console.log(id, request)
+
+            if(request){
+                const {date, codigo, quantidade} = request
+                console.log(request)
+
+                const excelSource = json.getExcelDBpath()
+                if(fs.existsSync(excelSource)){
+                    await macroExe.executeMacro({
+                        filePath: path.normalize(excelSource),
+                        macroName: 'Module1.registerMovement',
+                        args: [{
+                            data: date,
+                            codigo,
+                            tipo: 'Retorno',
+                            quant: quantidade,
+                        }],
+                    })
+
+                    await request.destroy()
+    
+                    return true
+                }
+
+                return false
+                
+            }
+
+            return false
+            
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
     async function updateHistory(data){
         try{
             const formatData = []
@@ -320,7 +362,7 @@ module.exports = (props)=>{
                     updateHistory(dados)
 
                     await importDataBase()
-                    events.sendSync('getWindows', 'main').webContents.send('resetMain', 'requisitar')
+                    events.sendSync('getWindows', 'main').webContents.send('refreshRequestData')
                     return {}
                     
                 }else{
@@ -375,6 +417,27 @@ module.exports = (props)=>{
         } 
            
     }
+
+    async function setMoviments(data){
+
+        try {
+            const moviments = [data]
+            const excelSource = json.getExcelDBpath()
+            if(fs.existsSync(excelSource)){
+                await macroExe.executeMacro({
+                    filePath: path.normalize(excelSource),
+                    macroName: 'Module1.registerMovement',
+                    args: moviments,
+                })
+                await importDataBase()
+                events.sendSync('getWindows', 'main').webContents.send('refreshMovimentsData')
+                return true
+            }
+            return false
+        } catch (error) {
+            return false
+        }
+    }
  
     function declareEvents(){
         //Produtos
@@ -387,6 +450,9 @@ module.exports = (props)=>{
         //Histórico
             ipcMain.on('getHistory', async (event, args)=>{
                 event.returnValue = await getHistory(args)
+            })
+            ipcMain.on('deleteHistory', async (event, args)=>{
+                event.returnValue = await deleteHistory(args)
             })
             ipcMain.on('generateSheetHistoric', async (event, args)=>{
                 event.returnValue =  await generateSheetHistoric(args)
@@ -430,6 +496,9 @@ module.exports = (props)=>{
             })
             ipcMain.on('getPDFpath', (event, args)=>{
                 event.returnValue = json.getPDFpath()
+            })
+            ipcMain.on('setMoviments', async (event, args)=>{
+                event.returnValue = await setMoviments(args)
             })
     }
 

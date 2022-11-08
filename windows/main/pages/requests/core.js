@@ -6,7 +6,7 @@ function createCore({window, container}){
     
     const page = require(__dirname, './render')({eventEmitter, ejs, container, globalEvents})
     
-    const renderTable = dados => {
+    const renderTable = ({dados, colaboradores}) => {
         eventEmitter.send('renderTable', {
             dados,
             colaboradores,
@@ -29,8 +29,10 @@ function createCore({window, container}){
             }
         })
         
-        renderTable(array)
-    }
+        console.log(array)
+
+        renderTable({dados:array, colaboradores})
+    } 
 
     function filterHistoryDB(){
         
@@ -48,8 +50,29 @@ function createCore({window, container}){
         if(tipo!= 'todos') filters.tipo = tipo
         
         dados = ipc.sendSync('getHistory', filters)     
+
+        console.log(dados)
         
         filterHistoryLocal()
+    }
+
+    function deleteRequest(id){
+        if(ipc.sendSync('dialogQuestion',{
+            msg: 'Atenção!!',
+            detail: 'Realmente deseja Excluir a requisição?\nEsta ação não pode ser revertida!',
+            window: 'main'
+        })){
+            if(ipc.sendSync('deleteHistory', id)){
+                dados = ipc.sendSync('getHistory', {})   
+                filterHistoryLocal()
+                ipc.sendSync('dialogSuccess', {
+                    msg:'Requisição Excluida com sucesso!!!',
+                    window: 'main'
+                })
+            }else{
+                ipc.sendSync('dialogError', 'Falha ao Excluir requisição!!')
+            }
+        }
     }
  
     function assignRoles(){
@@ -71,7 +94,7 @@ function createCore({window, container}){
 
         dados = ipc.sendSync('getHistory', {})
 
-        renderTable(dados)
+        renderTable({dados, colaboradores})
         
 
         assignRoles()
@@ -86,6 +109,7 @@ function createCore({window, container}){
     return {
         toCharge,
         update,
+        deleteRequest,
     }
 
 }

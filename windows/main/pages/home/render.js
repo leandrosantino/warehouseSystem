@@ -15,7 +15,8 @@ function createPage({eventEmitter, ejs, globalEvents}){
             sideBar:{id:'#side-bar'},
             nameUser:{id:'#nameUser'},
             matricula: {id: '#matricula'},
-            btEntrar: {id: '#btEntrar'}
+            btEntrar: {id: '#btEntrar'},
+            moviments: {id: '#moviments'},
         }
         
         for(iten in elements){

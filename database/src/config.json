@@ -1,12 +1,25 @@
 {
-    "requestNumber": 371,
+    "requestNumber": 381,
     "ExcelDBpath": "C:\\Users\\leand\\Desktop\\Dev\\warehouseSystem\\database\\src\\CONTROLE DE SPARE PARTS-2.0.xlsm",
     "PDFpath": "C:\\Users\\leand\\Desktop\\Dev\\warehouseSystem\\database\\src\\Backup\\PDFs",
     "user": {
-        "email": "usuario",
+        "email": "david",
         "name": "usuario",
-        "password": "senha",
+        "password": "adler188",
         "securityQuestion": "Quanto é 1+1?",
-        "securityQuestionResponse": "2"
+        "securityQuestionResponse": "2",
+        "permissions": {
+            "pages": [
+                "requests",
+                "inventario",
+                "estoque",
+                "config",
+                "requisitar",
+                "moviments"
+            ],
+            "actions": [
+                "user manage"
+            ]
+        }
     }
 }

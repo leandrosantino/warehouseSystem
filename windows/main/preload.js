@@ -9,7 +9,8 @@ contextBridge.addPages({
     'inventario': require('./pages/inventario/core.js'), 
     'requisitar': require('./pages/requisitar/core'),
     'config': require('./pages/config/core.js'),
-    'requests': require('./pages/requests/core.js')
+    'requests': require('./pages/requests/core.js'),
+    'moviments': require('./pages/moviments/core.js'),
 })
 
 contextBridge.init() 
