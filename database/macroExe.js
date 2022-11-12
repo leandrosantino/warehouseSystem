@@ -1,6 +1,10 @@
-module.exports = ()=>{
+module.exports = (events)=>{
 
     const {PythonShell} = require('python-shell')
+
+    const path = require('path')
+
+    const source = path.join(__dirname, '../python')
 
     function toString(data){
 
@@ -37,9 +41,9 @@ module.exports = ()=>{
 
             const  options = {
                 mode: 'text',
-                pythonPath: './python/python.exe',
+                pythonPath: path.join(source, 'python.exe'),
                 pythonOptions: ['-u'],
-                scriptPath: './python',
+                scriptPath: source,
                 args: [filePath, macroName, toString(args)]
             };
             

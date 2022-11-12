@@ -1,7 +1,7 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 const createBrowserWindows = require('./modules/createWindow.js')
-const isdev = require('electron-is-dev')
+//const isdev = require('electron-is-dev')
 
 const emitters = {
     events: require('./modules/event.js')(),

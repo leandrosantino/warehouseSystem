@@ -2,6 +2,11 @@
   "name": "warehousesystem",
   "version": "1.0.0",
   "main": "main.js",
+  "homepage": "./",
+  "author": {
+    "name": "Leandro",
+    "email": "leandrosantino2013@gmail.com"
+  },
   "scripts": {
     "dist": "electron-builder",
     "pack": "electron-builder — dir",
@@ -13,12 +18,12 @@
   },
   "build": {
     "asar": "false",
+    "appId": "com.teste.electron",
     "productName": "warehouseSystem",
     "win": {
       "icon": "./src/icon.png"
     }
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "csv-parser": "^3.0.0",
@@ -29,19 +34,13 @@
     "puppeteer": "^19.1.0",
     "python-shell": "^3.0.1",
     "sass": "^1.52.3",
-    "sequelize": "^6.20.0",
+    "sequelize": "^6.25.5",
     "serialport": "^10.4.0",
-    "sqlite3": "^5.0.8"
+    "sqlite3": "^5.1.2"
   },
   "devDependencies": {
-    "electron": "^18.2.3",
-    "electron-builder": "^22.13.1",
-    "electron-is-dev": "^2.0.0",
-    "electron-rebuild": "^3.2.7",
-    "electron-reload": "^2.0.0-alpha.1"
+    "electron": "^21.2.2",
+    "electron-builder": "^23.6.0"
   },
-  "description": "Um aplicação construída com base electron, tem o objetivo de emitir e gerenciar requisições de saídas de item de um almoxarife.",
-  "directories": {
-    "test": "test"
-  }
+  "description": "Um aplicação construída com base electron, tem o objetivo de emitir e gerenciar requisições de saídas de item de um almoxarife."
 }

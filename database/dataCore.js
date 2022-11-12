@@ -9,7 +9,7 @@ module.exports = (props)=>{
     const excel = require('./excel')()
     const csv = require('./csvWriter')()
     const json = require('./jsonCore')()
-    const macroExe = require('./macroExe')()
+    const macroExe = require('./macroExe')(events)
     const PDF = require('../modules/PDF/PDFgenerator')(events)
     
     const dataBase = {
