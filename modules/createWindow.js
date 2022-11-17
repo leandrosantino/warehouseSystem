@@ -33,7 +33,7 @@ function createBrowserWindows(dependencies = {
                 webPreferences: {
                     nodeIntegration: true,
                     contextIsolation: true,
-                    devTools: true,
+                    devTools: this.devTools,
                     enableRemoteModule: false,
                     preload: path.join(this.source, 'preload.js')
                 }

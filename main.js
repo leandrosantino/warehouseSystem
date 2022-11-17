@@ -1,7 +1,7 @@
-const {app, BrowserWindow, ipcMain} = require('electron')
+const {app, BrowserWindow, ipcMain, globalShortcut} = require('electron')
 const path = require('path')
 const createBrowserWindows = require('./modules/createWindow.js')
-//const isdev = require('electron-is-dev')
+const isDev = require('electron-is-dev')
 
 const emitters = {
     events: require('./modules/event.js')(),
@@ -26,7 +26,7 @@ if(false){
 const windows = createBrowserWindows({
     BrowserWindow,
     ipcMain,
-    devTool: true,
+    devTools: isDev,
     icon: path.join(__dirname, './src/icon.png')
 })
 
@@ -43,6 +43,11 @@ app.on('window-all-closed', ()=>{
     app.exit();
     app.quit();
 }); 
+
+!isDev && app.on('browser-window-focus', ()=>{
+    globalShortcut.register('CommandOrControl+R', ()=>{})
+    globalShortcut.register('F5', ()=>{})
+})
 
 async function init(){
     emitters.events.on('getWindows', (event, args)=>{
