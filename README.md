@@ -6,7 +6,8 @@ possibilidade de registrar saídas e entradas de itens no estoque, permite a
 emissão de requisições de saídas, uma interface para controle do estoque e
 permite registar contagens de inventário através de um aplicativo móvel.
 
-![image1](./public/image1.png) ![image2](./public/image2.png)
+![image1](https://github.com/leandrosantino/warehouseSystem/blob/main/public/image1.png?raw=true)
+ ![image2](https://github.com/leandrosantino/warehouseSystem/blob/main/public/image2.png?raw=true)
 
 Ele foi construído utilizando o ElectronJs para criar um aplicativo nativo para
 o windows, toda aparte visual foi construída com html, css e javascript.
@@ -31,7 +32,7 @@ estilização.
 
 ## Veja o WarehouseSystem funcionando
 
-[![tamb](./public/tamb.png)](https://youtu.be/3Mqvd27UoYM)
+[![tamb](https://github.com/leandrosantino/warehouseSystem/blob/main/public/tamb.png?raw=true)](https://youtu.be/3Mqvd27UoYM)
 
 #### Link para o Repostório
 
