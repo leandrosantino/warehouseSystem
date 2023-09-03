@@ -2,17 +2,17 @@
 
     <div id="form">
 
-        <button id="voltar" >
-            <span id="iconBt" >
-                <%- icons.back %> 
-            </span> 
+        <button id="voltar">
+            <span id="iconBt">
+                <%- icons.back %>
+            </span>
             <div>
                 Voltar
             </div>
         </button>
 
         <div id="logo_case">
-            <img  id="logo" src="../../src/logoAdler2.png" alt="">
+            <!-- <img  id="logo" src="../../src/logoAdler2.png" alt=""> -->
         </div>
 
         <div class="title">
@@ -23,11 +23,11 @@
 
             <div id="row_1">
                 <div>
-                    <label for="matricula" class="label" >Matrícula:</label>
-                    <input type="text" id="matricula">  
+                    <label for="matricula" class="label">Matrícula:</label>
+                    <input type="text" id="matricula">
                 </div>
                 <div>
-                    <label for="tag" class="label" >Máquina:</label>
+                    <label for="tag" class="label">Máquina:</label>
                     <select type="text" id="tag"></select>
                 </div>
             </div>
@@ -38,27 +38,27 @@
                 </div>
                 <div>
                     <input name="natureza" checked type="radio" id="quebra">
-                    <label for="quebra" class="label" id="label_nat" >Quebra</label>
+                    <label for="quebra" class="label" id="label_nat">Quebra</label>
 
                     <input name="natureza" type="radio" id="preventiva">
-                    <label for="preventiva" class="label" id="label_nat" >Preventiva</label>
+                    <label for="preventiva" class="label" id="label_nat">Preventiva</label>
 
                     <input name="natureza" type="radio" id="melhoria">
-                    <label for="melhoria" class="label"  id="label_nat">Melhoria</label>
+                    <label for="melhoria" class="label" id="label_nat">Melhoria</label>
                 </div>
 
                 <div>
                     <input name="natureza" type="radio" id="seguranca">
-                    <label for="seguranca" class="label"  id="label_nat">Segurança</label>
+                    <label for="seguranca" class="label" id="label_nat">Segurança</label>
 
                     <input name="natureza" type="radio" id="outros">
-                    <label for="outros" class="label"  id="label_nat">Outros</label>
+                    <label for="outros" class="label" id="label_nat">Outros</label>
                 </div>
 
             </div>
 
         </div>
-        
+
 
         <div class="row">
 
@@ -68,53 +68,53 @@
             <button id="adicionar">+</button>
 
         </div>
- 
+
         <div class="row">
             <div id="row_quant">
                 <label for="requisitada" class="label">Quant. Requisitada:</label>
                 <input type="number" min="1" value="1" id="requisitada">
                 <label for="etregue" class="label">Quant. Entregue:</label>
-                <input type="number" min="1" value="1"  id="entregue">
+                <input type="number" min="1" value="1" id="entregue">
             </div>
         </div>
 
         <div class="row">
-            
+
             <label for="pesquisa" id="label_search" class="label">
-                <span id="iconsearch" >
-                    <%- icons.search %> 
+                <span id="iconsearch">
+                    <%- icons.search %>
                 </span>
             </label>
             <input type="text" id="pesquisa">
 
             <button id="close_search">X</button>
-            
+
         </div>
 
         <div class="row">
             <div id="search_case">
 
-                
+
 
             </div>
         </div>
 
         <div class="row" id="butons">
 
-            
+
 
             <button id="cancelar">Cancelar</button>
             <button id="concluir">Concluir</button>
 
 
         </div>
-        
-    </div>  
- 
+
+    </div>
+
     <div id="itens">
-        
+
         <div class="row">
-            <div id="title">Material Requisitado</div>           
+            <div id="title">Material Requisitado</div>
         </div>
 
         <div class="row" id="row-requisitante">
@@ -125,30 +125,30 @@
         <div class="row" id="row-natureza">
             <label for="natureza">Natureza da Solicitação:</label>
             <div id="natureza"></div>
-        </div> 
+        </div>
 
         <div class="row" id="row-natureza">
             <label for="natureza">Máquina:</label>
-            <div id="maquina" ></div>
-        </div> 
+            <div id="maquina"></div>
+        </div>
 
         <div class="row">
 
             <div id="table">
                 <div id="header">
-                    <div class="cell" id="desc"  >Descrição</div>
-                    <div class="cell" id="ende"  >Endereço</div>
-                    <div class="cell" id="quaR"  >Quant. R.</div>  
-                    <div class="cell" id="quaE"  >Quant. E.</div>
-                    
+                    <div class="cell" id="desc">Descrição</div>
+                    <div class="cell" id="ende">Endereço</div>
+                    <div class="cell" id="quaR">Quant. R.</div>
+                    <div class="cell" id="quaE">Quant. E.</div>
+
                 </div>
 
                 <div id="caselist"></div>
 
-            </div>      
+            </div>
 
-            
-            
+
+
         </div>
 
         <div class="row">
@@ -159,5 +159,5 @@
 
 
     </div>
-    
+
 </div>

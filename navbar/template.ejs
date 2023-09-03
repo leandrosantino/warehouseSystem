@@ -1,4 +1,4 @@
-<div >
+<div>
     <div id="logo">
         <img id="imgLogo" src="../../src/icon.png" alt="">
     </div>
@@ -7,29 +7,29 @@
         Wharehouse System
     </div>
 </div>
- 
+
 <div id="Nav_butons">
 
     <% if (minimize) { %>
         <div class="no-drag" id="butonNav" onclick="window.navBar.minimize()">
             <div id="ico-min">
-                <%- minimize  %>  
+                <%- minimize %>
             </div>
         </div>
-    <% } %>  
+        <% } %>
 
-    <% if (maximize) { %>
-        <div class="no-drag" id="butonNav" onclick="window.navBar.maximize()">
-            <div id="ico-max">
-                <%- maximize %>  
-            </div>
-        </div>
-    <% } %>  
- 
-    <div class="no-drag" id="butonClose" onclick="window.navBar.close()">
-        <span id="ico-close">
-            <%- close %> 
-        </span>
-    </div>
+            <% if (maximize) { %>
+                <div class="no-drag" id="butonNav" onclick="window.navBar.maximize()">
+                    <div id="ico-max">
+                        <%- maximize %>
+                    </div>
+                </div>
+                <% } %>
+
+                    <div class="no-drag" id="butonClose" onclick="window.navBar.close()">
+                        <span id="ico-close">
+                            <%- close %>
+                        </span>
+                    </div>
 
 </div>

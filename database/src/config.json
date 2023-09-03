@@ -1,7 +1,7 @@
 {
-    "requestNumber": 386,
-    "ExcelDBpath": "C:\\Users\\leand\\Desktop\\Dev\\warehouseSystem\\database\\src\\CONTROLE DE SPARE PARTS-2.0.xlsm",
-    "PDFpath": "C:\\Users\\leand\\Desktop\\Dev\\warehouseSystem\\database\\src\\Backup\\PDFs",
+    "requestNumber": 390,
+    "ExcelDBpath": "D:\\Dev\\warehouseSystem\\database\\src\\CONTROLE DE SPARE PARTS-2.0.xlsm",
+    "PDFpath": "D:\\Dev\\warehouseSystem\\database\\src",
     "user": {
         "email": "david",
         "name": "usuario",
