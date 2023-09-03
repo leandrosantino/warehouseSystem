@@ -28,7 +28,15 @@ estilização.
 
 ## Aprendizados
 
-[em aberto]
+Tive a oportunidade de aprender diversas tecnologias durante a construção deste projeto, como por exemplo:
+
+- **Ejs:** Eu precisei aprender a usar ele para criar a navegação entre as paginas e para criar conteúdos dinâmicos dentro de algumas páginas.
+
+- **Sass:** Um pré processador para css, decidi usa-ló no projeto devido a sua praticidade para repetir estilizações, e pela sintaxe que facilita a escrita do css.
+
+- **Puppeteer:** Um dos requisitos funcionais do sistema era a impressão das folhas de requisição, para isso seria necessário criar PDF a partir de html. O Puppeteer é uma das forma de fazer isso.
+
+Além das tecnologias, também a prendi alguns padrões de design como o "event" e o "factory".
 
 ## Veja o WarehouseSystem funcionando
 
